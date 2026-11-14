@@ -1,0 +1,91 @@
+/*
+ * Tokens de color y elevación (design.md §2).
+ * Único archivo del proyecto donde se escriben códigos de color.
+ */
+
+:root {
+  --primary: #0B3C5D;
+  --primary-hover: #072A42;
+  --on-primary: #FFFFFF;
+  --surface: #F4F8FB;
+  --on-surface: #0A1F2E;
+  --on-surface-muted: #1F4A66;
+  --surface-container: #FFFFFF;
+  --surface-container-low: #E8F0F6;
+  --surface-container-high: #D3E2EC;
+  --outline: #4F7A96;
+  --outline-variant: #C7D9E5;
+  --focus-ring: #0B3C5D;
+  --success: #14532D;
+  --success-subtle: #ECFBF1;
+  --success-border: #A7E3BF;
+  --warning: #7A3A06;
+  --warning-subtle: #FFF6E6;
+  --warning-border: #F2C98C;
+  --on-warning: #FFFFFF;
+  --error: #8B1A1A;
+  --error-subtle: #FFF0F0;
+  --error-border: #F2B3B3;
+  --info: #123F6E;
+  --info-subtle: #EAF3FC;
+  --info-border: #B5D3F0;
+  --inverse-surface: #0A1F2E;
+  --inverse-on-surface: #E8F2F8;
+  --inverse-primary: #8CCFF0;
+  --scrim: rgba(6, 23, 34, 0.60);
+  --nav-surface: #0B3C5D;
+  --on-nav: #E8F2F8;
+  --on-nav-muted: #C6DEEC;
+  --nav-active: #1A5279;
+  --nav-indicator: #8CCFF0;
+
+  --shadow-1: 0 1px 2px rgba(10, 31, 46, 0.06);
+  --shadow-2: 0 10px 25px -5px rgba(10, 31, 46, 0.14), 0 8px 10px -6px rgba(10, 31, 46, 0.08);
+
+  /* Color del espacio entre un control y su anillo de foco (§2.2). */
+  --focus-offset: var(--surface);
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --primary: #8CCFF0;
+  --primary-hover: #B5E2F7;
+  --on-primary: #061722;
+  --surface: #061722;
+  --on-surface: #E8F2F8;
+  --on-surface-muted: #A9CCE0;
+  --surface-container: #0C2331;
+  --surface-container-low: #08202D;
+  --surface-container-high: #14344A;
+  --outline: #6F9AB5;
+  --outline-variant: #24465C;
+  --focus-ring: #8CCFF0;
+  --success: #6EE7A0;
+  --success-subtle: #0B2A1A;
+  --success-border: #1F5A38;
+  --warning: #FCC86B;
+  --warning-subtle: #2E1F08;
+  --warning-border: #6B4A12;
+  --on-warning: #061722;
+  --error: #FCA5A5;
+  --error-subtle: #331314;
+  --error-border: #6B2A2A;
+  --info: #9CC9F5;
+  --info-subtle: #0D2740;
+  --info-border: #1F4A70;
+  --inverse-surface: #E8F2F8;
+  --inverse-on-surface: #0A1F2E;
+  --inverse-primary: #0B3C5D;
+  --scrim: rgba(0, 0, 0, 0.70);
+  --nav-surface: #030E15;
+  --on-nav: #E8F2F8;
+  --on-nav-muted: #A9CCE0;
+  --nav-active: #14344A;
+  --nav-indicator: #8CCFF0;
+
+  --shadow-1: none;
+  --shadow-2: 0 10px 25px -5px rgba(0, 0, 0, 0.55);
+
+  color-scheme: dark;
+}
