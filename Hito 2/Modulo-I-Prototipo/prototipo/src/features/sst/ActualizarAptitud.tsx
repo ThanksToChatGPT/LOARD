@@ -5,10 +5,10 @@ import { Banner, Button, DateField, FormLayout, PageHeader, RadioCardGroup, Stat
 import { formatoFecha, numeroDeDia } from '@/lib/formato';
 import type { ConceptoMedico } from '@/lib/semaforo';
 import { VistaPreviaSemaforo, Volver } from './componentes';
-import { aptitudVigente, evaluar } from './evaluacion';
-import { HOY_SST, ahora } from './fechas';
-import { useSst, useTrabajador } from './SstContext';
-import type { Aptitud } from './tipos';
+import { aptitudVigente, evaluar } from '@/lib/sst/evaluacion';
+import { HOY_SST, ahora } from '@/lib/sst/fechas';
+import { useSst, useTrabajador } from '@/lib/sst/SstContext';
+import type { Aptitud } from '@/lib/sst/tipos';
 
 type Errores = Partial<Record<'concepto' | 'expedicion' | 'vencimiento', string>>;
 

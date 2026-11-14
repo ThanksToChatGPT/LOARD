@@ -12,7 +12,7 @@ Artefactos de este módulo:
 | :--- | :--- |
 | `src/styles` | `tokens.css` es el único archivo con códigos de color. En el resto se usan nombres de token (`bg-surface`, `text-error`). |
 | `src/components` | Componentes compartidos por todo el equipo (átomos, moléculas, organismos y plantillas). Se importan desde `@/components`. |
-| `src/lib` | Reglas y constantes de negocio: estados oficiales, semáforo SST, formatos de fecha, validación de archivos. |
+| `src/lib` | Reglas y constantes de negocio: estados oficiales, semáforo SST, formatos de fecha, validación de archivos. En `src/lib/sst` están los trabajadores, su evaluación SST y el proveedor de datos que comparten `sst` y `cortes`. |
 | `src/hooks` | Tema claro/oscuro, foco dentro de diálogos, ancho de pantalla, estado de conexión. |
 | `src/features` | Una carpeta por módulo funcional. Cada pantalla se construye dentro de la suya. |
 | `src/muestra` | Página que enseña todos los componentes compartidos. |

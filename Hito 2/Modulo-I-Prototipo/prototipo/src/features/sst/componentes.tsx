@@ -8,13 +8,8 @@ import type { EstadoSST } from '@/lib/estados';
 import { cn } from '@/lib/cn';
 import { diasRestantes, formatoFecha, formatoFechaHora, formatoMB, type FechaCalendario } from '@/lib/formato';
 import { DIAS_ALERTA_15, DIAS_ALERTA_30, calcularEstadoSST, textoVencimiento } from '@/lib/semaforo';
-import { HOY_SST } from './fechas';
-import type { Curso } from './tipos';
-
-/** 1144082315 → «1.144.082.315» */
-export function formatoCedula(cedula: string): string {
-  return cedula.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-}
+import { HOY_SST } from '@/lib/sst/fechas';
+import type { Curso } from '@/lib/sst/tipos';
 
 /** Enlace de regreso, con área táctil completa. */
 export function Volver({ to, children }: { to: string; children: ReactNode }) {

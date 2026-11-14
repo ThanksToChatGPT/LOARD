@@ -23,6 +23,7 @@ export function Checkbox({
   onBlockedAttempt,
   className,
   onClick,
+  onChange,
   onKeyDown,
   ...rest
 }: CheckboxProps) {
@@ -39,6 +40,10 @@ export function Checkbox({
         {...rest}
         type="checkbox"
         aria-disabled={blocked || undefined}
+        // React dispara onChange en casillas aunque el clic se cancele: bloqueada, no se reenvía.
+        onChange={(e) => {
+          if (!blocked) onChange?.(e);
+        }}
         onClick={(e) => {
           if (blocked) {
             e.preventDefault();

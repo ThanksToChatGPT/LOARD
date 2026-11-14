@@ -2,13 +2,13 @@ import { FilePlus2, FileText, RefreshCw, ShieldCheck, Stethoscope } from 'lucide
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Badge, Banner, Button, PageHeader, StatusBadge, Timeline } from '@/components';
-import { formatoFecha, formatoFechaHora } from '@/lib/formato';
+import { formatoCedula, formatoFecha, formatoFechaHora } from '@/lib/formato';
 import { calcularEstadoSST, esAsignable, textoVencimiento } from '@/lib/semaforo';
-import { Seccion, VisorCertificado, Volver, formatoCedula } from './componentes';
-import { aptitudVigente, construirBitacora, cursosVigentes, textoOtros } from './evaluacion';
-import { HOY_SST } from './fechas';
-import { useTrabajador } from './SstContext';
-import type { Curso } from './tipos';
+import { Seccion, VisorCertificado, Volver } from './componentes';
+import { aptitudVigente, construirBitacora, cursosVigentes, textoOtros } from '@/lib/sst/evaluacion';
+import { HOY_SST } from '@/lib/sst/fechas';
+import { useTrabajador } from '@/lib/sst/SstContext';
+import type { Curso } from '@/lib/sst/tipos';
 
 export function FichaTrabajador() {
   const { id } = useParams();

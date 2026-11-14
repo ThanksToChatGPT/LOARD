@@ -17,10 +17,10 @@ import {
 } from '@/components';
 import { formatoFecha, numeroDeDia } from '@/lib/formato';
 import { VistaPreviaSemaforo, Volver } from './componentes';
-import { evaluar } from './evaluacion';
-import { HOY_SST, ahora } from './fechas';
-import { useSst, useTrabajador } from './SstContext';
-import { TIPOS_CURSO, type Curso, type TipoCurso } from './tipos';
+import { evaluar } from '@/lib/sst/evaluacion';
+import { HOY_SST, ahora } from '@/lib/sst/fechas';
+import { useSst, useTrabajador } from '@/lib/sst/SstContext';
+import { TIPOS_CURSO, type Curso, type TipoCurso } from '@/lib/sst/tipos';
 
 interface Subida {
   archivo: File;

@@ -71,3 +71,13 @@ export function formatoMB(bytes: number): string {
 export function plural(cantidad: number, singular: string, pluralTexto: string): string {
   return `${cantidad} ${cantidad === 1 ? singular : pluralTexto}`;
 }
+
+/** 1144082315 → «1.144.082.315» */
+export function formatoCedula(cedula: string): string {
+  return cedula.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+/** Texto para comparar en una búsqueda: sin tildes y en minúscula. */
+export function sinTildes(texto: string): string {
+  return texto.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+}

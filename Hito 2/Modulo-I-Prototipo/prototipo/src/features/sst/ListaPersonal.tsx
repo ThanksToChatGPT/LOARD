@@ -3,12 +3,11 @@ import { useMemo, type ReactNode } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { Button, KpiCard, PageHeader, ResponsiveTable, SearchField, StatusBadge, type TableColumn } from '@/components';
 import type { EstadoSST } from '@/lib/estados';
-import { formatoFecha, formatoHora, plural } from '@/lib/formato';
+import { formatoCedula, formatoFecha, formatoHora, plural, sinTildes } from '@/lib/formato';
 import { compararCriticosPrimero, esAsignable } from '@/lib/semaforo';
-import { formatoCedula } from './componentes';
-import { textoOtros } from './evaluacion';
-import { HOY_SST, SINCRONIZADO_EN } from './fechas';
-import { useSst, type FilaPersonal } from './SstContext';
+import { textoOtros } from '@/lib/sst/evaluacion';
+import { HOY_SST, SINCRONIZADO_EN } from '@/lib/sst/fechas';
+import { useSst, type FilaPersonal } from '@/lib/sst/SstContext';
 
 /** Grupos de los indicadores. Cada uno filtra la tabla por uno o dos estados oficiales. */
 const GRUPOS = {
@@ -36,8 +35,6 @@ function ordenar(a: FilaPersonal, b: FilaPersonal): number {
   if (da !== db) return da - db;
   return a.trabajador.nombre.localeCompare(b.trabajador.nombre, 'es');
 }
-
-const sinTildes = (s: string) => s.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
 
 export function ListaPersonal() {
   const navigate = useNavigate();
