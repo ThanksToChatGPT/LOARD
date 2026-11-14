@@ -1,155 +1,71 @@
-# LOARD
+# LOARD · Prototipo de alta fidelidad
 
-Sistema de información para Loard Construcciones S.A.S.: cortes de obra, dossier de calidad y habilitación SST.
+Entrega navegable de ejemplo para el Hito 2 de Loard Construcciones S.A.S.
 
-## Contenido
+## Ejecutar
 
-- [`Hito 2/design.md`](Hito%202/design.md): sistema de diseño (tokens, componentes, reglas de interacción).
-- [`Hito 2/Modulo-I-Prototipo`](Hito%202/Modulo-I-Prototipo): prototipo navegable en código.
-- [`Hito 2/Modulo-II-Frontend`](Hito%202/Modulo-II-Frontend): arquitectura de frontend y componentización.
-- [`Hito 2/Modulo-III-QC`](Hito%202/Modulo-III-QC): pruebas de usabilidad y accesibilidad.
-- [`Hito 2/Modulo-IV-Persistencia`](Hito%202/Modulo-IV-Persistencia): modelo de datos y mapa de API.
-
-## Ejecutar el prototipo
-
-```bash
-cd "Hito 2/Modulo-I-Prototipo/prototipo"
-npm install
-npm run dev -- --host 127.0.0.1 --port 5174 --strictPort
-```
-
-El prototipo se abre en `http://127.0.0.1:5174`. La aplicación funcional de Django y React descrita abajo usa `http://127.0.0.1:5173`. El prototipo SST conserva sus propios datos de demostración y está pendiente de conexión con la API funcional.
-
-## Implementación funcional de HU-M01 y HU-M02
-
-Base del MVP con autenticación por correo y contraseña, permisos por rol/proyecto y registro de cortes de obra. Incluye listado, búsqueda, detalle, edición con motivo obligatorio, historial de versiones y recuperación de borradores locales.
-
-### Organización
-
-```text
-backend/
-  config/                 Configuración y rutas de Django
-  accounts/               Usuario por correo, roles y autenticación JWT
-  projects/               Proyectos, miembros y catálogos mínimos
-  cuts/                   Modelos, permisos, validaciones y servicios de cortes
-frontend/
-  src/
-    app/                  Rutas protegidas y estructura de navegación
-    components/           Controles, estados de carga y etiquetas compartidos
-    features/auth/        Sesión y pantalla de acceso
-    features/cuts/        Listado, formulario reutilizable, detalle e historial
-    lib/                  Cliente HTTP, tipos y formatos
-```
-
-El backend usa Django 5.2, DRF, Simple JWT y migraciones versionadas. El frontend usa React, TypeScript, Vite, Tailwind e Inter local. TanStack Query centraliza las consultas y la invalidación de caché.
-
-### Ejecución local en Windows
-
-Requisitos: Python 3.12 o superior y Node.js 22.12 o superior.
-
-Desde la raíz, prepara el backend.
+Requiere Node.js 22.12 o superior. Ejecuta estos comandos desde la raíz del repositorio.
 
 ```powershell
-py -m venv .venv
-.venv/Scripts/python.exe -m pip install -r backend/requirements.txt
-.venv/Scripts/python.exe backend/manage.py migrate
-.venv/Scripts/python.exe backend/manage.py createsuperuser
-.venv/Scripts/python.exe backend/manage.py runserver 127.0.0.1:8000
-```
-
-En otra terminal, prepara el frontend.
-
-```powershell
-cd frontend
 npm ci
 npm run dev
 ```
 
-Abre [la aplicación](http://127.0.0.1:5173) y [la administración](http://127.0.0.1:8000/admin/). Vite redirige `/api`, `/admin` y `/static` hacia Django durante el desarrollo.
+Abre http://127.0.0.1:5173. Los comandos de la raíz ejecutan el prototipo ubicado en `Hito 2/Modulo-I-Prototipo/prototipo`.
 
-La configuración lee variables del entorno del proceso. `backend/.env.example` enumera las variables disponibles. Para usar PostgreSQL, define `DATABASE_URL` antes de ejecutar las migraciones. Sin esa variable, el desarrollo local usa SQLite. Para un despliegue, configura un secreto propio, hosts permitidos, `DJANGO_DEBUG=0`, HTTPS y un proxy que sirva el frontend y dirija `/api` y `/admin` al backend. La base incluye configuración de conexión a PostgreSQL. Las verificaciones locales se realizaron con SQLite.
+## Recorrido de la demostración
 
-#### Datos ficticios para explorar el flujo
+1. En «Perfil de ejemplo», elige un rol.
+2. Ingresa con el correo mostrado y la contraseña `Demo2026!`.
+3. El perfil Residente abre «Cortes de obra». Puede registrar actividades, seleccionar personal habilitado, indicar horas e insumos y guardar un corte de ejemplo.
+4. Abre el detalle, edita un corte propio y escribe un motivo. El historial conserva autor, fecha, motivo y valores de las versiones anteriores. Editar el corte visado de ejemplo lo devuelve a revisión.
+5. El perfil SST abre «Personal SST» y conserva los recorridos del compañero para cursos, aptitud y bloqueo de personal.
+6. Director, Calidad y Gerencia consultan los módulos habilitados para sus perfiles. «Cerrar sesión de ejemplo» permite cambiar de rol.
 
-El comando crea cuentas, un proyecto, catálogos y tres cortes de ejemplo. Solo funciona en modo de desarrollo. Define una contraseña local propia, de al menos 12 caracteres.
+Todas las cuentas usan la misma contraseña de demostración.
 
-```powershell
-$env:LOARD_DEMO_PASSWORD = Read-Host 'Contraseña para las cuentas nuevas de demostración'
-.venv/Scripts/python.exe backend/manage.py seed_demo
-Remove-Item Env:LOARD_DEMO_PASSWORD
-```
+| Perfil | Correo de ejemplo |
+| --- | --- |
+| Residente | residente@loard.demo |
+| Director | director@loard.demo |
+| Calidad | calidad@loard.demo |
+| SST | sst@loard.demo |
+| Gerencia | gerencia@loard.demo |
 
-Cuentas creadas: `resident@loard.test`, `director@loard.test`, `quality@loard.test`, `sst@loard.test`, `management@loard.test` y `admin@loard.test`. La última accede a Django Admin. Volver a ejecutar el comando conserva las contraseñas y los cortes ya creados.
+Las cantidades, personas y credenciales son ejemplos para presentar la interacción. Los perfiles y accesos se simulan en el navegador. Los cortes y sus borradores se conservan en `localStorage`, y la sesión de ejemplo en `sessionStorage`. SST conserva el reloj fijo al 17/11/2026 y sus registros en memoria durante la sesión. Los cambios SST se reflejan en el selector de personal mientras se recorre la demostración.
 
-Para cargar datos propios desde la administración, crea usuarios y proyectos, asigna sus miembros y registra frentes, actividades con unidad/cantidad prevista, trabajadores e insumos. Activa los proyectos que deban estar disponibles. Los usuarios administradores se crean con `createsuperuser`.
-
-### Permisos iniciales
-
-| Rol | Consultar cortes del proyecto asignado | Crear cortes | Editar cortes |
-| --- | --- | --- | --- |
-| Residente | Sí | Sí | Solo los propios |
-| Director | Sí | No | No |
-| SIG / Calidad | Sí | No | No |
-| Gerencia | Sí | No | No |
-| SST | No | No | No |
-
-El administrador consulta todos los proyectos activos y gestiona usuarios/catálogos. Los cortes y las versiones son de solo lectura en Django Admin. El backend comprueba los permisos en cada solicitud con el usuario actual de la base de datos.
-
-La sesión usa un JWT de acceso de 10 minutos y uno de renovación de 8 horas, con rotación y revocación del token de renovación al salir. El navegador guarda los tokens en `sessionStorage`, y la sesión se recupera al recargar la misma pestaña. El token de acceso emitido expira por su vigencia. Las renovaciones requieren una cuenta activa. El ingreso tiene un límite inicial de 10 intentos por minuto e IP, usando la caché de Django.
-
-### Reglas del corte
-
-- Cada corte pertenece a un proyecto, un frente y un periodo con fechas de inicio y fin.
-- El residente registra cantidades del periodo por actividad, horas del periodo por trabajador e insumos por cantidad y unidad. Se requiere una actividad y un trabajador. Los insumos y las observaciones son opcionales.
-- Las cantidades y horas deben ser positivas. Las actividades, trabajadores e insumos se pueden incluir una vez por corte y deben pertenecer al proyecto. Las horas por trabajador no pueden superar las horas calendario disponibles en el periodo.
-- El avance de cada actividad es su cantidad acumulada hasta el fin del periodo dividida entre la cantidad prevista. Cada versión conserva el acumulado calculado al guardarla. Los valores reales superiores a lo previsto se conservan y pueden dar porcentajes superiores al 100 %. Las unidades heterogéneas se presentan por actividad.
-- Crear un corte lo deja en `En Revisión (Enviado)`. El motivo de edición exige al menos 10 caracteres. Editar crea otra versión con autor, rol, fecha, hora y una copia completa de los valores. Una versión visada se conserva y la corrección vuelve a revisión.
-- El guardado es transaccional. La edición exige la versión que se leyó y responde `409` si cambió. Una clave UUID por solicitud de creación evita duplicar un corte al reintentar la misma solicitud.
-- El borrador se guarda después de 500 ms de inactividad y al cerrar/recargar la página. Está separado por usuario, proyecto y corte en `localStorage`. Se elimina al confirmar el guardado en el servidor. Los borradores de versiones anteriores permiten consultar su contenido antes de descartarlos.
-
-### API e integración con el equipo
-
-| Método | Ruta | Uso |
-| --- | --- | --- |
-| POST | `/api/auth/login/` | Correo y contraseña → tokens |
-| POST | `/api/auth/refresh/` | Rotar token de renovación |
-| POST | `/api/auth/logout/` | Revocar token de renovación |
-| GET | `/api/auth/me/` | Usuario y rol actuales |
-| GET | `/api/projects/` | Proyectos activos autorizados |
-| GET | `/api/projects/{id}/catalogs/` | Frentes, actividades, trabajadores e insumos |
-| GET / POST | `/api/cuts/` | Listar o crear cortes |
-| GET / PUT | `/api/cuts/{id}/` | Consultar o guardar otra versión completa |
-| GET | `/api/cuts/{id}/history/` | Consultar versiones de solo lectura |
-
-`GET /api/cuts/?project={id}` filtra por proyecto. Las respuestas de listado son arreglos JSON. Una solicitud de creación tiene esta forma.
-
-```json
-{
-  "request_id": "4cf025d6-8c91-4fe2-9274-197aff9f4bbc",
-  "project": 1,
-  "front": 1,
-  "period_start": "2026-11-01",
-  "period_end": "2026-11-07",
-  "activities": [{ "activity": 1, "quantity": "20.500" }],
-  "labor": [{ "worker": 1, "hours": "40.00" }],
-  "supplies": [{ "supply": 1, "quantity": "2.500" }],
-  "notes": "Avance del periodo"
-}
-```
-
-Para editar, envía el mismo documento completo por `PUT`, conserva `request_id` y añade `version` y `reason`. Las respuestas incluyen `data`, con los valores conservados en la versión, y `can_edit` para habilitar la acción en la interfaz.
-
-Los compañeros pueden integrar las historias restantes como apps de Django y módulos en `frontend/src/features`. HU-M03 debe relacionar sus soportes con el corte y la versión correspondiente. HU-M10 debe conectar su validación de habilitación con el guardado de personal en `cuts/services.py`. `Worker` es el catálogo básico para HU-M02. Los campos y decisiones de SST corresponden al módulo del compañero.
-
-Para HU-M04, `cuts.services.transition_cut` recibe `cut`, `user`, `status`, `reason` y `expected_version`. Comprueba Director/proyecto, registra el cambio y crea una versión conservando los valores. La entrega de HU-M04 puede exponer ese servicio desde su endpoint y construir su interfaz de visado. Todos los cambios de estado deben pasar por ese servicio para conservar el historial. El historial de cortes está disponible para su integración con HU-M11.
-
-### Verificación
+## Verificación
 
 ```powershell
-.venv/Scripts/python.exe backend/manage.py test cuts
-.venv/Scripts/python.exe backend/manage.py makemigrations --check --dry-run
-cd frontend
+npm test
+npm run typecheck
 npm run build
 ```
 
-Las pruebas cubren autenticación, renovación/revocación, acceso por rol y proyecto, validaciones de recursos, reintentos, versiones concurrentes, conservación de la versión aprobada y acumulados por periodo.
+La compilación se genera en `Hito 2/Modulo-I-Prototipo/prototipo/dist`. Para previsualizarla:
+
+```powershell
+npm run preview --workspace loard-prototipo -- --host 127.0.0.1 --port 5175
+```
+
+## Organización
+
+- `src/features/acceso` implementa HU-M01 con perfiles, sesión y validaciones de ejemplo.
+- `src/features/cortes` implementa HU-M02, su historial local y el selector SST compartido.
+- `src/features/sst` conserva las pantallas de HU-M09.
+- `src/components` reúne los componentes reutilizados de formularios, tablas, avisos y navegación.
+- `src/lib/sst` comparte trabajadores y reglas de habilitación entre SST y cortes.
+
+Las rutas anteriores son relativas a `Hito 2/Modulo-I-Prototipo/prototipo`.
+
+## Trabajo funcional apartado
+
+La aplicación funcional anterior está conservada en la rama `codex/backend-en-pausa`. Esta rama principal contiene el prototipo de la entrega y sus documentos. Los comandos de ejecución y compilación están dirigidos al prototipo compartido del equipo.
+
+## Documentos del equipo
+
+- [Sistema de diseño](Hito%202/design.md)
+- [Módulo I · Prototipo](Hito%202/Modulo-I-Prototipo)
+- [Módulo II · Componentización](Hito%202/Modulo-II-Frontend)
+- [Módulo III · Usabilidad y accesibilidad](Hito%202/Modulo-III-QC)
+- [Módulo IV · Modelo y mapa de API](Hito%202/Modulo-IV-Persistencia)

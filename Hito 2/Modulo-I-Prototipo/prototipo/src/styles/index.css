@@ -71,3 +71,15 @@
     scroll-behavior: auto !important;
   }
 }
+
+.demo-login { min-height: 100dvh; display: grid; grid-template-columns: 1fr 1fr; }
+.demo-login-brand { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: 48px; }
+.demo-login-form { display: flex; align-items: center; justify-content: center; padding: 48px; }
+.demo-resource-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 190px) 48px; align-items: end; gap: 16px; }
+@media (max-width: 767px) {
+  .demo-login { grid-template-columns: 1fr; }
+  .demo-login-brand { padding: 24px; gap: 32px; }
+  .demo-login-form { padding: 32px 16px; }
+  .demo-resource-row { grid-template-columns: minmax(0, 1fr) 48px; }
+  .demo-resource-row > :first-child { grid-column: 1 / -1; }
+}

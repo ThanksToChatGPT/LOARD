@@ -7,10 +7,11 @@ import { calcularEstadoSST, esAsignable, textoVencimiento } from '@/lib/semaforo
 import { Seccion, VisorCertificado, Volver } from './componentes';
 import { aptitudVigente, construirBitacora, cursosVigentes, textoOtros } from '@/lib/sst/evaluacion';
 import { HOY_SST } from '@/lib/sst/fechas';
-import { useTrabajador } from '@/lib/sst/SstContext';
+import { useSst, useTrabajador } from '@/lib/sst/SstContext';
 import type { Curso } from '@/lib/sst/tipos';
 
 export function FichaTrabajador() {
+  const { puedeGestionar } = useSst();
   const { id } = useParams();
   const datos = useTrabajador(id);
   const navigate = useNavigate();
@@ -71,6 +72,8 @@ export function FichaTrabajador() {
               <Button
                 size="field"
                 icon={<FilePlus2 aria-hidden="true" className="h-4 w-4" />}
+                blocked={!puedeGestionar}
+                blockedReason="Este perfil tiene acceso de consulta a SST."
                 onClick={() => navigate(`/sst/${t.id}/cursos/nuevo`)}
               >
                 Registrar curso
@@ -79,6 +82,8 @@ export function FichaTrabajador() {
                 variant="secondary"
                 size="field"
                 icon={<Stethoscope aria-hidden="true" className="h-4 w-4" />}
+                blocked={!puedeGestionar}
+                blockedReason="Este perfil tiene acceso de consulta a SST."
                 onClick={() => navigate(`/sst/${t.id}/aptitud`)}
               >
                 Actualizar aptitud médica
@@ -172,6 +177,8 @@ export function FichaTrabajador() {
                     size="field"
                     icon={<RefreshCw aria-hidden="true" className="h-4 w-4" />}
                     aria-label={`Renovar o corregir ${c.tipo}`}
+                    blocked={!puedeGestionar}
+                    blockedReason="Este perfil tiene acceso de consulta a SST."
                     onClick={() => navigate(`/sst/${t.id}/cursos/nuevo?tipo=${encodeURIComponent(c.tipo)}&reemplaza=${c.id}`)}
                   >
                     Renovar o corregir
@@ -226,6 +233,8 @@ export function FichaTrabajador() {
           variant="secondary"
           size="field"
           icon={<ShieldCheck aria-hidden="true" className="h-4 w-4" />}
+          blocked={!puedeGestionar}
+          blockedReason="Este perfil tiene acceso de consulta a SST."
           onClick={() => navigate(`/sst/${t.id}/aptitud`)}
         >
           Actualizar aptitud médica

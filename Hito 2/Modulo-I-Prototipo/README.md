@@ -43,6 +43,8 @@ npm run build      # compila
 
 ## Alcance de la demostración
 
-El prototipo usa datos de ejemplo y un reloj fijo al 17/11/2026 para reproducir todos los estados SST. Los cursos, certificados y conceptos de aptitud se mantienen en memoria durante la sesión y se reinician al recargar. El botón «Guardar personal» conserva los identificadores seleccionados en `localStorage`, y la selección se recupera al volver a la pantalla o recargar.
+El prototipo usa datos de ejemplo y un reloj fijo al 17/11/2026 para reproducir todos los estados SST. Incluye acceso por perfiles de ejemplo (HU-M01), registro y edición de cortes (HU-M02), y los módulos SST y de selección de personal del equipo (HU-M09 y HU-M10). Las pantallas de acceso están en `features/acceso`, y las pantallas y el almacenamiento local de cortes en `features/cortes`. Ambas usan los componentes compartidos existentes.
 
-La aplicación funcional de acceso y cortes está en `/frontend` y `/backend`, con instrucciones en el README de la raíz. La conexión de este prototipo SST con la API, la persistencia de sus certificados y la sincronización de cambios sin señal siguen pendientes.
+Los cortes, sus versiones, los borradores y la selección de personal se guardan en el navegador. Los cursos, certificados y conceptos de aptitud se mantienen en memoria durante la sesión y se reinician al recargar. Los cambios SST se reflejan en el selector que utiliza el formulario de cortes. El backend anterior está conservado en la rama `codex/backend-en-pausa`.
+
+Desde la raíz del repositorio, `npm ci` prepara las dependencias y `npm run dev` abre la demostración en `http://127.0.0.1:5173`. La contraseña de las cuentas mostradas en la pantalla de acceso es `Demo2026!`.

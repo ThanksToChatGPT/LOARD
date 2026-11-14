@@ -23,6 +23,7 @@ export interface FilaPersonal {
 }
 
 interface SstApi {
+  puedeGestionar: boolean;
   trabajadores: Trabajador[];
   cursos: Curso[];
   aptitudes: Aptitud[];
@@ -47,7 +48,7 @@ export function useSst(): SstApi {
 let consecutivo = 0;
 const nuevoId = (prefijo: string) => `${prefijo}-nuevo-${Date.now()}-${consecutivo++}`;
 
-export function SstProvider({ children }: { children: ReactNode }) {
+export function SstProvider({ children, puedeGestionar = true }: { children: ReactNode; puedeGestionar?: boolean }) {
   const navegadorEnLinea = useOnlineStatus();
   const [sinSenalSimulada, setSinSenalSimulada] = useState(false);
   const [cursos, setCursos] = useState<Curso[]>(DATOS_INICIALES.cursos);
@@ -85,6 +86,7 @@ export function SstProvider({ children }: { children: ReactNode }) {
 
   const api = useMemo<SstApi>(
     () => ({
+      puedeGestionar,
       trabajadores,
       cursos,
       aptitudes,
@@ -95,7 +97,7 @@ export function SstProvider({ children }: { children: ReactNode }) {
       sinSenalSimulada,
       alternarSinSenal,
     }),
-    [trabajadores, cursos, aptitudes, filas, registrarCurso, registrarAptitud, navegadorEnLinea, sinSenalSimulada, alternarSinSenal],
+    [trabajadores, cursos, aptitudes, filas, registrarCurso, registrarAptitud, navegadorEnLinea, sinSenalSimulada, alternarSinSenal, puedeGestionar],
   );
 
   return <SstContext.Provider value={api}>{children}</SstContext.Provider>;

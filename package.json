@@ -1,0 +1,11 @@
+{
+  "name": "loard",
+  "private": true,
+  "workspaces": ["Hito 2/Modulo-I-Prototipo/prototipo"],
+  "scripts": {
+    "dev": "npm run dev --workspace loard-prototipo -- --host 127.0.0.1 --port 5173 --strictPort",
+    "build": "npm run build --workspace loard-prototipo",
+    "test": "npm run test --workspace loard-prototipo",
+    "typecheck": "npm run typecheck --workspace loard-prototipo"
+  }
+}
