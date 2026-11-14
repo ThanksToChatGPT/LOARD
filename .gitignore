@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.sqlite3
+.env
+node_modules/
+dist/
+staticfiles/
+test-results/
+playwright-report/
+.playwright-mcp/
+*.tsbuildinfo
