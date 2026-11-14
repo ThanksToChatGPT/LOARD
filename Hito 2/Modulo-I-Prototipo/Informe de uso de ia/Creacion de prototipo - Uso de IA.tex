@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{capturas/}}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+
+% Los prompts se pegan tal cual se escribieron.
+\lstnewenvironment{prompt}{\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakindent=0pt,
+  breakatwhitespace=true,
+  frame=single,
+  framesep=3mm,
+  xleftmargin=3mm,
+  xrightmargin=3mm,
+  rulecolor=\color{black!40},
+  showstringspaces=false,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {ñ}{{\~n}}1 {«}{{\guillemotleft}}1 {»}{{\guillemotright}}1
+           {`}{{\textasciigrave}}1
+}}{}
+
+% Espacio para completar a mano.
+\newcommand{\pendiente}[1]{%
+  \begin{center}
+  \fcolorbox{black!40}{yellow!15}{\parbox{0.92\linewidth}{\textbf{Pendiente:} #1}}
+  \end{center}}
+
+\newcommand{\captura}[3][0.65\linewidth]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#1,height=0.45\textheight,keepaspectratio]{#2}
+    \caption{#3}
+  \end{figure}}
+
+\title{Creación del prototipo --- Uso de IA\\[0.3em]
+\large Loard · Hito 2 · Módulo I: Prototipo}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+
+El primer planteamiento fue usar v0 para crear los prototipos. Al usarlo vimos que en realidad solo genera código en React (Next.js) con Tailwind y no se lograron resultados esperados, así que se decidió hacer el prototipo de alta fidelidad directamente en código, con las IA personales de
+cada integrante.
+
+Cada paso de este documento sigue el mismo flujo:
+
+\begin{center}
+\textbf{Prompt inicial $\rightarrow$ Resultado de la IA $\rightarrow$ Refactorización humana}
+\end{center}
+
+Se intentó que el documento fuera corto. Aun así, los prompts se pegan tal cual
+y las capturas de pantalla ocupan mucho espacio, y eso lo alarga.
+
+\section{Paso 1: creación de \texttt{design.md}}
+
+\pendiente{Juan David Peña Lozada describe aquí cómo creó la primera versión de
+\texttt{design.md}: prompt inicial, resultado de la IA y ajustes hechos a mano.}
+
+\section{Paso 2: refinamiento de \texttt{design.md}}
+
+\subsection{Por qué se refinó}
+
+La primera versión no servía del todo para el uso real en obra. El profesor
+explicó que «el color gris es el más fácil para buscar contrastes», así que se
+pidió una paleta sin grises (se escogió una paleta basada en azul petróleo). Loard se usa con sol directo, celulares de gama
+baja y guantes, por lo que se subió el contraste a 7:1 y se pidieron botones más
+grandes y separados. El anillo de foco casi no se veía en modo oscuro, y las
+transiciones por debajo de 150 ms (el mínimo que usan Google Material Design y
+Figma Motion) se sentían como un salto brusco. Como la bitácora no se puede
+borrar, un toque equivocado dejaba un registro falso; los 5 segundos de
+«Deshacer» dan tiempo de reaccionar. En frentes como Buenaventura puede no
+haber señal hasta por 6 horas y el sistema no decía si el corte había salido.
+Por último, como el equipo trabaja de manera asíncrona, hacía falta una única
+fuente de verdad de colores y componentes, una retícula común (12, 8 y 4
+columnas, la vista en clase) y navegación completa por teclado, por
+accesibilidad y comodidad.
+
+\subsection{Prompt}
+
+\begin{prompt}
+Mejora `design.md` con estos cambios:
+
+1. La paleta no usa grises para lograr contraste; propon otra paleta de colores.
+2. Todo el texto tiene un contraste de 7:1.
+3. El anillo de foco tiene un color para modo claro y otro para modo oscuro. El espacio entre el control y el anillo es del color del fondo.
+4. Los botones miden 48 px en escritorio y 56 px en las pantallas móviles de corte e inspección SST. Entre controles hay 8 px.
+5. Las transiciones duran 150 ms.
+6. Antes de escribir en la bitácora aparece un aviso con «Deshacer» durante 5 segundos.
+7. Los códigos de color solo aparecen en la sección 2. En el resto del documento cada color se llama por su nombre.
+8. El documento explica qué pasa cuando se cae la señal.
+9. El documento define la retícula.
+10. Describe la navegacion por teclado
+\end{prompt}
+
+\subsection{Resultado de la IA}
+
+La IA entregó el \texttt{design.md} refinado (\texttt{Hito 2/design.md}). Para
+poder ver todo junto se creó una página de muestra (\texttt{/muestra}) con los
+colores, la tipografía, la retícula y cada componente en sus estados.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\linewidth]{muestra-1-fundamentos}\\[2mm]
+  \includegraphics[width=0.5\linewidth]{muestra-5-claro}
+  \caption{Página de muestra en modo oscuro (arriba) y claro (abajo): colores, tipografía y retícula.}
+\end{figure}
+\captura{muestra-2-atomos}{Átomos: botones, etiquetas de estado, casillas y barras de progreso.}
+\captura{muestra-3-moleculas}{Moléculas: campos, selección, indicadores, avisos y carga de archivos.}
+\captura{muestra-4-organismos}{Organismos y plantillas: tabla, franja de conexión, avisos, carga de soportes y bitácora.}
+
+\subsection{Refactorización humana}
+
+\pendiente{describir los ajustes hechos a mano sobre el \texttt{design.md} y la
+página de muestra.}
+
+\subsection{Por qué importa elegir el diseño desde el inicio}
+
+Tener el diseño escogido desde el principio permite que todo el equipo trabaje
+en sintonía y adelanta trabajo de los módulos siguientes. De ahí en adelante, el
+trabajo consiste solo en aplicar estos componentes, temas, colores y tipografías
+a la lógica del negocio.
+
+\section{Prototipo de la HU-09 (Personal SST)}
+
+\subsection{Prompt}
+
+\begin{prompt}
+Construye el prototipo de alta fidelidad de la Historia de usuario 9 en Hito 2/Modulo-I-Prototipo/prototipo, dentro de src/features/sst.
+HU-09: como Coordinación SST quiero registrar los cursos normativos y la aptitud
+médica de cada trabajador, con un semáforo de vencimiento a 30 y 15 días, para saber
+a tiempo quién dejará de estar habilitado.
+Antes de escribir, lee Hito 2/design.md y el README del Módulo I. Usa los componentes
+de @/components y las reglas de @/lib (semaforo, estados, archivos).
+Pantallas:
+
+1. Lista de personal: indicadores por estado que filtran la tabla, búsqueda, y la
+tabla ordenada con los críticos primero y el motivo visible en la fila.
+2. Ficha del trabajador: cursos, aptitud médica e historial.
+3. Formulario para registrar un curso, con carga del certificado y vista previa
+del semáforo al elegir las fechas.
+4. Formulario para actualizar la aptitud médica.
+
+Reglas que no se pueden romper:
+
+* La aptitud médica es solo Habilitado / No Habilitado con sus fechas. Ningún campo
+de diagnóstico ni texto libre clínico.
+* Sin conexión no se puede guardar; el botón queda bloqueado con el motivo.
+* Los cursos no se editan ni se borran: se corrigen registrando uno nuevo.
+
+Los datos de ejemplo van en src/features/sst, con fechas calculadas desde el 17/11 para
+que se vean todos los estados del semáforo. Usa react router para conectar la pantalla en
+App.tsx.
+\end{prompt}
+
+\subsection{Resultado de la IA}
+
+La IA construyó las cuatro pantallas pedidas, disponibles en \texttt{/sst}.
+
+\captura{sst-1-lista}{Lista de personal: indicadores por estado, búsqueda y tabla con los críticos primero.}
+\captura{sst-2-ficha}{Ficha del trabajador: cursos, aptitud médica e historial.}
+\captura{sst-3-curso}{Formulario para registrar un curso, con vista previa del semáforo y carga del certificado.}
+\captura{sst-4-aptitud}{Formulario para actualizar la aptitud médica.}
+
+\subsection{Refactorización humana}
+
+\pendiente{describir los ajustes hechos a mano sobre las pantallas de la HU-09.}
+
+\section{Prototipo de la HU-10 (Personal del corte)}
+
+\subsection{Prompt}
+
+\begin{prompt}
+Haz el prototipo de la HU-10 en Hito 2/Modulo-I-Prototipo/prototipo, en src/features/cortes.
+HU-10: como Ingeniero Residente quiero que al agregar personal a un corte de obra no me
+deje escoger trabajadores vencidos o No Habilitados, y que me diga por qué.
+Lee primero design.md (sobre todo la 6.2A) y el README del módulo. Usa los componentes
+de @/components y lo de @/lib. Los trabajadores y el semáforo ya están en features/sst,
+reutilízalos (si toca moverlos a lib, muévelos).
+Lo que necesito:
+
+* Selector de personal con búsqueda. Salen todos, pero los bloqueados van abajo, en rojo,
+con candado y el motivo (ej. "Bloqueado: Alturas vencido hace 4 días").
+* Si intento seleccionar uno bloqueado, la fila se sacude y resalta el motivo. Tiene que
+funcionar también con teclado.
+* Sin internet usa los últimos datos SST y muestra a qué hora se actualizaron.
+* Un resumen de los trabajadores escogidos con sus alertas de 15 y 30 días.
+
+Usa las mismas fechas de ejemplo del 17/11 y conéctalo en App.tsx con react router
+\end{prompt}
+
+\subsection{Resultado de la IA}
+
+La IA construyó el selector de personal, disponible en
+\texttt{/cortes/nuevo/personal}. En la captura hay cuatro trabajadores
+escogidos, con su resumen de alertas a la derecha, y se intentó marcar a un
+trabajador bloqueado (Jhon Angulo): la fila resalta el motivo y no se agrega.
+
+\captura{cortes-2-seleccion}{Selector de personal del corte: disponibles arriba, bloqueados abajo con candado y motivo, y resumen con alertas de 15 y 30 días.}
+
+\subsection{Refactorización humana}
+
+\pendiente{describir los ajustes hechos a mano sobre la pantalla de la HU-10.}
+
+\end{document}
