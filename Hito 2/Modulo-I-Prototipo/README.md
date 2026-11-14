@@ -35,8 +35,14 @@ Artefactos de este módulo:
 ## Comandos
 
 ```bash
-npm run dev        # abre la página de muestra
+npm run dev        # abre el módulo de personal SST
 npm run typecheck  # revisa tipos
 npm run test       # pruebas del semáforo SST
 npm run build      # compila
 ```
+
+## Alcance de la demostración
+
+El prototipo usa datos de ejemplo y un reloj fijo al 17/11/2026 para reproducir todos los estados SST. Los cursos, certificados y conceptos de aptitud se mantienen en memoria durante la sesión y se reinician al recargar. El botón «Guardar personal» conserva los identificadores seleccionados en `localStorage`, y la selección se recupera al volver a la pantalla o recargar.
+
+La aplicación funcional de acceso y cortes está en `/frontend` y `/backend`, con instrucciones en el README de la raíz. La conexión de este prototipo SST con la API, la persistencia de sus certificados y la sincronización de cambios sin señal siguen pendientes.

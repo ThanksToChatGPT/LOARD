@@ -15,8 +15,10 @@ Sistema de información para Loard Construcciones S.A.S.: cortes de obra, dossie
 ```bash
 cd "Hito 2/Modulo-I-Prototipo/prototipo"
 npm install
-npm run dev
+npm run dev -- --host 127.0.0.1 --port 5174 --strictPort
 ```
+
+El prototipo se abre en `http://127.0.0.1:5174`. La aplicación funcional de Django y React descrita abajo usa `http://127.0.0.1:5173`. El prototipo SST conserva sus propios datos de demostración y está pendiente de conexión con la API funcional.
 
 ## Implementación funcional de HU-M01 y HU-M02
 

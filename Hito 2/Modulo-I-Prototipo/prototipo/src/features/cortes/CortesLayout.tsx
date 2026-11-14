@@ -8,7 +8,7 @@ export function CortesLayout() {
   return (
     <LayoutPrototipo
       usuario={RESIDENTE}
-      mensajeSinSenal={`Sin conexión. El selector de personal usa los datos SST actualizados hoy a las ${formatoHora(SINCRONIZADO_EN)}. Lo que guardes se enviará al recuperar señal.`}
+      mensajeSinSenal={`Sin conexión. El selector usa los datos de demostración SST de las ${formatoHora(SINCRONIZADO_EN)}. Puedes guardar la selección en este navegador.`}
     />
   );
 }

@@ -17,7 +17,7 @@ const GRUPOS = {
   habilitados: { titulo: 'Habilitados', estados: ['Habilitado'] as EstadoSST[], tono: 'success' as const },
 };
 type Grupo = keyof typeof GRUPOS;
-const esGrupo = (v: string | null): v is Grupo => v != null && v in GRUPOS;
+const esGrupo = (v: string | null): v is Grupo => v != null && Object.hasOwn(GRUPOS, v);
 
 const ICONO_GRUPO: Record<Grupo, ReactNode> = {
   bloqueados: <Lock aria-hidden="true" className="h-4 w-4 text-error" />,

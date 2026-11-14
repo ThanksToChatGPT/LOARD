@@ -88,7 +88,7 @@ export function SelectorPersonal({ seleccionados, onCambiar, className }: Select
           <CloudOff aria-hidden="true" className="mt-px h-4 w-4 shrink-0" />
           <span>
             <strong className="font-semibold">Sin señal: datos SST actualizados hoy a las {formatoHora(SINCRONIZADO_EN)}.</strong>{' '}
-            Al enviar el corte se vuelve a revisar la habilitación de cada trabajador.
+            La habilitación de cada trabajador se revisa antes del guardado local de esta demostración.
           </span>
         </p>
       )}

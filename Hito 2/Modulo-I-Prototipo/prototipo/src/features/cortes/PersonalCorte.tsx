@@ -5,15 +5,15 @@ import { formatoFecha, plural } from '@/lib/formato';
 import { esAsignable } from '@/lib/semaforo';
 import { useSst } from '@/lib/sst/SstContext';
 import { CORTE_BORRADOR } from './datos';
+import { guardarPersonal, leerPersonal } from './almacenamiento';
 import { ResumenPersonal } from './ResumenPersonal';
 import { SelectorPersonal } from './SelectorPersonal';
 
 /** HU-M10: personal del corte de obra con bloqueo estricto SST (§6.2A). */
 export function PersonalCorte() {
-  const { filas, enLinea } = useSst();
+  const { filas } = useSst();
   const toast = useToast();
-  const [seleccionados, setSeleccionados] = useState<string[]>([]);
-  const [guardando, setGuardando] = useState(false);
+  const [seleccionados, setSeleccionados] = useState<string[]>(leerPersonal);
 
   const elegidos = useMemo(
     () => seleccionados.map((id) => filas.find((f) => f.trabajador.id === id)).filter((f) => f != null),
@@ -32,15 +32,13 @@ export function PersonalCorte() {
         : undefined;
 
   const guardar = () => {
-    setGuardando(true);
-    window.setTimeout(() => {
-      setGuardando(false);
-      toast.show({
-        message: enLinea
-          ? `Personal del Corte #${CORTE_BORRADOR.numero} guardado: ${plural(elegidos.length, 'trabajador', 'trabajadores')}.`
-          : `Personal guardado en este dispositivo. Se enviará al recuperar señal.`,
-      });
-    }, 700);
+    if (motivoBloqueo) return;
+    try {
+      guardarPersonal(elegidos.map((fila) => fila.trabajador.id));
+      toast.show({ message: `Personal del Corte #${CORTE_BORRADOR.numero} guardado en este navegador: ${plural(elegidos.length, 'trabajador', 'trabajadores')}.` });
+    } catch {
+      toast.show({ message: 'El navegador no permitió guardar el personal. La selección sigue disponible en esta pantalla. Intenta de nuevo.' });
+    }
   };
 
   return (
@@ -71,8 +69,6 @@ export function PersonalCorte() {
         <Button
           size="field"
           icon={<Save aria-hidden="true" className="h-4 w-4" />}
-          loading={guardando}
-          loadingText="Guardando personal…"
           blocked={motivoBloqueo != null}
           blockedReason={motivoBloqueo}
           onClick={guardar}
