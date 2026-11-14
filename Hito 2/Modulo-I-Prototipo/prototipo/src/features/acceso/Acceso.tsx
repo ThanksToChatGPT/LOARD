@@ -9,7 +9,7 @@ export function Acceso() {
   const navigate = useNavigate();
   const [perfil, setPerfil] = useState(CUENTAS_DEMO[0].correo);
   const [correo, setCorreo] = useState(CUENTAS_DEMO[0].correo);
-  const [clave, setClave] = useState('');
+  const [clave, setClave] = useState(CLAVE_DEMO);
   const [error, setError] = useState('');
   const [cargando, setCargando] = useState(false);
   if (usuario) return <Navigate to={rutaInicial(usuario)} replace />;
@@ -40,7 +40,7 @@ export function Acceso() {
     <section className="demo-login-form"><form className="flex w-full max-w-md flex-col gap-gutter-lg" onSubmit={entrar}>
       <div><h2 className="text-headline-lg">Iniciar sesión</h2><p className="mt-gutter-sm text-body-md text-on-surface-muted">Elige una cuenta para recorrer las pantallas de su rol.</p></div>
       <Select label="Perfil de ejemplo" value={perfil} options={CUENTAS_DEMO.map(cuenta => ({ value: cuenta.correo, label: cuenta.etiqueta }))}
-        onChange={event => { setPerfil(event.target.value); setCorreo(event.target.value); setError(''); }} />
+        onChange={event => { setPerfil(event.target.value); setCorreo(event.target.value); setClave(CLAVE_DEMO); setError(''); }} />
       <Banner tone="info">Correo de ejemplo: <strong>{perfil}</strong><br />Contraseña de ejemplo: <strong>{CLAVE_DEMO}</strong></Banner>
       <TextField label="Correo electrónico" type="email" autoComplete="off" required value={correo} onChange={event => setCorreo(event.target.value)} />
       <TextField label="Contraseña" type="password" autoComplete="off" required value={clave} onChange={event => setClave(event.target.value)} />
