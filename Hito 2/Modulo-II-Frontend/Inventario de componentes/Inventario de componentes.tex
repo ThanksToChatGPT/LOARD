@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{capturas/}}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.25}
+\setlist{nosep,leftmargin=1.2em}
+
+\definecolor{marca}{HTML}{0B3A5C}
+\definecolor{borde}{HTML}{B8C4CE}
+\arrayrulecolor{borde}
+\newcommand{\prop}[1]{\texttt{#1}}
+\newcommand{\imagen}[2][\linewidth]{\fcolorbox{borde}{white}{\includegraphics[width=\dimexpr#1-2\fboxsep-2\fboxrule\relax,height=9.5cm,keepaspectratio]{#2}}}
+
+% Contenido de la ficha: qué es, variantes y estados.
+\newcommand{\ficha}[3]{%
+  {\large\bfseries\color{marca}#1}\par\smallskip
+  \textbf{Qué es.} #2\par\smallskip
+  #3}
+
+% Ficha con la imagen a la izquierda (55% imagen, 45% texto).
+% #1 imagen, #2 nombre, #3 qué es, #4 variantes y estados
+\newcommand{\comp}[4]{%
+  \par\medskip\noindent
+  \begin{minipage}{\linewidth}
+  \begin{tabular}{|m{0.55\linewidth}|m{\dimexpr0.45\linewidth-4\tabcolsep-3\arrayrulewidth\relax}|}
+  \hline
+  \vspace{4pt}\centering\imagen{#1}\vspace{4pt} & \vspace{4pt}\ficha{#2}{#3}{#4}\vspace{4pt} \\
+  \hline
+  \end{tabular}
+  \end{minipage}\par\medskip}
+
+% Ficha con la imagen arriba (componentes anchos).
+% #1 imagen, #2 nombre, #3 qué es, #4 variantes y estados
+\newcommand{\compancho}[4]{%
+  \par\medskip\noindent
+  \begin{minipage}{\linewidth}
+  \begin{tabular}{|m{\dimexpr\linewidth-2\tabcolsep-2\arrayrulewidth\relax}|}
+  \hline
+  \vspace{4pt}\centering\imagen{#1}\vspace{4pt} \tabularnewline
+  \hline
+  \vspace{4pt}\ficha{#2}{#3}{#4}\vspace{4pt} \\
+  \hline
+  \end{tabular}
+  \end{minipage}\par\medskip}
+
+\title{Inventario de componentes\\[0.3em]
+\large Loard · Hito 2 · Módulo II: Arquitectura de frontend y componentización}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+
+Para el desarrollo de los prototipos, se plantearon componentes que se repetirían varias veces, como botones, formularios, etiquetas, tablas y avisos. Para mantener consistencia en todo el prototipo y agilizar el trabajo en equipo, se inició creando los componentes \textbf{una sola vez} para luego reutilizarlos en todos los módulos sin crear elementos visuales propios.
+
+Este inventario muestra cada componente con una captura tomada del prototipo en funcionamiento. El código se encuentra en \texttt{Modulo-I-Prototipo/prototipo/src/components} y se recomienda ver la página de muestra del prototipo para visualizar estos componentes
+en la ruta \texttt{/muestra} del prototipo.
+
+
+\subsection*{Reglas comunes a todos los componentes}
+
+\begin{itemize}
+  \item \textbf{Tamaño} (\prop{size}): \prop{default} para escritorio y \prop{field} para uso en obra (56 px de alto en móvil, más fácil de tocar).
+  \item \textbf{Tono} (\prop{tone}): un mismo juego de colores con significado fijo: \prop{info} (azul), \prop{success} (verde), \prop{warning} (ámbar), \prop{error} (rojo) y \prop{neutral}.
+  \item \textbf{Tema}: todos funcionan en claro y oscuro sin cambios.
+  \item \textbf{Bloqueado no es deshabilitado}: un control bloqueado sigue visible y \emph{explica el motivo} del bloqueo.
+\end{itemize}
+
+\newpage
+\section{Átomos}
+
+\comp{button}{Button (botón)}
+{El botón de acción. Es el componente más repetido del sistema.}
+{\textbf{Variantes:} primario (acción principal), secundario, advertencia (acciones delicadas como «Devolver») y fantasma (acciones de poco peso). 
+\textbf{Estados:} normal, con el cursor encima, con foco, cargando (muestra un spinner y cambia el texto) y bloqueado (gris, con el motivo debajo).}
+
+\comp{badges}{Etiquetas de estado}
+{Etiquetas pequeñas con ícono, color y texto. \textbf{StatusBadge} muestra un estado oficial del negocio; \textbf{Badge} es la etiqueta genérica para cualquier otro dato corto.}
+{\textbf{Variantes de StatusBadge:} una por cada estado oficial (estados SST del personal, estados del corte y estados de los requisitos). \textbf{Tonos de Badge:} info, éxito, advertencia, error y neutro. El estado nunca se comunica solo con color: siempre lleva ícono y texto.}
+
+\comp{checkbox-chip}{Checkbox y Chip}
+{\textbf{Checkbox}: casilla para marcar una opción (por ejemplo, seleccionar personal del corte). \textbf{Chip}: pastilla que se oprime para elegir o insertar un texto rápido.}
+{\textbf{Checkbox:} sin marcar, marcada y bloqueada (no se deja marcar y la fila se sacude para avisar). \textbf{Chip:} normal y seleccionado.}
+
+\comp{progreso}{ProgressBar, Spinner, Skeleton e IconButton}
+{\textbf{ProgressBar}: barra de avance. \textbf{Spinner}: indicador giratorio de 16 px, solo dentro de botones. \textbf{Skeleton}: franja gris que ocupa el lugar del contenido mientras carga. \textbf{IconButton}: botón cuadrado de 48 × 48 px con solo un ícono.}
+{\textbf{ProgressBar:} con valor, con tono de advertencia e indeterminada (cuando no se conoce el avance). \textbf{IconButton:} con o sin contador.}
+
+\newpage
+\section{Moléculas}
+
+\comp{campos}{TextField, DateField y TextArea (campos de formulario)}
+{Campos para escribir. Todos comparten la misma estructura: etiqueta arriba, el campo, y debajo una ayuda o el mensaje de error. \textbf{DateField} es para fechas y \textbf{TextArea} para textos largos.}
+{\textbf{Estados:} vacío, con foco, lleno, obligatorio (marcado con *) y con error (borde rojo y mensaje que dice qué pasó y cómo corregirlo).}
+
+\comp{seleccion}{Select, Combobox, SearchField, RadioCardGroup y FilterChips (selección)}
+{Formas de elegir entre opciones. \textbf{Select}: lista desplegable corta. \textbf{Combobox}: lista en la que se puede escribir para buscar. \textbf{SearchField}: buscador. \textbf{RadioCardGroup}: opciones excluyentes en tarjetas grandes. \textbf{FilterChips}: filtros rápidos con contador.}
+{\textbf{Estados:} sin selección, con opción elegida y desplegado (Select y Combobox). En FilterChips, el filtro activo queda resaltado.}
+
+\compancho{kpi}{KpiCard (tarjeta de indicador)}
+{Tarjeta que muestra una cifra importante con su título y una descripción. Se usa en el tablero.}
+{\textbf{Variantes:} informativa, con cifra en color de estado y como filtro (se puede oprimir). \textbf{Estados:} normal y seleccionada.}
+
+\comp{banner}{Banner (aviso en la página)}
+{Franja de aviso dentro de la pantalla. Informa algo que el usuario debe saber antes de continuar.}
+{\textbf{Variantes por tono:} información, advertencia, error o bloqueo, y confirmación. Cada una con su color e ícono.}
+
+\comp{conexion-upload}{ConnectionIndicator y UploadItem}
+{\textbf{ConnectionIndicator}: muestra en la barra superior si hay señal. \textbf{UploadItem}: una fila por cada archivo que se está subiendo.}
+{\textbf{ConnectionIndicator:} en línea, sin señal, sincronizando y error. \textbf{UploadItem:} en espera, subiendo (con barra), confirmando, cargado y con error (permite reintentar).}
+
+\comp{toast}{Aviso temporal}
+{Mensaje breve que aparece unos segundos en la parte inferior para confirmar una acción.}
+{\textbf{Variantes:} informativo y con opción «Deshacer». Se cierra solo o con la X.}
+
+\newpage
+\section{Organismos}
+
+\compancho{tabla}{ResponsiveTable}
+{La tabla de todas las bandejas y listados. En escritorio se ve como tabla; en móvil cada fila se convierte en una tarjeta, sin desplazamiento horizontal.}
+{\textbf{Variantes:} tabla (escritorio) y tarjetas (móvil). \textbf{Estados:} con datos, primera carga (filas Skeleton), recarga en segundo plano y fila resaltada en rojo.}
+
+\comp{tabla-movil}{ResponsiveTable en móvil}
+{La misma tabla anterior vista en un teléfono. El componente y los datos son los mismos; solo cambia la presentación.}
+{\textbf{Presentación:} cada fila es una tarjeta con sus datos en vertical.}
+
+\comp{sidebar}{Sidebar}
+{Menú de navegación principal, fijo a la izquierda en escritorio.}
+{\textbf{Estados de cada opción:} normal, con el cursor encima y activa (resaltada con una barra a la izquierda).}
+
+\compancho{topbar}{Topbar}
+{Barra fija arriba con el proyecto actual, el estado de conexión, el rol del usuario y accesos rápidos.}
+{\textbf{Estados:} cambia según el estado de conexión y la cantidad de alertas pendientes.}
+
+\compancho{offline-banner}{Franja sin conexión}
+{Franja bajo la barra superior que avisa cuando se pierde la señal en obra y cuántos cambios quedan guardados en el dispositivo.}
+{\textbf{Estados:} sin conexión, sincronizando, todo enviado (se oculta sola a los 5 segundos) y envío rechazado (pide revisar).}
+
+\comp{dialog}{Diálogo de confirmación}
+{Ventana que aparece sobre la pantalla para confirmar una acción importante o pedir un dato (por ejemplo, la observación al devolver un corte).}
+{\textbf{Variantes:} confirmación simple y con formulario. \textbf{Estados:} cerrada, abierta y «¿descartar cambios?».}
+
+\compancho{drawer-full}{Panel lateral}
+{Panel que se desliza desde la derecha para ver un detalle o un documento sin salir de la pantalla. En móvil ocupa toda la pantalla.}
+{\textbf{Variantes:} panel lateral (desde 1024 px) y pantalla completa. \textbf{Estados:} cerrado y abierto.}
+
+\comp{fileupload}{FileUpload}
+{Zona para arrastrar o seleccionar soportes. Debajo lista cada archivo con un UploadItem.}
+{\textbf{Estados:} vacía, con un archivo encima (resaltada) y con archivos listados.}
+
+\comp{timeline}{Timeline}
+{Línea de tiempo con el historial de cambios de un registro: quién, cuándo y de qué estado a cuál.}
+{\textbf{Detalle:} cada registro puede llevar o no un motivo.}
+
+\newpage
+\section{Plantillas}
+
+\compancho{appshell}{Marco de página}
+{\textbf{AppShell} es el marco común de todas las pantallas: menú lateral, barra superior y zona de contenido. \textbf{PageHeader} es el encabezado de cada pantalla: título, descripción y acciones.}
+{\textbf{Variantes:} escritorio (menú lateral fijo) y móvil (navegación compacta). Con o sin franja de aviso.}
+
+\comp{formlayout}{Plantilla de formulario}
+{Estructura común de todos los formularios: encabezado, campos en una columna centrada y un pie fijo con los botones.}
+{\textbf{Presentación:} en escritorio ocupa 8 de 12 columnas centradas; el pie con los botones queda siempre visible.}
+
+\section{Resumen}
+
+\begin{center}
+\begin{tabular}{|m{2.6cm}|m{1.8cm}|m{10.6cm}|}
+\hline
+\textbf{Nivel} & \textbf{Cantidad} & \textbf{Elemento repetido que resuelve} \\ \hline
+Átomos & 9 & Botones, etiquetas de estado (badges), casillas, chips e indicadores de carga. \\ \hline
+Moléculas & 13 & Campos de formulario, controles de selección, tarjetas de indicador y avisos. \\ \hline
+Organismos & 8 & Tablas, navegación, ventanas emergentes, carga de archivos y bitácora. \\ \hline
+Plantillas & 3 & Marco de página, encabezado y estructura de formulario. \\ \hline
+\end{tabular}
+\end{center}
+
+Con estos 33 componentes se construyen las pantallas del MVP. Si cambia una regla de diseño (un color, un tamaño), se corrige en un solo componente y el cambio llega a todas las pantallas.
+
+\end{document}
