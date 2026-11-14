@@ -1,8 +1,28 @@
-# Loard Construcciones · HU-M01 y HU-M02
+# LOARD
+
+Sistema de información para Loard Construcciones S.A.S.: cortes de obra, dossier de calidad y habilitación SST.
+
+## Contenido
+
+- [`Hito 2/design.md`](Hito%202/design.md): sistema de diseño (tokens, componentes, reglas de interacción).
+- [`Hito 2/Modulo-I-Prototipo`](Hito%202/Modulo-I-Prototipo): prototipo navegable en código.
+- [`Hito 2/Modulo-II-Frontend`](Hito%202/Modulo-II-Frontend): arquitectura de frontend y componentización.
+- [`Hito 2/Modulo-III-QC`](Hito%202/Modulo-III-QC): pruebas de usabilidad y accesibilidad.
+- [`Hito 2/Modulo-IV-Persistencia`](Hito%202/Modulo-IV-Persistencia): modelo de datos y mapa de API.
+
+## Ejecutar el prototipo
+
+```bash
+cd "Hito 2/Modulo-I-Prototipo/prototipo"
+npm install
+npm run dev
+```
+
+## Implementación funcional de HU-M01 y HU-M02
 
 Base del MVP con autenticación por correo y contraseña, permisos por rol/proyecto y registro de cortes de obra. Incluye listado, búsqueda, detalle, edición con motivo obligatorio, historial de versiones y recuperación de borradores locales.
 
-## Organización
+### Organización
 
 ```text
 backend/
@@ -21,7 +41,7 @@ frontend/
 
 El backend usa Django 5.2, DRF, Simple JWT y migraciones versionadas. El frontend usa React, TypeScript, Vite, Tailwind e Inter local. TanStack Query centraliza las consultas y la invalidación de caché.
 
-## Ejecución local en Windows
+### Ejecución local en Windows
 
 Requisitos: Python 3.12 o superior y Node.js 22.12 o superior.
 
@@ -47,7 +67,7 @@ Abre [la aplicación](http://127.0.0.1:5173) y [la administración](http://127.0
 
 La configuración lee variables del entorno del proceso. `backend/.env.example` enumera las variables disponibles. Para usar PostgreSQL, define `DATABASE_URL` antes de ejecutar las migraciones. Sin esa variable, el desarrollo local usa SQLite. Para un despliegue, configura un secreto propio, hosts permitidos, `DJANGO_DEBUG=0`, HTTPS y un proxy que sirva el frontend y dirija `/api` y `/admin` al backend. La base incluye configuración de conexión a PostgreSQL. Las verificaciones locales se realizaron con SQLite.
 
-### Datos ficticios para explorar el flujo
+#### Datos ficticios para explorar el flujo
 
 El comando crea cuentas, un proyecto, catálogos y tres cortes de ejemplo. Solo funciona en modo de desarrollo. Define una contraseña local propia, de al menos 12 caracteres.
 
@@ -61,7 +81,7 @@ Cuentas creadas: `resident@loard.test`, `director@loard.test`, `quality@loard.te
 
 Para cargar datos propios desde la administración, crea usuarios y proyectos, asigna sus miembros y registra frentes, actividades con unidad/cantidad prevista, trabajadores e insumos. Activa los proyectos que deban estar disponibles. Los usuarios administradores se crean con `createsuperuser`.
 
-## Permisos iniciales
+### Permisos iniciales
 
 | Rol | Consultar cortes del proyecto asignado | Crear cortes | Editar cortes |
 | --- | --- | --- | --- |
@@ -75,7 +95,7 @@ El administrador consulta todos los proyectos activos y gestiona usuarios/catál
 
 La sesión usa un JWT de acceso de 10 minutos y uno de renovación de 8 horas, con rotación y revocación del token de renovación al salir. El navegador guarda los tokens en `sessionStorage`, y la sesión se recupera al recargar la misma pestaña. El token de acceso emitido expira por su vigencia. Las renovaciones requieren una cuenta activa. El ingreso tiene un límite inicial de 10 intentos por minuto e IP, usando la caché de Django.
 
-## Reglas del corte
+### Reglas del corte
 
 - Cada corte pertenece a un proyecto, un frente y un periodo con fechas de inicio y fin.
 - El residente registra cantidades del periodo por actividad, horas del periodo por trabajador e insumos por cantidad y unidad. Se requiere una actividad y un trabajador. Los insumos y las observaciones son opcionales.
@@ -85,7 +105,7 @@ La sesión usa un JWT de acceso de 10 minutos y uno de renovación de 8 horas, c
 - El guardado es transaccional. La edición exige la versión que se leyó y responde `409` si cambió. Una clave UUID por solicitud de creación evita duplicar un corte al reintentar la misma solicitud.
 - El borrador se guarda después de 500 ms de inactividad y al cerrar/recargar la página. Está separado por usuario, proyecto y corte en `localStorage`. Se elimina al confirmar el guardado en el servidor. Los borradores de versiones anteriores permiten consultar su contenido antes de descartarlos.
 
-## API e integración con el equipo
+### API e integración con el equipo
 
 | Método | Ruta | Uso |
 | --- | --- | --- |
@@ -121,7 +141,7 @@ Los compañeros pueden integrar las historias restantes como apps de Django y m�
 
 Para HU-M04, `cuts.services.transition_cut` recibe `cut`, `user`, `status`, `reason` y `expected_version`. Comprueba Director/proyecto, registra el cambio y crea una versión conservando los valores. La entrega de HU-M04 puede exponer ese servicio desde su endpoint y construir su interfaz de visado. Todos los cambios de estado deben pasar por ese servicio para conservar el historial. El historial de cortes está disponible para su integración con HU-M11.
 
-## Verificación
+### Verificación
 
 ```powershell
 .venv/Scripts/python.exe backend/manage.py test cuts

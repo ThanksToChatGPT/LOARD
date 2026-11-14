@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface font-sans text-body-md text-on-surface antialiased;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  /*
+   * Superficies. Además del fondo, cada una redefine --focus-offset para que
+   * el espacio del anillo de foco tome el color de donde está el control (§2.2).
+   * Usarlas en tarjetas, drawers, modales, toasts y menú en lugar de bg-* suelto.
+   */
+  .sf-page {
+    background-color: var(--surface);
+    --focus-offset: var(--surface);
+  }
+  .sf-container {
+    background-color: var(--surface-container);
+    --focus-offset: var(--surface-container);
+  }
+  .sf-low {
+    background-color: var(--surface-container-low);
+    --focus-offset: var(--surface-container-low);
+  }
+  .sf-inverse {
+    background-color: var(--inverse-surface);
+    color: var(--inverse-on-surface);
+    --focus-offset: var(--inverse-surface);
+    --focus-ring: var(--inverse-primary);
+  }
+  .sf-nav {
+    background-color: var(--nav-surface);
+    color: var(--on-nav);
+    --focus-offset: var(--nav-surface);
+    --focus-ring: var(--nav-indicator);
+  }
+
+  /* Tarjeta estática: borde decorativo + sombra mínima (§4). */
+  .card {
+    @apply sf-container rounded-md border border-outline-variant shadow-1;
+  }
+
+  /* Retícula 12–8–4 con sus gutters y márgenes (§4, §11.1). */
+  .grid-page {
+    @apply grid grid-cols-4 gap-gutter-md px-gutter-md tablet:grid-cols-8 tablet:px-gutter-lg desktop:grid-cols-12 desktop:gap-gutter-lg;
+  }
+}
+
+/* Anillo de foco: 2px, separado 2px, con el espacio del color de la superficie. */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-offset), 0 0 0 4px var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
