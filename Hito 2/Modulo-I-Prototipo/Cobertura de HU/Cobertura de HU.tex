@@ -1,0 +1,133 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.35}
+
+\newcommand{\si}{\cellcolor{green!18}Cubierta}
+\newcommand{\parcial}{\cellcolor{yellow!30}Parcial}
+\newcommand{\no}{\cellcolor{red!15}Pendiente}
+
+\title{Cobertura de historias de usuario\\[0.3em]
+\large Loard · Hito 2 · Módulo I: Prototipo}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Introduccion}
+
+Esta matriz relaciona cada historia de usuario del MVP priorizado en el Hito 1
+(12 historias) con la ruta o rutas del prototipo donde se puede ver.
+Sirve para comprobar, historia por historia, qué ya está en el prototipo y qué
+falta.
+
+\begin{itemize}
+  \item \textbf{Cubierta:} la historia se puede recorrer completa en el prototipo.
+  \item \textbf{Parcial:} hay pantallas que muestran una parte de la historia.
+  \item \textbf{Pendiente:} todavía no tiene pantalla.
+\end{itemize}
+
+\section{Matriz HU \texorpdfstring{$\rightarrow$}{->} ruta(s)}
+
+Donde dice \texttt{:id} va el corte o el trabajador que se abre
+desde la lista. Para comprobarlo se puede entrar al prototipo con una de las cuentas
+de ejemplo y abrir la ruta.
+
+\begin{longtable}{>{\raggedright}p{1.6cm} >{\raggedright}p{3.2cm} >{\raggedright}p{7.6cm} p{1.7cm}}
+\toprule
+\textbf{HU} & \textbf{Historia} & \textbf{Ruta y qué se ve ahí} & \textbf{Estado} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+
+\mbox{HU-M01} & Iniciar sesión y ver solo lo que corresponde al rol &
+\texttt{/acceso}: inicio de sesión; al entrar, el menú muestra solo lo del perfil \newline
+\texttt{/sst}: con un perfil sin permiso muestra el aviso de «Acceso restringido» &
+\si \\
+
+\mbox{HU-M02} & Registrar el corte de obra &
+\texttt{/cortes}: lista de cortes con su estado \newline
+\texttt{/cortes/nuevo}: formulario para registrar el corte \newline
+\texttt{/cortes/:id}: detalle del corte \newline
+\texttt{/cortes/:id/editar}: corregir un corte ya guardado &
+\si \\
+
+\mbox{HU-M03} & Adjuntar fotografías y soportes al corte &
+--- &
+\no \\
+
+\mbox{HU-M04} & Visar o devolver el corte &
+\texttt{/cortes}: lista de cortes, se puede filtrar por estado \newline
+\texttt{/cortes/:id}: detalle que revisa el director \newline
+Falta la acción de visar o devolver &
+\parcial \\
+
+\mbox{HU-M05} & Publicar documentos vigentes y armar la checklist &
+--- &
+\no \\
+
+\mbox{HU-M06} & Cargar soportes en la checklist y buscar documentos &
+--- &
+\no \\
+
+\mbox{HU-M07} & Registrar ensayos NDT ligados a una junta &
+--- &
+\no \\
+
+\mbox{HU-M08} & Monitorear el avance del dossier y exportarlo &
+--- &
+\no \\
+
+\mbox{HU-M09} & Registrar cursos y aptitud médica con semáforo &
+\texttt{/sst}: lista de personal con semáforo y filtros \newline
+\texttt{/sst/:id}: ficha del trabajador \newline
+\texttt{/sst/:id/cursos/nuevo}: registrar un curso con su vencimiento \newline
+\texttt{/sst/:id/aptitud}: marcar Habilitado o No habilitado &
+\si \\
+
+\mbox{HU-M10} & Asignar personal al corte con bloqueo SST &
+\texttt{/cortes/nuevo}: selector de personal con semáforo; no deja elegir a quien está bloqueado \newline
+\texttt{/cortes/nuevo/personal}: personal del corte con el motivo de cada bloqueo &
+\si \\
+
+\mbox{HU-M11} & Consultar la bitácora de cambios &
+\texttt{/cortes/:id}: historial de versiones del corte \newline
+\texttt{/sst/:id}: bitácora de cambios del trabajador \newline
+Falta el historial de la checklist y de documentos, y los filtros por fecha y autor &
+\parcial \\
+
+\mbox{HU-M12} & Consultar el tablero de avance &
+--- &
+\no \\
+
+\end{longtable}
+
+\section{Resumen}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Estado} & \textbf{Historias} & \textbf{Porcentaje} \\
+\midrule
+Cubierta  & 4 de 12 & 33 \% \\
+Parcial   & 2 de 12 & 17 \% \\
+Pendiente & 6 de 12 & 50 \% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

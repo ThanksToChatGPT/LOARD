@@ -23,8 +23,11 @@
 \definecolor{borde}{HTML}{B8C4CE}
 \arrayrulecolor{borde}
 \newcommand{\prop}[1]{\texttt{#1}}
-\newcommand{\imagen}[2][\linewidth]{\fcolorbox{borde}{white}{\includegraphics[width=\dimexpr#1-2\fboxsep-2\fboxrule\relax,height=9.5cm,keepaspectratio]{#2}}}
-
+\newcommand{\imagen}[2][\linewidth]{%
+  \fcolorbox{borde}{white}{%
+    \includegraphics[width=\dimexpr#1-2\fboxsep-2\fboxrule\relax,height=9.5cm,keepaspectratio]{#2.png}%
+  }%
+}
 % Contenido de la ficha: qué es, variantes y estados.
 \newcommand{\ficha}[3]{%
   {\large\bfseries\color{marca}#1}\par\smallskip
@@ -85,7 +88,7 @@ en la ruta \texttt{/muestra} del prototipo.
 \newpage
 \section{Átomos}
 
-\comp{button}{Button (botón)}
+\comp{button}{Button }
 {El botón de acción. Es el componente más repetido del sistema.}
 {\textbf{Variantes:} primario (acción principal), secundario, advertencia (acciones delicadas como «Devolver») y fantasma (acciones de poco peso). 
 \textbf{Estados:} normal, con el cursor encima, con foco, cargando (muestra un spinner y cambia el texto) y bloqueado (gris, con el motivo debajo).}
@@ -117,7 +120,7 @@ en la ruta \texttt{/muestra} del prototipo.
 {Tarjeta que muestra una cifra importante con su título y una descripción. Se usa en el tablero.}
 {\textbf{Variantes:} informativa, con cifra en color de estado y como filtro (se puede oprimir). \textbf{Estados:} normal y seleccionada.}
 
-\comp{banner}{Banner (aviso en la página)}
+\comp{banner}{Banner}
 {Franja de aviso dentro de la pantalla. Informa algo que el usuario debe saber antes de continuar.}
 {\textbf{Variantes por tono:} información, advertencia, error o bloqueo, y confirmación. Cada una con su color e ícono.}
 
