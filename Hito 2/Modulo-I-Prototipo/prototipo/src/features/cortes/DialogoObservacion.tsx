@@ -59,7 +59,7 @@ export function DialogoObservacion({
       discardLabel="Descartar observación"
       keepLabel="Seguir escribiendo"
       footer={<>
-        <Button variant="secondary" blocked={enviando} blockedReason="Espera a que termine el registro." onClick={onClose}>Cancelar</Button>
+        <Button variant="secondary" className="self-start" blocked={enviando} blockedReason="Espera a que termine el registro." onClick={onClose}>Cancelar</Button>
         <Button variant="warning" loading={enviando} loadingText={loadingText} blocked={motivo != null} blockedReason={motivo}
           onClick={() => onConfirm(texto)}>{confirmLabel}</Button>
       </>}

@@ -14,12 +14,13 @@ import { soportesActivos } from './soportes';
  * HU-M04 · Barra de revisión del Director de Proyectos.
  * Fija al pie mientras recorre cantidades y soportes. Solo aparece en cortes en revisión.
  */
-export function RevisionCorte({ corte }: { corte: CorteDemo }) {
+export function RevisionCorte({ corte, onDecidido }: { corte: CorteDemo; onDecidido?: () => void }) {
   const { usuario } = useAuthDemo();
   const { revisar, soportes } = useCortesDemo();
   const { enLinea } = useSst();
   const toast = useToast();
   const motivoId = useId();
+  const tituloId = useId();
   const [vista, setVista] = useState(corte.versiones[0].version);
   const [dialogo, setDialogo] = useState<DecisionCorte | null>(null);
   const [enviando, setEnviando] = useState(false);
@@ -42,6 +43,7 @@ export function RevisionCorte({ corte }: { corte: CorteDemo }) {
       const revisado = revisar({ corte, usuario, decision, observacion, versionEsperada: vista });
       setVista(revisado.versiones[0].version);
       setDialogo(null);
+      onDecidido?.();
       toast.show({ message: decision === 'Visado'
         ? `Corte #${corte.numero} visado. La decisión quedó registrada en la bitácora.`
         : `Corte #${corte.numero} devuelto al residente con tu observación.` });
@@ -54,28 +56,33 @@ export function RevisionCorte({ corte }: { corte: CorteDemo }) {
 
   function abrir(decision: DecisionCorte) { setError(''); setDialogo(decision); }
 
+  // Dos piezas dentro de la retícula de la página: la explicación y los avisos van en el flujo,
+  // y solo la fila de acciones queda fija al pie para no tapar los datos en móvil (§11.3).
   return (
-    <section aria-label={`Revisión del Corte #${corte.numero}`} className="card flex flex-col gap-gutter-sm p-gutter-md shadow-2">
-      <div className="flex flex-col gap-gutter-xs">
-        <h2 className="text-headline-sm">Revisión del director</h2>
+    <>
+      <section aria-labelledby={tituloId} className="card col-span-full flex flex-col gap-gutter-sm p-gutter-md">
+        <h2 id={tituloId} className="text-headline-sm">Revisión del director</h2>
         <p className="text-body-md text-on-surface-muted">
           Revisa cantidades, horas-hombre, insumos y soportes. El residente puede seguir registrando cortes mientras decides.
         </p>
-      </div>
-      {cambio && (
-        <Banner tone="warning" title={`El corte cambió (versión ${actual.version})`}
-          actions={<Button variant="secondary" onClick={() => setVista(actual.version)}>Revisar versión actual</Button>}>
-          {actual.autor} guardó una versión nueva el {formatoFechaHora(new Date(actual.fecha))}. Los valores en pantalla ya son los actuales.
-        </Banner>
-      )}
-      {sinSoportes && <Banner tone="info">Este corte no tiene soportes adjuntos. Puedes decidir igual o devolverlo pidiendo evidencia.</Banner>}
-      {error && !dialogo && <Banner tone="error">{error}</Banner>}
-      <div className="flex flex-col gap-gutter-sm tablet:flex-row tablet:items-center tablet:justify-end">
+        {cambio && (
+          <Banner tone="warning" title={`El corte cambió (versión ${actual.version})`}
+            actions={<Button variant="secondary" onClick={() => setVista(actual.version)}>Revisar versión actual</Button>}>
+            {actual.autor} guardó una versión nueva el {formatoFechaHora(new Date(actual.fecha))}. Los valores en pantalla ya son los actuales.
+          </Banner>
+        )}
+        {sinSoportes && <Banner tone="info">Este corte no tiene soportes adjuntos. Puedes decidir igual o devolverlo pidiendo evidencia.</Banner>}
+        {error && !dialogo && <Banner tone="error">{error}</Banner>}
+      </section>
+      <div role="group" aria-label={`Decisión sobre el Corte #${corte.numero}`}
+        className="card sticky bottom-gutter-md z-10 col-span-full flex flex-col gap-gutter-sm p-gutter-sm shadow-2 tablet:flex-row tablet:items-center tablet:justify-end">
         {bloqueo && <p id={motivoId} className="text-body-sm text-warning tablet:mr-auto">{bloqueo}</p>}
-        <Button variant="secondary" icon={<RotateCcw className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
-          onClick={() => abrir('Devuelto con Observaciones')}>Devolver con observaciones</Button>
-        <Button icon={<ShieldCheck className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
-          onClick={() => abrir('Visado')}>Visar corte</Button>
+        <div className="grid grid-cols-2 gap-gutter-sm tablet:flex">
+          <Button variant="secondary" fullWidth icon={<RotateCcw className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
+            onClick={() => abrir('Devuelto con Observaciones')}>Devolver<span className="sr-only tablet:not-sr-only"> con observaciones</span></Button>
+          <Button fullWidth icon={<ShieldCheck className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
+            onClick={() => abrir('Visado')}>Visar corte</Button>
+        </div>
       </div>
 
       <Dialog
@@ -84,7 +91,7 @@ export function RevisionCorte({ corte }: { corte: CorteDemo }) {
         title={`¿Confirmar visado técnico del Corte #${corte.numero}?`}
         description="Esta acción quedará registrada en la bitácora de auditoría. El corte quedará aprobado y ya no se podrá modificar."
         footer={<>
-          <Button variant="secondary" data-autofocus blocked={enviando} blockedReason="Espera a que termine el registro." onClick={() => setDialogo(null)}>Cancelar</Button>
+          <Button variant="secondary" className="self-start" data-autofocus blocked={enviando} blockedReason="Espera a que termine el registro." onClick={() => setDialogo(null)}>Cancelar</Button>
           <Button loading={enviando} loadingText="Registrando visado…" blocked={Boolean(bloqueo)} blockedReason={bloqueo}
             onClick={() => decidir('Visado', '')}>Confirmar visado</Button>
         </>}
@@ -106,7 +113,7 @@ export function RevisionCorte({ corte }: { corte: CorteDemo }) {
         error={error}
         onConfirm={observacion => decidir('Devuelto con Observaciones', observacion)}
       />
-    </section>
+    </>
   );
 }
 
