@@ -1,6 +1,7 @@
 import { ESTADOS_CORTE, type EstadoCorte } from '@/lib/estados';
 import type { UsuarioDemo } from '@/features/acceso/AuthDemo';
 import { HOY_SST, ahora, momento } from '@/lib/sst/fechas';
+import { OBSERVACION_MIN_CARACTERES } from '@/lib/constantes';
 
 export const ACTIVIDADES_DEMO = [
   { id: 'tuberia', nombre: 'Soldadura y tendido de tubería', unidad: 'm', prevista: 1200 },
@@ -28,6 +29,12 @@ export interface SolicitudCorteDemo {
   motivo: string; versionEsperada?: number;
 }
 const CLAVE_CORTES = 'loard_prototipo_cortes_v1';
+
+/** HU-M04: un corte visado queda aprobado y ya no se modifica. */
+export const MOTIVO_CORTE_VISADO = 'El corte está visado y ya no se puede modificar. Registra un corte nuevo para el siguiente periodo.';
+export function esEditable(corte: CorteDemo): boolean {
+  return corte.versiones[0].estado !== 'Visado';
+}
 
 export function validarCorteDemo(form: FormularioCorteDemo): string | null {
   if (!FRENTES_DEMO.includes(form.frente)) return 'Selecciona un frente del proyecto.';
@@ -113,6 +120,7 @@ export function guardarCorteDemo({ id, anterior, datos, usuario, motivo, version
   const existente = cortes.find(item => item.id === id);
   if (!anterior && existente) return existente;
   if (anterior && (!existente || existente.autorCorreo !== usuario.correo)) throw new Error('Solo el residente autor puede editar este corte de ejemplo.');
+  if (anterior && !esEditable(existente!)) throw new Error(MOTIVO_CORTE_VISADO);
   if (anterior && existente!.versiones[0].version !== versionEsperada) throw new Error('El corte cambió en otra pestaña. Consulta su versión actual antes de guardar.');
   if (anterior && motivo.trim().length < 10) throw new Error('Escribe un motivo de al menos 10 caracteres.');
   const copia = structuredClone(datos);
@@ -123,6 +131,45 @@ export function guardarCorteDemo({ id, anterior, datos, usuario, motivo, version
     autorCorreo: usuario.correo, autorNombre: usuario.nombre, versiones: [version, ...(existente?.versiones ?? [])] };
   localStorage.setItem(CLAVE_CORTES, JSON.stringify([corte, ...cortes.filter(item => item.id !== id)]));
   return corte;
+}
+
+/* ───────────── HU-M04 · Visado o devolución del director ───────────── */
+
+export type DecisionCorte = Extract<EstadoCorte, 'Visado' | 'Devuelto con Observaciones'>;
+export interface RevisionCorteDemo {
+  corte: CorteDemo; usuario: UsuarioDemo | null; decision: DecisionCorte; observacion: string; versionEsperada: number;
+}
+export const OBSERVACION_VISADO = 'Revisión técnica conforme.';
+export const CAUSAS_DEVOLUCION = [
+  'Desfase en horas-hombre',
+  'Falta soporte fotográfico',
+  'Soporte PDF ilegible',
+  'Cantidades no coinciden con el avance',
+  'Falta firma del residente',
+];
+
+/**
+ * Visa o devuelve un corte en revisión. Cada decisión es una versión nueva con
+ * los mismos valores, el autor, el rol y la observación (bitácora, HU-M11).
+ * No toca los demás cortes: el residente sigue registrando (visado no bloqueante).
+ */
+export function revisarCorteDemo({ corte, usuario, decision, observacion, versionEsperada }: RevisionCorteDemo): CorteDemo {
+  if (!usuario || usuario.rol !== 'director') throw new Error('Solo el Director de Proyectos visa o devuelve cortes.');
+  const texto = observacion.trim();
+  if (decision === 'Devuelto con Observaciones' && texto.length < OBSERVACION_MIN_CARACTERES) {
+    throw new Error(`Escribe una observación de al menos ${OBSERVACION_MIN_CARACTERES} caracteres para devolver el corte.`);
+  }
+  const cortes = leerCortes();
+  const existente = cortes.find(item => item.id === corte.id);
+  if (!existente) throw new Error('El corte ya no está disponible. Vuelve a la lista de cortes.');
+  const vigente = existente.versiones[0];
+  if (vigente.version !== versionEsperada) throw new Error(`El corte cambió (versión ${vigente.version}). Revisa la versión actual antes de decidir.`);
+  if (vigente.estado !== 'En Revisión (Enviado)') throw new Error(`El Corte #${existente.numero} ya no está en revisión. Su estado es «${vigente.estado}».`);
+  const version: VersionDemo = { version: vigente.version + 1, fecha: ahora().toISOString(), autor: usuario.nombre, rol: usuario.etiqueta,
+    motivo: texto || OBSERVACION_VISADO, estado: decision, datos: structuredClone(vigente.datos) };
+  const actualizado: CorteDemo = { ...existente, versiones: [version, ...existente.versiones] };
+  localStorage.setItem(CLAVE_CORTES, JSON.stringify(cortes.map(item => (item.id === existente.id ? actualizado : item))));
+  return actualizado;
 }
 
 export function horasTotales(form: FormularioCorteDemo): number {

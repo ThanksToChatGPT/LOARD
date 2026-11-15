@@ -7,7 +7,9 @@ import { useSst } from '@/lib/sst/SstContext';
 import { useAuthDemo } from '@/features/acceso/AuthDemo';
 import { Volver } from '@/features/sst/componentes';
 import { useCortesDemo } from './CortesDemoContext';
-import { ACTIVIDADES_DEMO, INSUMOS_DEMO, horasTotales, type FormularioCorteDemo, type RecursoDemo } from './modeloDemo';
+import { SoportesCorte } from './SoportesCorte';
+import { AvisoDevolucion, RevisionCorte } from './RevisionCorte';
+import { ACTIVIDADES_DEMO, INSUMOS_DEMO, MOTIVO_CORTE_VISADO, esEditable, horasTotales, type FormularioCorteDemo, type RecursoDemo } from './modeloDemo';
 
 export function DetalleCorte() {
   const { id } = useParams();
@@ -20,12 +22,15 @@ export function DetalleCorte() {
   if (!corte) return <div className="grid-page"><div className="col-span-full"><Volver to="/cortes">Cortes de obra</Volver><Banner tone="warning" title="Corte no disponible">{error || 'Abre un corte desde la lista de ejemplos.'}</Banner></div></div>;
   const actual = corte.versiones[0];
   const consultada = corte.versiones.find(item => item.version === version) ?? actual;
-  const puedeEditar = usuario?.rol === 'residente' && usuario.correo === corte.autorCorreo;
+  const esAutor = usuario?.rol === 'residente' && usuario.correo === corte.autorCorreo;
+  const visado = !esEditable(corte);
   return <div className="grid-page gap-y-gutter-lg"><div className="col-span-full"><Volver to="/cortes">Cortes de obra</Volver></div>
     <PageHeader className="col-span-full" title={`Corte #${corte.numero}`} description={`${actual.datos.frente} · ${formatoFecha(actual.datos.inicio)} – ${formatoFecha(actual.datos.fin)}`}
       meta={`${corte.autorNombre} · Versión ${actual.version} · Actualizado ${formatoFechaHora(new Date(actual.fecha))}`}
-      actions={puedeEditar && <Button variant="secondary" icon={<Pencil className="h-4 w-4" />} onClick={() => navigate(`/cortes/${corte.id}/editar`)}>Editar corte</Button>} />
+      actions={esAutor && <Button variant="secondary" icon={<Pencil className="h-4 w-4" />} blocked={visado} blockedReason={MOTIVO_CORTE_VISADO}
+        onClick={() => navigate(`/cortes/${corte.id}/editar`)}>Editar corte</Button>} />
     <div className="col-span-full"><StatusBadge estado={actual.estado} /></div>
+    <div className="col-span-full empty:hidden"><AvisoDevolucion corte={corte} /></div>
     <div className="col-span-full flex flex-wrap gap-gutter-sm"><Button variant={historial ? 'secondary' : 'primary'} onClick={() => setHistorial(false)}>Detalle del corte</Button>
       <Button variant={historial ? 'primary' : 'secondary'} icon={<History className="h-4 w-4" />} onClick={() => setHistorial(true)}>Historial de versiones</Button></div>
     {historial && <section className="card col-span-full flex flex-col gap-gutter-lg p-gutter-md"><h2 className="text-headline-sm">Cambios del corte</h2>
@@ -35,6 +40,9 @@ export function DetalleCorte() {
       <Banner tone="info">Versión {consultada.version} · {consultada.autor} · {formatoFechaHora(new Date(consultada.fecha))}<span className="ml-gutter-sm"><StatusBadge estado={consultada.estado} /></span></Banner>
     </section>}
     <div className="col-span-full"><ValoresCorte datos={(historial ? consultada : actual).datos} /></div>
+    <div className="col-span-full"><SoportesCorte corte={corte} /></div>
+    {/* HU-M04: fija al pie para que el director decida sin volver a subir. */}
+    <div className="sticky bottom-gutter-md z-10 col-span-full empty:hidden"><RevisionCorte key={corte.id} corte={corte} /></div>
   </div>;
 }
 

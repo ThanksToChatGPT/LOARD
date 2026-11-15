@@ -8,8 +8,9 @@ import { useSst } from '@/lib/sst/SstContext';
 import { esAsignable } from '@/lib/semaforo';
 import { formatoFechaHora } from '@/lib/formato';
 import { useCortesDemo } from './CortesDemoContext';
-import { ACTIVIDADES_DEMO, FRENTES_DEMO, INSUMOS_DEMO, formularioVacio, validarCorteDemo, type CorteDemo, type FormularioCorteDemo } from './modeloDemo';
+import { ACTIVIDADES_DEMO, FRENTES_DEMO, INSUMOS_DEMO, MOTIVO_CORTE_VISADO, esEditable, formularioVacio, validarCorteDemo, type CorteDemo, type FormularioCorteDemo } from './modeloDemo';
 import { RecursosCorte } from './RecursosCorte';
+import { SoportesCorte } from './SoportesCorte';
 import { SelectorPersonal } from './SelectorPersonal';
 import { useBorradorDemo } from './useBorradorDemo';
 
@@ -20,6 +21,8 @@ export function FormularioCorte() {
   const corte = cortes.find(item => item.id === id);
   if (!usuario || usuario.rol !== 'residente') return <Banner tone="warning" title="Acceso de consulta">El perfil Residente registra y edita los cortes de ejemplo.</Banner>;
   if (id && (!corte || corte.autorCorreo !== usuario.correo)) return <Banner tone="warning" title="Corte no disponible">Abre un corte propio desde la lista.</Banner>;
+  if (corte && !esEditable(corte)) return <div className="flex flex-col gap-gutter-md"><Volver to={`/cortes/${corte.id}`}>Corte #{corte.numero}</Volver>
+    <Banner tone="info" title={`Corte #${corte.numero} visado`}>{MOTIVO_CORTE_VISADO}</Banner></div>;
   if (error) return <Banner tone="error">{error}</Banner>;
   return <EditorCorte key={id ?? 'nuevo'} corte={corte} />;
 }
@@ -60,7 +63,8 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       const saved = guardar({ id: corte?.id ?? solicitud, anterior: corte, datos, usuario: usuario!, motivo, versionEsperada: version });
       borrador.completar();
       setSucio(false);
-      toast.show({ message: `Corte #${saved.numero} de ejemplo guardado. Versión ${saved.versiones[0].version}.` });
+      toast.show({ message: corte ? `Corte #${saved.numero} de ejemplo guardado. Versión ${saved.versiones[0].version}.`
+        : `Corte #${saved.numero} de ejemplo guardado. Ahora puedes adjuntar sus fotografías y PDF.` });
       navigate(`/cortes/${saved.id}`, { replace: true });
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'No se pudo guardar el ejemplo. Intenta de nuevo.'); }
     finally { setGuardando(false); }
@@ -80,7 +84,8 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       }}>Continuar editando</Button>}<Button variant="ghost" onClick={() => { try { borrador.descartar(); } catch { setError('No se pudo descartar el borrador del navegador.'); } }}>Descartar borrador</Button></div>}>
       {puedeRecuperar ? 'Recupera los campos guardados en este navegador.' : 'El corte tiene una versión más reciente. Conserva el borrador antes de descartarlo.'}
     </Banner>}
-    {corte?.versiones[0].estado === 'Visado' && <Banner tone="warning">La versión visada quedará en el historial. La corrección volverá a revisión.</Banner>}
+    {corte?.versiones[0].estado === 'Devuelto con Observaciones' && <Banner tone="warning" title={`Observación de ${corte.versiones[0].autor}`}>
+      <span className="whitespace-pre-wrap">«{corte.versiones[0].motivo}»</span></Banner>}
     {error && <Banner tone="error" title="Revisa el corte">{error}</Banner>}
     <fieldset disabled={guardando || Boolean(borrador.pendiente)} className="flex min-w-0 flex-col gap-gutter-lg">
       <section className="card flex flex-col gap-gutter-md p-gutter-md"><h2 className="text-headline-sm">Información del corte</h2>
@@ -99,5 +104,7 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       <TextArea label="Observaciones del residente" value={datos.observaciones} maxLength={5000} onChange={event => cambiar({ observaciones: event.target.value })} />
       {corte && <TextArea label="Motivo de la edición" required minCharacters={10} maxLength={1000} value={motivo} onChange={event => { setMotivo(event.target.value); setSucio(true); }} />}
     </fieldset>
+    {corte ? <SoportesCorte corte={corte} /> : <section className="card flex flex-col gap-gutter-sm p-gutter-md"><h2 className="text-headline-sm">Soportes del corte</h2>
+      <p className="text-body-md text-on-surface-muted">Guarda el corte para adjuntar fotografías y PDF. Al guardar se abre el detalle del corte, donde puedes agregarlos.</p></section>}
   </FormLayout>;
 }

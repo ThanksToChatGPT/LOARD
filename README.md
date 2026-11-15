@@ -18,9 +18,11 @@ Abre http://127.0.0.1:5173. Los comandos de la raíz ejecutan el prototipo ubica
 1. En «Perfil de ejemplo», elige un rol.
 2. Ingresa con el correo mostrado y la contraseña `Demo2026!`.
 3. El perfil Residente abre «Cortes de obra». Puede registrar actividades, seleccionar personal habilitado, indicar horas e insumos y guardar un corte de ejemplo.
-4. Abre el detalle, edita un corte propio y escribe un motivo. El historial conserva autor, fecha, motivo y valores de las versiones anteriores. Editar el corte visado de ejemplo lo devuelve a revisión.
-5. El perfil SST abre «Personal SST» y conserva los recorridos del compañero para cursos, aptitud y bloqueo de personal.
-6. Director, Calidad y Gerencia consultan los módulos habilitados para sus perfiles. «Cerrar sesión de ejemplo» permite cambiar de rol.
+4. Abre el detalle, edita un corte propio y escribe un motivo. El historial conserva autor, fecha, motivo y valores de las versiones anteriores. Corregir el corte devuelto de ejemplo lo devuelve a revisión. El corte visado ya no se puede editar y la pantalla explica el motivo.
+5. En el detalle de un corte propio no visado, «Soportes del corte» permite adjuntar fotografías y PDF, abrirlos en el visor y retirarlos con «Deshacer». El Corte #08 empieza sin soportes. En `Hito 2/Modulo-I-Prototipo/prototipo/public/ejemplos` hay fotos y un PDF de ejemplo para la prueba. El botón «Prototipo: simular sin señal» de la barra superior deja los archivos en espera hasta volver a simular conexión.
+6. El perfil Director abre «Cortes por revisar», filtrada en los cortes en revisión. En el detalle, la barra de revisión permite visar con confirmación o devolver con una observación de al menos 10 caracteres y causas frecuentes. El residente ve la observación en el detalle y puede corregir y reenviar el corte. La revisión no le impide registrar cortes nuevos.
+7. El perfil SST abre «Personal SST» y conserva los recorridos del compañero para cursos, aptitud y bloqueo de personal.
+8. Calidad y Gerencia consultan los módulos habilitados para sus perfiles. «Cerrar sesión de ejemplo» permite cambiar de rol.
 
 Todas las cuentas usan la misma contraseña de demostración.
 

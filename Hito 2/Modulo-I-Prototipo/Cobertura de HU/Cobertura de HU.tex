@@ -67,14 +67,14 @@ de ejemplo y abrir la ruta.
 \si \\
 
 \mbox{HU-M03} & Adjuntar fotografías y soportes al corte &
---- &
-\no \\
+\texttt{/cortes/:id}: sección «Soportes del corte» para adjuntar, ver, descargar y retirar fotos o PDF; el director la consulta \newline
+\texttt{/cortes/:id/editar}: la misma sección mientras se corrige el corte &
+\si \\
 
 \mbox{HU-M04} & Visar o devolver el corte &
-\texttt{/cortes}: lista de cortes, se puede filtrar por estado \newline
-\texttt{/cortes/:id}: detalle que revisa el director \newline
-Falta la acción de visar o devolver &
-\parcial \\
+\texttt{/cortes}: con el perfil Director abre filtrada en los pendientes de visado, con la acción «Revisar» \newline
+\texttt{/cortes/:id}: barra de revisión con «Visar corte» (confirmación) y «Devolver con observaciones» (mínimo 10 caracteres y causas frecuentes); el residente ve la observación y corrige el corte &
+\si \\
 
 \mbox{HU-M05} & Publicar documentos vigentes y armar la checklist &
 --- &
@@ -123,9 +123,9 @@ Falta el historial de la checklist y de documentos, y los filtros por fecha y au
 \toprule
 \textbf{Estado} & \textbf{Historias} & \textbf{Porcentaje} \\
 \midrule
-Cubierta  & 4 de 12 & 33 \% \\
-Parcial   & 2 de 12 & 17 \% \\
-Pendiente & 6 de 12 & 50 \% \\
+Cubierta  & 6 de 12 & 50 \% \\
+Parcial   & 1 de 12 & 8 \% \\
+Pendiente & 5 de 12 & 42 \% \\
 \bottomrule
 \end{tabular}
 \end{center}
