@@ -1,0 +1,353 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{backgrounds}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{capturas/}}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.35}
+\setlist{nosep,leftmargin=1.2em}
+
+\definecolor{marca}{HTML}{0B3A5C}
+\definecolor{borde}{HTML}{B8C4CE}
+\definecolor{barra}{HTML}{E6ECF1}
+\definecolor{telefono}{HTML}{1F2933}
+\definecolor{suave}{HTML}{F3F6F9}
+\definecolor{ok}{HTML}{1E7B45}
+\arrayrulecolor{borde}
+
+% ---------- Marcos para capturas (mismos del documento de diseño responsivo) ----------
+% Captura de escritorio dentro de una ventana de navegador. #1 ancho, #2 archivo
+\newcommand{\escritorio}[2]{%
+  \begin{tikzpicture}[baseline=(img.south)]
+    \node[inner sep=0] (img) {\includegraphics[width=#1]{#2}};
+    \fill[barra] ([yshift=0.36cm]img.north west) rectangle (img.north east);
+    \foreach \i/\c in {0/red!55, 1/orange!65, 2/green!50!black!45}
+      \fill[\c] ([xshift={0.22cm+\i*0.24cm}, yshift=0.18cm]img.north west) circle (0.06cm);
+    \draw[borde, line width=0.8pt, rounded corners=3pt]
+      ([yshift=0.36cm]img.north west) rectangle (img.south east);
+  \end{tikzpicture}}
+
+% Captura de móvil dentro de un marco de teléfono. #1 alto, #2 archivo
+\newcommand{\movil}[2]{%
+  \begin{tikzpicture}[baseline=(img.south)]
+    \node[inner sep=0] (img) {\includegraphics[height=#1]{#2}};
+    \begin{scope}[on background layer]
+      \fill[telefono, rounded corners=9pt]
+        ([shift={(-0.14cm,0.3cm)}]img.north west) rectangle ([shift={(0.14cm,-0.3cm)}]img.south east);
+    \end{scope}
+    \fill[telefono!45] ([yshift=0.15cm]img.north) circle (0.045cm);
+  \end{tikzpicture}}
+
+% Recorte de pantalla con borde fino. #1 ancho, #2 archivo
+\newcommand{\recorte}[2]{%
+  \begin{tikzpicture}[baseline=(img.south)]
+    \node[inner sep=0] (img) {\includegraphics[width=#1]{#2}};
+    \draw[borde, line width=0.6pt, rounded corners=2pt] (img.north west) rectangle (img.south east);
+  \end{tikzpicture}}
+
+% Pie corto debajo de cada captura.
+\newcommand{\pie}[1]{{\small\color{marca}\textbf{#1}}}
+
+% ---------- Muestras de color ----------
+% Texto de ejemplo. #1 color del texto, #2 color del fondo, #3 texto
+\newcommand{\muestra}[3]{{\setlength{\fboxsep}{3pt}\fcolorbox[HTML]{B8C4CE}{#2}{\makebox[2.9cm][l]{\textcolor[HTML]{#1}{\small\textbf{#3}}}}}}
+% Borde o anillo de ejemplo. #1 color del borde, #2 color del fondo
+\newcommand{\muestraborde}[2]{{\setlength{\fboxsep}{4pt}\colorbox[HTML]{#2}{\makebox[2.8cm][c]{\setlength{\fboxrule}{1.8pt}\setlength{\fboxsep}{0pt}\fcolorbox[HTML]{#1}{#2}{\rule{0pt}{8pt}\hspace{1.6cm}}}}}}
+
+% ---------- Resultados ----------
+\newcommand{\punto}[1]{\tikz[baseline=-0.6ex]\fill[#1] (0,0) circle (0.1);}
+\newcommand{\cumple}{\punto{ok}~\textcolor{ok}{\textbf{Cumple}}}
+
+% Recuadro gris con título.
+\newcommand{\recuadro}[2]{%
+  \par\smallskip\noindent
+  \colorbox{suave}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep\relax}
+    \vspace{4pt}\textbf{#1}\par\smallskip
+    #2\vspace{4pt}
+  \end{minipage}}\par}
+
+% Tecla dibujada.
+\newcommand{\tecla}[1]{\tikz[baseline=(k.base)]\node[draw=borde, fill=suave, rounded corners=2pt, inner sep=2pt, font=\small\sffamily] (k) {#1};}
+
+\title{Auditoría de accesibilidad (WCAG 2.1 AA)\\[0.3em]
+\large Loard - Hito 2 - Módulo III: QC de usabilidad y accesibilidad\\[0.2em]
+\normalsize Primera versión}
+\author{}
+\date{14 de noviembre de 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\section{Introducción}
+
+Se revisó si el prototipo de Loard se puede \textbf{leer bien} y \textbf{usar sin ratón}. La revisión se hizo sobre el prototipo en funcionamiento, siguiendo las pautas de accesibilidad web \textbf{WCAG 2.1, nivel AA}, que es el nivel que se pide normalmente a sitios y aplicaciones.
+
+Loard no se usa solo en una oficina. Buena parte del trabajo se hace en la obra, y eso hace que estos tres puntos sean necesarios:
+
+\begin{itemize}
+  \item \textbf{Mucho contraste por la luz del sol.} En la obra la pantalla del celular o del portátil se usa a pleno sol. La luz solar opaca la pantalla y los colores parecidos entre sí se pierden. Con un contraste alto entre la letra y el fondo, la información se sigue leyendo aunque haya mucha luz.
+  \item \textbf{Letras de buen tamaño para leer bien.} Cantidades, fechas, horas y estados de los trabajadores tienen que leerse sin esfuerzo y sin errores. Además, los entornos de obra no facilitan el uso de gafas: el casco, la careta, las gafas de seguridad, el polvo y el sudor las hacen incómodas. Y la soldadura, por la luz intensa del arco, suele afectar la visión con el tiempo.
+  \item \textbf{Navegación por teclado para trabajar más rápido.} El residente y la coordinación SST usan el programa durante muchas horas para registrar cortes, personal y cursos. Pasar de un campo a otro con \tecla{Tab}, marcar con \tecla{Espacio} y guardar con \tecla{Enter} es más rápido que mover el ratón para cada campo, y agiliza el trabajo diario.
+\end{itemize}
+
+\subsection*{Resultados en breve}
+
+\begin{center}
+\begin{tabular}{|>{\bfseries\raggedright\arraybackslash}m{3.4cm}|>{\raggedright\arraybackslash}m{2.4cm}|>{\raggedright\arraybackslash}m{9.8cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Aspecto} & \textbf{Resultado} & \textbf{En pocas palabras} \\ \hline
+Contraste de color & \cumple & Se midieron 1.056 textos en 9 pantallas y en los dos temas (claro y oscuro). Ninguno quedó por debajo del mínimo. El más bajo tiene 7,3:1 y la norma pide 4,5:1. \\ \hline
+Tamaños de letra & \cumple & El texto se puede ampliar al 200\,\% y al 400\,\% sin que se corte ni aparezca una barra para mover la página hacia los lados. Dos de cada tres textos miden 14 píxeles o más. \\ \hline
+Navegación por teclado & \cumple & Todas las pantallas se pueden recorrer y usar solo con el teclado, y siempre se marca dónde está el teclado. \\ \hline
+\end{tabular}
+\end{center}
+
+\newpage
+\section{Qué se revisó y cómo}
+
+\subsection*{Pantallas revisadas}
+
+Se revisaron 9 pantallas del prototipo, en tamaño de escritorio (1440 píxeles de ancho) y en los dos temas de color.
+
+\begin{center}
+\begin{tabular}{|c|>{\raggedright\arraybackslash}m{6.2cm}|>{\raggedright\arraybackslash}m{8.2cm}|}
+\hline
+\rowcolor{barra}
+\textbf{\#} & \textbf{Pantalla} & \textbf{Qué contiene} \\ \hline
+1 & Iniciar sesión & Selector de perfil, correo y contraseña. \\ \hline
+2 & Cortes de obra & Cifras, buscador y tabla de cortes. \\ \hline
+3 & Detalle del corte & Datos del corte e historial. \\ \hline
+4 & Registrar corte de obra & Formulario largo con fechas, actividades y personal. \\ \hline
+5 & Personal del corte & Lista de trabajadores con casillas. \\ \hline
+6 & Personal SST & Tarjetas de filtro y tabla de trabajadores. \\ \hline
+7 & Ficha del trabajador & Cursos, aptitud médica y certificados. \\ \hline
+8 & Registrar curso & Formulario con carga de certificado. \\ \hline
+9 & Actualizar aptitud médica & Formulario con vista previa del semáforo. \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.4cm}}c@{\hspace{0.4cm}}c@{}}
+\escritorio{5.4cm}{acceso} & \escritorio{5.4cm}{cortes-claro} & \escritorio{5.4cm}{formulario} \\[2pt]
+\pie{1. Iniciar sesión} & \pie{2. Cortes de obra} & \pie{4. Registrar corte} \\[8pt]
+\escritorio{5.4cm}{detalle} & \escritorio{5.4cm}{sst-claro} & \escritorio{5.4cm}{ficha} \\[2pt]
+\pie{3. Detalle del corte} & \pie{6. Personal SST} & \pie{7. Ficha del trabajador}
+\end{tabular}
+\end{center}
+
+\subsection*{Cómo se hizo}
+
+\begin{enumerate}
+  \item \textbf{Medición del contraste.} Se tomó el color de cada texto visible y el color de su fondo, y el contraste se calculó en una página web con la fórmula de WCAG. Se hizo en tema claro y en tema oscuro.
+  \item \textbf{Recorrido con el teclado.} Se recorrió cada pantalla solo con las teclas \tecla{Tab}, \tecla{Mayús}+\tecla{Tab}, \tecla{Enter}, \tecla{Espacio} y \tecla{Esc}, revisando el orden, que siempre se vea dónde está el teclado y que todo se pueda activar.
+  \item \textbf{Ampliación del texto.} Se simuló el zoom del navegador al 200\,\% y al 400\,\% para ver si el contenido se sigue leyendo completo.
+\end{enumerate}
+
+\subsection*{Reglas que se usaron}
+
+\begin{center}
+\begin{tabular}{|>{\raggedright\arraybackslash}m{5.6cm}|>{\raggedright\arraybackslash}m{7.4cm}|>{\centering\arraybackslash}m{2.6cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Regla (WCAG 2.1)} & \textbf{Qué se pide} & \textbf{Mínimo} \\ \hline
+1.4.3 Contraste del texto & Texto normal. & 4,5:1 \\ \hline
+1.4.3 Contraste del texto & Texto grande: 24 píxeles o más, o 18,7 píxeles o más en negrita. & 3:1 \\ \hline
+1.4.11 Contraste de controles & Bordes de los campos y recuadro que marca dónde está el teclado. & 3:1 \\ \hline
+1.4.4 Cambio de tamaño del texto & Ampliar al 200\,\% sin perder contenido ni funciones. & 200\,\% \\ \hline
+1.4.10 Ajuste del contenido & A 320 píxeles de ancho (zoom 400\,\%) no debe hacer falta mover la página hacia los lados. & 320 px \\ \hline
+2.1.1 y 2.1.2 Teclado & Todo se puede usar con teclado y el teclado nunca queda atrapado. & --- \\ \hline
+2.4.1, 2.4.3 y 2.4.7 Navegación & Atajo para saltar al contenido, orden lógico y foco siempre visible. & --- \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Contraste de color}
+
+\textbf{Resultado: \cumple.} Ninguno de los 1.056 textos medidos quedó por debajo del mínimo. Todos los textos superan incluso 7:1, que es el nivel más exigente de la norma (AAA). Esto se debe a que los colores del prototipo se eligieron desde el sistema de diseño con buen contraste.
+
+\subsection*{Tema claro}
+
+\begin{center}
+\begin{tabular}{|>{\raggedright\arraybackslash}m{5.3cm}|>{\centering\arraybackslash}m{3.5cm}|>{\centering\arraybackslash}m{1.8cm}|>{\centering\arraybackslash}m{1.5cm}|>{\raggedright\arraybackslash}m{2.2cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Dónde se usa} & \textbf{Muestra} & \textbf{Contraste} & \textbf{Mínimo} & \textbf{Resultado} \\ \hline
+Texto principal sobre tarjetas & \muestra{0A1F2E}{FFFFFF}{Corte \#06} & 16,8:1 & 4,5:1 & \cumple \\ \hline
+Texto principal sobre el fondo & \muestra{0A1F2E}{F4F8FB}{Iniciar sesión} & 15,8:1 & 4,5:1 & \cumple \\ \hline
+Texto secundario (cédulas, fechas) & \muestra{1F4A66}{FFFFFF}{C.C. 16.789.432} & 9,4:1 & 4,5:1 & \cumple \\ \hline
+Encabezados de las tablas & \muestra{1F4A66}{E8F0F6}{Corte / periodo} & 8,2:1 & 4,5:1 & \cumple \\ \hline
+Botón principal & \muestra{FFFFFF}{0B3C5D}{Registrar corte} & 11,5:1 & 4,5:1 & \cumple \\ \hline
+Botón secundario y enlaces & \muestra{0B3C5D}{FFFFFF}{Ver detalle} & 11,5:1 & 4,5:1 & \cumple \\ \hline
+Menú lateral & \muestra{E8F2F8}{0B3C5D}{Componentes} & 10,2:1 & 4,5:1 & \cumple \\ \hline
+Opción activa del menú \newline {\small(la más baja de todo el prototipo)} & \muestra{E8F2F8}{1A5279}{Cortes de obra} & 7,3:1 & 4,5:1 & \cumple \\ \hline
+Estado ``Visado'' y ``Habilitado'' & \muestra{14532D}{ECFBF1}{Visado} & 8,5:1 & 4,5:1 & \cumple \\ \hline
+Estado ``Devuelto'' y ``Vence pronto'' & \muestra{7A3A06}{FFF6E6}{Devuelto} & 8,0:1 & 4,5:1 & \cumple \\ \hline
+Estado ``En revisión'' & \muestra{123F6E}{EAF3FC}{En revisión} & 9,5:1 & 4,5:1 & \cumple \\ \hline
+Bloqueos y errores & \muestra{8B1A1A}{FFF0F0}{Bloqueado} & 8,4:1 & 4,5:1 & \cumple \\ \hline
+\end{tabular}
+\end{center}
+
+\subsection*{Tema oscuro}
+
+\begin{center}
+\begin{tabular}{|>{\raggedright\arraybackslash}m{5.3cm}|>{\centering\arraybackslash}m{3.5cm}|>{\centering\arraybackslash}m{1.8cm}|>{\centering\arraybackslash}m{1.5cm}|>{\raggedright\arraybackslash}m{2.2cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Dónde se usa} & \textbf{Muestra} & \textbf{Contraste} & \textbf{Mínimo} & \textbf{Resultado} \\ \hline
+Texto principal & \muestra{E8F2F8}{0C2331}{Corte \#06} & 14,2:1 & 4,5:1 & \cumple \\ \hline
+Texto secundario & \muestra{A9CCE0}{0C2331}{C.C. 16.789.432} & 9,5:1 & 4,5:1 & \cumple \\ \hline
+Botón principal & \muestra{061722}{8CCFF0}{Registrar corte} & 10,7:1 & 4,5:1 & \cumple \\ \hline
+Opción activa del menú & \muestra{E8F2F8}{14344A}{Cortes de obra} & 11,4:1 & 4,5:1 & \cumple \\ \hline
+Estado ``Visado'' & \muestra{6EE7A0}{0B2A1A}{Visado} & 10,0:1 & 4,5:1 & \cumple \\ \hline
+Estado ``Devuelto'' & \muestra{FCC86B}{2E1F08}{Devuelto} & 10,3:1 & 4,5:1 & \cumple \\ \hline
+Estado ``En revisión'' & \muestra{9CC9F5}{0D2740}{En revisión} & 8,7:1 & 4,5:1 & \cumple \\ \hline
+Bloqueos & \muestra{FCA5A5}{331314}{Bloqueado} & 8,9:1 & 4,5:1 & \cumple \\ \hline
+Mensajes de error \newline {\small(la más baja del tema oscuro)} & \muestra{FCA5A5}{0C2331}{No se pueden...} & 8,5:1 & 4,5:1 & \cumple \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.6cm}}c@{}}
+\escritorio{8.2cm}{cortes-claro} & \escritorio{8.2cm}{cortes-oscuro} \\[2pt]
+\pie{Tema claro} & \pie{Tema oscuro}
+\end{tabular}
+\end{center}
+
+\subsection*{Bordes de campos y recuadro de foco}
+
+Además del texto, la norma pide que los bordes de los campos y el recuadro que muestra dónde está el teclado se distingan del fondo (mínimo 3:1).
+
+\begin{center}
+\begin{tabular}{|>{\raggedright\arraybackslash}m{5.3cm}|>{\centering\arraybackslash}m{3.5cm}|>{\centering\arraybackslash}m{1.8cm}|>{\centering\arraybackslash}m{1.5cm}|>{\raggedright\arraybackslash}m{2.2cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Elemento} & \textbf{Muestra} & \textbf{Contraste} & \textbf{Mínimo} & \textbf{Resultado} \\ \hline
+Borde de campos sobre el fondo & \muestraborde{4F7A96}{F4F8FB} & 4,3:1 & 3:1 & \cumple \\ \hline
+Borde de campos sobre tarjetas & \muestraborde{4F7A96}{FFFFFF} & 4,6:1 & 3:1 & \cumple \\ \hline
+Borde de campos, tema oscuro & \muestraborde{6F9AB5}{0C2331} & 5,4:1 & 3:1 & \cumple \\ \hline
+Recuadro de foco & \muestraborde{0B3C5D}{F4F8FB} & 10,8:1 & 3:1 & \cumple \\ \hline
+Recuadro de foco en el menú & \muestraborde{8CCFF0}{0B3C5D} & 6,8:1 & 3:1 & \cumple \\ \hline
+Recuadro de foco, tema oscuro & \muestraborde{8CCFF0}{061722} & 10,7:1 & 3:1 & \cumple \\ \hline
+\end{tabular}
+\end{center}
+
+\newpage
+\section{Tamaños de letra}
+
+\textbf{Resultado: \cumple.} La norma no fija un tamaño mínimo de letra, pero sí pide que el texto se pueda ampliar al 200\,\% sin perder contenido. El prototipo cumple y, además, usa tamaños cómodos de leer.
+
+\subsection*{Tamaños usados}
+
+Conteo de los 528 textos medidos en las 9 pantallas (tema claro).
+
+\begin{center}
+\begin{tabular}{|>{\centering\arraybackslash}m{1.8cm}|>{\raggedright\arraybackslash}m{9.6cm}|>{\centering\arraybackslash}m{1.5cm}|>{\centering\arraybackslash}m{1.6cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Tamaño} & \textbf{Dónde se usa} & \textbf{Textos} & \textbf{\%} \\ \hline
+36 px & Frase de bienvenida en ``Iniciar sesión''. & 1 & 0,2\,\% \\ \hline
+28 px & Título de cada pantalla y cifras grandes de las tarjetas. & 16 & 3,0\,\% \\ \hline
+18 px & Títulos de las secciones de un formulario o ficha. & 15 & 2,8\,\% \\ \hline
+16 px & Texto dentro de los campos, descripciones y barra superior. & 52 & 9,8\,\% \\ \hline
+\rowcolor{suave}
+14 px & \textbf{Texto general:} etiquetas, botones, menú y celdas principales. & 270 & 51,1\,\% \\ \hline
+12 px & Encabezados de tabla, fechas, estados y datos secundarios. & 173 & 32,8\,\% \\ \hline
+11 px & Rótulo ``OPERACIONES Y CALIDAD'' en ``Iniciar sesión'' (decorativo). & 1 & 0,2\,\% \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item El texto de los \textbf{campos} mide 16 píxeles. En el celular este tamaño evita que el teléfono haga zoom solo al tocar un campo.
+  \item Los títulos tienen un tamaño claramente mayor que el texto, lo que ayuda a ubicarse en la pantalla.
+\end{itemize}
+
+\subsection*{Prueba de ampliación (zoom)}
+
+Se simuló una ventana de 1280 píxeles con zoom al 200\,\% y al 400\,\%.
+
+\begin{center}
+\begin{tabular}{@{}m{4.9cm}@{\hspace{0.45cm}}m{4.9cm}@{\hspace{0.5cm}}m{6.6cm}@{}}
+\escritorio{4.9cm}{zoom-200} & \escritorio{4.9cm}{zoom-200-formulario} &
+\begin{itemize}
+  \item \textbf{Todo se lee completo:} nada se corta ni se monta encima de otra cosa.
+  \item \textbf{La página no se sale de la pantalla:} no aparece barra para moverse hacia los lados, ni al 200\,\% ni al 400\,\%.
+  \item El menú se guarda en el botón de tres líneas, igual que en el celular.
+  \item La tabla de cortes se desplaza \emph{dentro de su propio recuadro}. Esto está permitido para tablas.
+\end{itemize} \\[2pt]
+\centering\pie{Cortes de obra al 200\,\%} & \centering\pie{Registrar corte al 200\,\%} &
+\end{tabular}
+\end{center}
+
+\newpage
+\section{Navegación por teclado}
+
+\textbf{Resultado: \cumple.} Todas las pantallas se pueden usar sin ratón.
+
+\recuadro{Cómo se usa el teclado en una página web}{%
+\tecla{Tab} pasa al siguiente elemento - \tecla{Mayús}+\tecla{Tab} vuelve al anterior - \tecla{Enter} o \tecla{Espacio} activa botones y casillas - \tecla{Esc} cierra paneles y menús. El \textbf{foco} es el elemento donde está ``parado'' el teclado; en Loard se marca con un recuadro azul alrededor.}
+
+\subsection*{Lista de revisión}
+
+\begin{center}
+\begin{tabular}{|c|>{\raggedright\arraybackslash}m{12.2cm}|>{\raggedright\arraybackslash}m{2.4cm}|}
+\hline
+\rowcolor{barra}
+\textbf{\#} & \textbf{Qué se revisó} & \textbf{Resultado} \\ \hline
+1 & Con el primer \tecla{Tab} aparece el botón ``Saltar al contenido''. Con \tecla{Enter} se llega directo al contenido, sin pasar por todo el menú. & \cumple \\ \hline
+2 & El orden sigue la lectura: menú, barra superior y luego el contenido, de izquierda a derecha y de arriba abajo. & \cumple \\ \hline
+3 & Siempre se ve dónde está el teclado. & \cumple \\ \hline
+4 & Botones, enlaces, listas desplegables, casillas y tarjetas de filtro se activan con \tecla{Enter} o \tecla{Espacio}. & \cumple \\ \hline
+5 & Panel del certificado y menú del celular: mientras están abiertos el teclado se queda dentro, \tecla{Esc} los cierra y el foco vuelve al botón que los abrió. & \cumple \\ \hline
+6 & No hay trampas: después del último elemento, \tecla{Tab} sale de la página y vuelve a empezar. & \cumple \\ \hline
+7 & Una tabla que no cabe se puede mover con las flechas, porque su recuadro también recibe el foco. & \cumple \\ \hline
+8 & Los trabajadores bloqueados se alcanzan con \tecla{Tab} y se lee el motivo, pero su casilla no se marca con \tecla{Espacio}. & \cumple \\ \hline
+9 & Al guardar un corte incompleto, el aviso aparece arriba del formulario y la página sube para mostrarlo. & \cumple \\ \hline
+\end{tabular}
+\end{center}
+
+\newpage
+\subsection*{Así se ve el foco}
+
+\begin{center}
+\begin{tabular}{@{}>{\centering\arraybackslash}m{8.1cm}@{\hspace{0.6cm}}>{\centering\arraybackslash}m{8.1cm}@{}}
+\recorte{7.2cm}{teclado-saltar} & \recorte{7.2cm}{teclado-filtro} \\[1pt]
+\pie{``Saltar al contenido'', primer Tab} & \pie{Tarjeta de filtro en Personal SST} \\[6pt]
+\recorte{7.2cm}{teclado-menu} & \recorte{7.2cm}{teclado-boton} \\[1pt]
+\pie{Opción del menú} & \pie{Botón principal} \\[6pt]
+\recorte{7.2cm}{teclado-campo} & \recorte{7.2cm}{teclado-oscuro} \\[1pt]
+\pie{Campo de búsqueda} & \pie{Botón principal en tema oscuro} \\[6pt]
+\recorte{7.2cm}{teclado-casilla} & \recorte{7.2cm}{teclado-bloqueado} \\[1pt]
+\pie{Casilla marcada con Espacio} & \pie{Trabajador bloqueado: no se marca} \\
+\end{tabular}
+
+\smallskip
+\recorte{15.6cm}{teclado-tabla}\\[1pt]
+\pie{Botón ``Ver detalle'' dentro de la tabla}
+\end{center}
+
+\subsection*{Paneles y menú del celular}
+
+\begin{center}
+\begin{tabular}{@{}>{\centering\arraybackslash}m{10.4cm}@{\hspace{0.6cm}}>{\centering\arraybackslash}m{4.4cm}@{}}
+\escritorio{9.2cm}{teclado-panel} & \movil{6.0cm}{teclado-menu-movil} \\[2pt]
+\pie{Panel del certificado abierto con Enter} & \pie{Menú del celular abierto con Enter}
+\end{tabular}
+\end{center}
+
+En ambos, \tecla{Tab} da vueltas solo dentro del panel, \tecla{Esc} lo cierra y el foco vuelve al botón que lo abrió.
+
+\end{document}
