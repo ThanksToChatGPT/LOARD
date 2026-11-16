@@ -130,7 +130,8 @@ def render_rite_apa(md, output):
         if not line: i += 1; continue
         if line.startswith('## '): story.append(paragraph(line[3:], heading))
         elif line.startswith('**Tabla '): story.append(paragraph(line.strip('*'), label))
-        elif line.startswith('*Resultados'): story.append(paragraph(line.strip('*'), caption))
+        elif line.startswith('*') and line.endswith('*') and not line.startswith('*Nota.*'):
+            story.append(paragraph(line.strip('*'), caption))
         elif line.startswith('*Nota.*'):
             story.append(Paragraph('<i>Nota.</i>' + html.escape(line[len('*Nota.*'):]), plain))
         elif line.startswith('|'):
@@ -140,7 +141,8 @@ def render_rite_apa(md, output):
                 if not all(re.fullmatch(r'[:\- ]+', v) for v in values): rows.append(values)
                 i += 1
             data = [[paragraph(value, cellhead if n == 0 else cell) for value in row] for n, row in enumerate(rows)]
-            t = Table(data, colWidths=[51, 140, 197, 80], repeatRows=1, hAlign='LEFT')
+            widths = {2: [125, 343], 3: [135, 155, 178], 4: [51, 140, 197, 80]}[len(rows[0])]
+            t = Table(data, colWidths=widths, repeatRows=1, hAlign='LEFT')
             t.setStyle(TableStyle([
                 ('VALIGN', (0, 0), (-1, -1), 'TOP'), ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
                 ('LINEABOVE', (0, 0), (-1, 0), .8, colors.black),
