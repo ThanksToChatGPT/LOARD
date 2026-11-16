@@ -5,27 +5,33 @@ import { formatoFecha, formatoFechaHora, numeroDeDia } from '@/lib/formato';
 import { ACTUALIZADO, CARPETAS, FECHA_DEMO, REGISTROS } from '@/lib/seguimiento/datos';
 import { porcentaje, porcentajeTiempo, resumenDossier } from '@/lib/seguimiento/reglas';
 import { useConsulta, ControlesConsulta, EstadoConsulta, consultaDisponible } from '@/lib/seguimiento/consulta';
+import { useDossier } from '@/features/dossier/DossierContext';
+import { registrosDossier } from '@/lib/seguimiento/dossier';
 
 export function Tablero() {
   const q = useConsulta();
+  const { confirmado, error: errorDossier } = useDossier();
   const [carpeta, setCarpeta] = useState<number | null>(null);
   const [proyectoDetalle, setProyectoDetalle] = useState(q.proyectoId);
-  const registros = q.escenario === 'vacio' ? [] : REGISTROS.filter(r => r.proyecto === q.proyectoId && r.tipo === 'requisito');
+  const fuente = [...registrosDossier(confirmado), ...REGISTROS.filter(r => r.proyecto !== 'CW-118')];
+  const registros = q.escenario === 'vacio' ? [] : fuente.filter(r => r.proyecto === q.proyectoId && r.tipo === 'requisito');
   const resumen = resumenDossier(registros);
   const incompleto = ['vacio','incompleto'].includes(q.escenario);
   const fisico = incompleto ? null : q.proyecto?.avanceFisico ?? null;
   const tiempo = incompleto ? null : porcentajeTiempo(q.proyecto?.inicio ?? null,q.proyecto?.fin ?? null,FECHA_DEMO);
-  const dias = q.proyecto?.aceptacionActa ? 10 - (numeroDeDia(FECHA_DEMO) - numeroDeDia(q.proyecto.aceptacionActa)) : null;
+  const aceptacion = q.proyectoId === 'CW-118' ? confirmado.acta?.aceptada : q.proyecto?.aceptacionActa;
+  const dias = aceptacion ? 10 - (numeroDeDia(FECHA_DEMO) - numeroDeDia(aceptacion)) : null;
   const diferencia = fisico != null && tiempo != null ? fisico-tiempo : null;
   const detalleAbierto = carpeta != null && proyectoDetalle === q.proyectoId && consultaDisponible(q);
   return <div className="grid-page"><div className="col-span-full flex min-w-0 flex-col gap-gutter-lg">
     <PageHeader title="Tablero del proyecto" description="Avance físico, tiempo contractual y expediente de calidad en una sola consulta."
       meta={`Datos de ejemplo al ${formatoFechaHora(new Date(ACTUALIZADO))} · Hora de Bogotá`} />
     <ControlesConsulta consulta={q} /><EstadoConsulta consulta={q} />
+    {errorDossier && q.proyectoId === 'CW-118' && <Banner tone="error" title="No se pudo leer el dossier">{errorDossier}</Banner>}
     {consultaDisponible(q) && <>
       {q.escenario === 'vacio' && <Banner title="Aún no hay datos operativos">No hay cortes ni requisitos registrados en este escenario. La ausencia de información no representa un avance de cero.</Banner>}
       {dias != null ? <Banner tone={dias < 0 ? 'error' : 'warning'} title={dias < 0 ? `Plazo del dossier vencido hace ${-dias} días` : dias === 0 ? 'El plazo del dossier vence hoy' : `Quedan ${dias} días para el dossier`}>
-        Acta aceptada el {formatoFecha(q.proyecto!.aceptacionActa!)}. Plazo: 10 días calendario. {resumen.total ? `${resumen.total-resumen.validados} requisitos por validar.` : 'Sin requisitos configurados.'}
+        Acta aceptada el {formatoFecha(aceptacion!)}. Plazo: 10 días calendario. {resumen.total ? `${resumen.total-resumen.validados} requisitos por validar.` : 'Sin requisitos configurados.'}
       </Banner> : <Banner title="Plazo del dossier sin iniciar">No hay fecha de aceptación del acta registrada.</Banner>}
       <div className="grid grid-cols-4 gap-gutter-md tablet:grid-cols-8 desktop:grid-cols-12">
         <KpiCard title="Avance físico" value={porcentaje(fisico)} description="Referencia consolidada del proyecto">

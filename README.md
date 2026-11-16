@@ -55,6 +55,7 @@ npm run preview --workspace loard-prototipo -- --host 127.0.0.1 --port 5175
 - `src/features/acceso` implementa HU-M01 con perfiles, sesión y validaciones de ejemplo.
 - `src/features/cortes` implementa HU-M02, su historial local y el selector SST compartido.
 - `src/features/sst` conserva las pantallas de HU-M09.
+- `src/features/dossier` integra checklist y documentos (HU-M05/06), ensayos NDT (HU-M07), avance y exportación del dossier (HU-M08), y bitácora (HU-M11). [Recorrido de HU-M07 y HU-M08](Hito%202/Modulo-I-Prototipo/Especificacion%20HU-M07%20y%20HU-M08.md).
 - `src/components` reúne los componentes reutilizados de formularios, tablas, avisos y navegación.
 - `src/lib/sst` comparte trabajadores y reglas de habilitación entre SST y cortes.
 

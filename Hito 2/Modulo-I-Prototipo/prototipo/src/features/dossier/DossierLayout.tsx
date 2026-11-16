@@ -17,12 +17,14 @@ export function DossierLayout() {
 const PESTANAS = [
   { to: '/dossier', label: 'Checklist', end: true },
   { to: '/dossier/documentos', label: 'Documentos del SIG', end: false },
+  { to: '/dossier/ensayos', label: 'Ensayos NDT', end: false },
+  { to: '/dossier/avance', label: 'Avance y entrega', end: false },
 ];
 
 /** Cambia entre las dos vistas del dossier. La activa se anuncia con `aria-current`. */
 export function PestanasDossier() {
   return (
-    <nav aria-label="Secciones del dossier" className="col-span-full flex gap-gutter-sm border-b border-outline-variant">
+    <nav aria-label="Secciones del dossier" className="col-span-full flex flex-wrap gap-gutter-sm border-b border-outline-variant">
       {PESTANAS.map(pestana => (
         <NavLink key={pestana.to} to={pestana.to} end={pestana.end}
           className={({ isActive }) => cn(

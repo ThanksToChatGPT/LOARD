@@ -1,11 +1,12 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
-  agregarItem, cargarSoporte, editarItem, leerDossier, publicarDocumento, retirarItem, revisarItem, type DossierDemo,
+  agregarItem, cargarSoporte, editarItem, leerDossier, publicarDocumento, retirarItem, revisarItem, registrarEnsayo, registrarActa, type DossierDemo,
 } from './modelo';
 
 interface DossierApi {
   /** Documentos y checklist. Un requisito en plazo de «Deshacer» ya se muestra como Validado. */
   dossier: DossierDemo;
+  confirmado: DossierDemo;
   /** Problema al leer lo guardado en el navegador. */
   error: string;
   /** Requisitos cuya validación aún se puede deshacer (§6.2B): todavía no está en la bitácora. */
@@ -18,6 +19,8 @@ interface DossierApi {
   retirar: typeof retirarItem;
   cargar: typeof cargarSoporte;
   revisar: typeof revisarItem;
+  registrarNdt: typeof registrarEnsayo;
+  aceptarActa: typeof registrarActa;
 }
 
 const Contexto = createContext<DossierApi | null>(null);
@@ -51,11 +54,12 @@ export function DossierProvider({ children }: { children: ReactNode }) {
       terminarValidacion: (itemId: string) => setPorValidar(ids => ids.filter(id => id !== itemId)),
       publicar: conRecarga(publicarDocumento), agregar: conRecarga(agregarItem), editar: conRecarga(editarItem),
       retirar: conRecarga(retirarItem), cargar: conRecarga(cargarSoporte), revisar: conRecarga(revisarItem),
+      registrarNdt: conRecarga(registrarEnsayo), aceptarActa: conRecarga(registrarActa),
     };
   }, [recargar]);
 
   const api = useMemo<DossierApi>(() => ({
-    ...acciones, error, porValidar,
+    ...acciones, error, porValidar, confirmado: dossier,
     dossier: { ...dossier, items: dossier.items.map(item => (porValidar.includes(item.id) && item.estado === 'Archivo Cargado' ? { ...item, estado: 'Validado' } : item)) },
   }), [acciones, dossier, error, porValidar]);
 

@@ -64,7 +64,15 @@ export interface ItemChecklist {
   historial: EventoItem[];
 }
 
-export interface DossierDemo { documentos: DocumentoSig[]; items: ItemChecklist[] }
+export const JUNTAS_NDT = ['JW-16-042', 'JW-16-043', 'JW-16-044', 'JW-08-021'] as const;
+export const TIPOS_NDT = ['RT · Radiografía', 'UT · Ultrasonido', 'PT · Líquidos penetrantes', 'MT · Partículas magnéticas'] as const;
+export interface EnsayoNdt {
+  id: string; itemId: string; junta: string; laboratorio: string; informe: string;
+  tipo: string; fechaEnsayo: string; resultado: 'Conforme' | 'No conforme';
+  registradoPor: string; fechaRegistro: string;
+}
+export interface ActaDossier { numero: string; aceptada: string; registradoPor: string; fechaRegistro: string }
+export interface DossierDemo { documentos: DocumentoSig[]; items: ItemChecklist[]; ensayos?: EnsayoNdt[]; acta?: ActaDossier }
 
 type Usuario = UsuarioDemo | null | undefined;
 type ArchivoElegido = { name: string; size: number };
@@ -159,7 +167,7 @@ export function dossierInicial(): DossierDemo {
         : { id: `soporte-item-${i + 1}`, nombre: archivo, bytes: 240_000 + i * 61_000, subidoPor: RESIDENTE.usuario, rol: RESIDENTE.rol, fecha: cargue },
     };
   });
-  return { documentos, items };
+  return { documentos, items, ensayos: [], acta: { numero: 'Acta de facturación #07', aceptada: '2026-11-11', registradoPor: CALIDAD.usuario, fechaRegistro: momento(-6, '09:00').toISOString() } };
 }
 
 /* ───────────────── Lectura y guardado ───────────────── */
@@ -196,7 +204,11 @@ export function leerDossier(): DossierDemo {
   let value: unknown;
   try { value = JSON.parse(raw); } catch { throw new Error('El dossier guardado no se pudo leer. Revisa el almacenamiento del navegador.'); }
   if (!esObjeto(value) || !Array.isArray(value.documentos) || !value.documentos.every(esDocumento) ||
-      !Array.isArray(value.items) || !value.items.every(esItem)) {
+      !Array.isArray(value.items) || !value.items.every(esItem) ||
+      !opcional(value.ensayos, e => Array.isArray(e) && e.every(n => esObjeto(n) &&
+        ['id', 'itemId', 'junta', 'laboratorio', 'informe', 'tipo', 'fechaEnsayo', 'registradoPor', 'fechaRegistro'].every(k => esTexto(n[k])) &&
+        (n.resultado === 'Conforme' || n.resultado === 'No conforme'))) ||
+      !opcional(value.acta, a => esObjeto(a) && ['numero', 'aceptada', 'registradoPor', 'fechaRegistro'].every(k => esTexto(a[k])))) {
     throw new Error('El formato del dossier guardado es incompatible. Conserva los datos del navegador antes de restablecer la demostración.');
   }
   return value as unknown as DossierDemo;
@@ -204,6 +216,48 @@ export function leerDossier(): DossierDemo {
 
 function guardarDossier(dossier: DossierDemo) {
   localStorage.setItem(CLAVE_DOSSIER, JSON.stringify(dossier));
+}
+
+export type DatosEnsayo = Pick<EnsayoNdt, 'junta' | 'laboratorio' | 'informe' | 'tipo' | 'fechaEnsayo' | 'resultado'>;
+export function validarEnsayo(datos: DatosEnsayo, archivo: ArchivoElegido | null, ensayos: EnsayoNdt[] = []) {
+  if (!JUNTAS_NDT.some(j => j === datos.junta)) return 'Selecciona una junta soldada del frente.';
+  if (datos.laboratorio.trim().length < 3) return 'Escribe el laboratorio responsable (mínimo 3 caracteres).';
+  if (!TIPOS_NDT.some(t => t === datos.tipo)) return 'Selecciona el tipo de ensayo.';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(datos.fechaEnsayo) || !Number.isFinite(Date.parse(datos.fechaEnsayo)) ||
+      new Date(`${datos.fechaEnsayo}T00:00:00Z`).toISOString().slice(0, 10) !== datos.fechaEnsayo || datos.fechaEnsayo > ahora().toISOString().slice(0, 10)) return 'Indica una fecha de ensayo válida, hasta el día de la demostración.';
+  if (!['Conforme', 'No conforme'].includes(datos.resultado)) return 'Selecciona el resultado del laboratorio.';
+  if (!datos.informe.trim()) return 'Escribe el número de informe del laboratorio.';
+  if (ensayos.some(e => sinTildes(e.laboratorio.trim()) === sinTildes(datos.laboratorio.trim()) &&
+      sinTildes(e.informe.trim()) === sinTildes(datos.informe.trim()))) return 'Ese informe ya está registrado para este laboratorio.';
+  return archivo ? validarPdf(archivo) : 'Adjunta el reporte PDF del laboratorio.';
+}
+
+/** Guarda ensayo y requisito juntos: un informe nunca reemplaza el de otra junta. */
+export function registrarEnsayo({ id, datos, archivo, usuario }: { id: string; datos: DatosEnsayo; archivo: ArchivoElegido; usuario: Usuario }): EnsayoNdt {
+  if (!puedeRevisar(usuario)) throw new Error('Solo Calidad registra ensayos NDT.');
+  const dossier = leerDossier();
+  const existente = dossier.ensayos?.find(e => e.id === id);
+  if (existente) return existente;
+  const error = validarEnsayo(datos, archivo, dossier.ensayos);
+  if (error) throw new Error(error);
+  const fecha = ahora().toISOString();
+  const inicial = dossier.items.find(i => !i.retirado && i.carpeta === 4 && i.documentoCodigo === 'GC-FR30' && i.estado === 'Pendiente' && !i.soporte && !dossier.ensayos?.some(e => e.itemId === i.id));
+  const itemId = inicial?.id ?? `ndt-${id}`;
+  const ensayo: EnsayoNdt = { ...datos, laboratorio: datos.laboratorio.trim(), informe: datos.informe.trim(), id, itemId, registradoPor: usuario.nombre, fechaRegistro: fecha };
+  const nombre = `NDT ${datos.junta} · ${ensayo.informe}`;
+  const soporte = { id: `soporte-${id}`, nombre: archivo.name, bytes: archivo.size, subidoPor: usuario.nombre, rol: usuario.etiqueta, fecha };
+  const item: ItemChecklist = { id: itemId, carpeta: 4, nombre, detalle: `${datos.tipo} · ${ensayo.laboratorio} · Resultado: ${datos.resultado}`, documentoCodigo: 'GC-FR30',
+    estado: 'Archivo Cargado', soporte, historial: [evento(usuario, inicial?.estado ?? 'Sin registro', 'Archivo Cargado', `Informe ${ensayo.informe} vinculado a junta ${datos.junta}. Resultado: ${datos.resultado}.`), ...(inicial?.historial ?? [])] };
+  guardarDossier({ ...dossier, ensayos: [ensayo, ...(dossier.ensayos ?? [])], items: inicial ? dossier.items.map(i => i.id === itemId ? item : i) : [...dossier.items, item] });
+  return ensayo;
+}
+
+export function registrarActa({ numero, aceptada, usuario }: { numero: string; aceptada: string; usuario: Usuario }) {
+  if (!puedeRevisar(usuario)) throw new Error('Solo Calidad registra la aceptación del acta.');
+  if (!numero.trim()) throw new Error('Indica la referencia del acta aceptada.');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(aceptada) || !Number.isFinite(Date.parse(aceptada)) || new Date(`${aceptada}T00:00:00Z`).toISOString().slice(0, 10) !== aceptada || aceptada > ahora().toISOString().slice(0, 10)) throw new Error('Selecciona una fecha de aceptación válida, hasta el día de la demostración.');
+  const dossier = leerDossier();
+  guardarDossier({ ...dossier, acta: { numero: numero.trim(), aceptada, registradoPor: usuario.nombre, fechaRegistro: ahora().toISOString() } });
 }
 
 /* ───────────────── HU-M05 · Documentos del SIG ───────────────── */

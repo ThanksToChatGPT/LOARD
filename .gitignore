@@ -9,6 +9,7 @@ staticfiles/
 test-results/
 playwright-report/
 .playwright-mcp/
+.playwright-cli/
 *.tsbuildinfo
 .local/
 backend/media/

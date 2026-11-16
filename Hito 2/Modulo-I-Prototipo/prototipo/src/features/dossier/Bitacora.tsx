@@ -6,11 +6,14 @@ import { REGISTROS, ACTUALIZADO } from '@/lib/seguimiento/datos';
 import { historial } from '@/lib/seguimiento/reglas';
 import { useConsulta, ControlesConsulta, EstadoConsulta, consultaDisponible } from '@/lib/seguimiento/consulta';
 import { formatoFechaHora } from '@/lib/formato';
+import { useDossier } from './DossierContext';
+import { registrosDossier } from '@/lib/seguimiento/dossier';
 
 export function Bitacora() {
   const q = useConsulta();
   const { cortes, error } = useCortesDemo();
-  const fuente = [...registrosCortes(cortes), ...REGISTROS.filter(r=>r.tipo==='requisito')];
+  const { confirmado, error: errorDossier } = useDossier();
+  const fuente = [...registrosCortes(cortes), ...registrosDossier(confirmado, true), ...REGISTROS.filter(r=>r.tipo==='requisito' && r.proyecto !== 'CW-118')];
   const registros = q.escenario === 'vacio' ? [] : fuente.filter(r => r.proyecto === q.proyectoId);
   const id = q.params.get('registro') ?? registros[0]?.id;
   const registro = registros.find(r => r.id === id);
@@ -20,6 +23,7 @@ export function Bitacora() {
       meta={`Hora de Bogotá · Consulta de solo lectura · Datos de ejemplo: ${formatoFechaHora(new Date(ACTUALIZADO))}`} />
     <ControlesConsulta consulta={q} /><EstadoConsulta consulta={q} />
     {error && <Banner tone="error" title="No se pudo leer el historial de cortes">{error}</Banner>}
+    {errorDossier && <Banner tone="error" title="No se pudo leer el historial del dossier">{errorDossier}</Banner>}
     {consultaDisponible(q) && <>
       {!registros.length ? <Banner title="Sin registros">Este proyecto no tiene registros disponibles para consultar.</Banner> : <>
         <Select label="Registro" value={id} options={registros.map(r => ({value:r.id,label:`${r.tipo === 'corte' ? 'Corte' : `Carpeta ${r.carpeta}`} · ${r.nombre}`}))}

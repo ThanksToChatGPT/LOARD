@@ -13,8 +13,13 @@ import { DetalleCorte } from '@/features/cortes/DetalleCorte';
 import { FormularioCorte } from '@/features/cortes/FormularioCorte';
 import { CargasDossierProvider, ChecklistDossier, DocumentosSig, DossierLayout, DossierProvider, PublicarDocumento } from '@/features/dossier';
 import { Bitacora } from '@/features/dossier/Bitacora';
-import { Tablero } from '@/features/tablero/Tablero';
 import { SeguimientoLayout } from '@/lib/seguimiento/consulta';
+import { lazy, Suspense } from 'react';
+
+const EnsayosNdt = lazy(() => import('@/features/dossier/EnsayosNdt').then(m => ({ default: m.EnsayosNdt })));
+const RegistrarEnsayoNdt = lazy(() => import('@/features/dossier/EnsayosNdt').then(m => ({ default: m.RegistrarEnsayoNdt })));
+const AvanceDossier = lazy(() => import('@/features/dossier/AvanceDossier').then(m => ({ default: m.AvanceDossier })));
+const Tablero = lazy(() => import('@/features/tablero/Tablero').then(m => ({ default: m.Tablero })));
 
 /** Rutas de la aplicación. Cada módulo de `src/features` conecta aquí sus pantallas. */
 export function App() {
@@ -31,6 +36,7 @@ function ContenidoDemo() {
         <DossierProvider>
         <CargasDossierProvider>
         <BrowserRouter>
+          <Suspense fallback={<main className="p-gutter-lg" role="status">Abriendo módulo de calidad…</main>}>
           <Routes>
             <Route path="acceso" element={<Acceso />} />
             <Route element={<SesionDemo />}>
@@ -65,8 +71,11 @@ function ContenidoDemo() {
             <Route element={<PermisoDemo roles={['residente', 'director', 'calidad', 'gerencia']} />}>
             <Route path="dossier" element={<DossierLayout />}>
               <Route index element={<ChecklistDossier />} />
+              <Route path="ensayos" element={<EnsayosNdt />} />
+              <Route path="avance" element={<AvanceDossier />} />
               <Route path="documentos" element={<DocumentosSig />} />
               <Route element={<PermisoDemo roles={['calidad']} />}>
+                <Route path="ensayos/nuevo" element={<RegistrarEnsayoNdt />} />
                 <Route path="documentos/publicar" element={<PublicarDocumento />} />
               </Route>
             </Route>
@@ -84,6 +93,7 @@ function ContenidoDemo() {
             <Route path="*" element={<InicioDemo />} />
             </Route>
           </Routes>
+          </Suspense>
         </BrowserRouter>
         </CargasDossierProvider>
         </DossierProvider>
