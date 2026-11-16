@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+  // En GitHub Pages el sitio vive en /LOARD/; el workflow define BASE_PATH. En local queda en "/".
+  base: process.env.BASE_PATH ?? '/',
   plugins: [react()],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },

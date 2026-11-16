@@ -35,7 +35,7 @@ function ContenidoDemo() {
         <CortesDemoProvider>
         <DossierProvider>
         <CargasDossierProvider>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <Suspense fallback={<main className="p-gutter-lg" role="status">Abriendo módulo de calidad…</main>}>
           <Routes>
             <Route path="acceso" element={<Acceso />} />
