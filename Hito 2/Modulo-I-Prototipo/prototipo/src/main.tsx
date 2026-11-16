@@ -1,4 +1,4 @@
-import '@fontsource-variable/inter';
+import '@fontsource-variable/ibm-plex-sans';
 import './styles/tokens.css';
 import './styles/index.css';
 

@@ -25,7 +25,7 @@ export default {
     screens: { tablet: '600px', desktop: '1024px' },
     colors: { transparent: 'transparent', current: 'currentColor', ...colors },
     fontFamily: {
-      sans: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'],
+      sans: ['"IBM Plex Sans Variable"', '"IBM Plex Sans"', 'system-ui', 'sans-serif'],
     },
     fontSize: {
       'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.02em', fontWeight: '700' }],
