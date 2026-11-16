@@ -2,6 +2,8 @@
 
 Artefactos de este módulo:
 
+Aporte de HU1, HU2, HU7 y HU8: [uso de IA, capturas y cobertura](../Aportes-HU01-HU02-HU07-HU08/README.md). El informe PDF compartido incluye el aporte al final; la matriz de cobertura fue actualizada.
+
 - **Prototipo interactivo** (`prototipo/`): flujo navegable con los flujos de excepción (bloqueos, errores, observaciones).
 - **Cobertura de HU:** matriz *HU → pantalla(s)* con el 100 % de las historias del MVP.
 - **Informe de creacion / uso de IA:** prompt inicial → resultado de la IA → refactorización humana, con capturas antes/después.
