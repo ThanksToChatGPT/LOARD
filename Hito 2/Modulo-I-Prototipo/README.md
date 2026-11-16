@@ -43,7 +43,7 @@ npm run build      # compila
 
 ## Alcance de la demostración
 
-El prototipo usa datos de ejemplo y un reloj fijo al 17/11/2026 para reproducir todos los estados SST. Incluye acceso por perfiles de ejemplo (HU-M01), registro y edición de cortes (HU-M02), y los módulos SST y de selección de personal del equipo (HU-M09 y HU-M10). Las pantallas de acceso están en `features/acceso`, y las pantallas y el almacenamiento local de cortes en `features/cortes`. Ambas usan los componentes compartidos existentes.
+El prototipo usa datos de ejemplo y un reloj fijo al 17/11/2026 para reproducir todos los estados SST. Incluye acceso por perfiles de ejemplo (HU-M01), registro y edición de cortes (HU-M02), soportes del corte con carga, visor y retiro (HU-M03, en `features/cortes/soportes.ts` y `SoportesCorte.tsx`, con archivos de ejemplo en `public/ejemplos`), visado o devolución del director (HU-M04, en `RevisionCorte.tsx` y `DialogoObservacion.tsx`), y los módulos SST y de selección de personal del equipo (HU-M09 y HU-M10). Las pantallas de acceso están en `features/acceso`, y las pantallas y el almacenamiento local de cortes en `features/cortes`. Ambas usan los componentes compartidos existentes.
 
 Los cortes, sus versiones, los borradores y la selección de personal se guardan en el navegador. Los cursos, certificados y conceptos de aptitud se mantienen en memoria durante la sesión y se reinician al recargar. Los cambios SST se reflejan en el selector que utiliza el formulario de cortes. El backend anterior está conservado en la rama `codex/backend-en-pausa`.
 
