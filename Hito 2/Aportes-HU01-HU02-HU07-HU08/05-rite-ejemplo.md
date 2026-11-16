@@ -1,38 +1,44 @@
-# Ejemplo SIMULADO de prueba RITE
+# Prueba RITE del prototipo Loard: ejemplo simulado
 
-Nuestra parte: HU1, HU2, HU7 y HU8.
+## Lo que quiero revisar
 
-SIMULADO: no participaron personas reales. Los perfiles, tiempos, resultados y comentarios siguientes son inventados para mostrar cómo llenar el informe. No cumplen el requisito de probar con dos usuarios reales.
+Mi parte del proyecto incluye las HU1, HU2, HU7 y HU8. Quiero revisar si se entiende cómo entrar a la aplicación, guardar y editar un corte, registrar un ensayo y consultar el dossier.
 
-## Cómo hacer la prueba real
+Preparé este informe como un ejemplo simulado. Todavía no hice sesiones con personas reales. Los perfiles, tiempos y resultados de la tabla son ficticios y me sirven para organizar la prueba que haré después.
 
-Pedir permiso para tomar notas. Proponer cuatro tareas: entrar; registrar y editar un corte; registrar un NDT; y revisar faltantes y descargar el borrador. Anotar tiempo, dificultades y ayuda recibida. Probar con una persona, mejorar lo necesario y después probar con otra. Eso es RITE: probar y mejorar en pasos cortos.
+## Cómo haría la prueba
 
-## Resultados de ejemplo: TODOS SIMULADOS
+Primero pediría permiso para tomar notas. Después le propondría a cada persona cuatro tareas: entrar como Residente, registrar y editar un corte, registrar un NDT como Calidad y revisar los faltantes del dossier para descargar su borrador. Evitaría decirle qué botones debe pulsar.
 
-S1: perfil ficticio con experiencia media, usando un computador. S2: perfil ficticio con poca experiencia, usando un celular. No hay fechas de sesiones reales.
+Anotaría cuánto tarda, dónde se confunde y si necesita ayuda. Probaría primero con una persona, revisaría los problemas que aparezcan y haría los cambios necesarios antes de probar con la segunda.
 
-| Persona ficticia | Tarea | Resultado SIMULADO | Tiempo SIMULADO |
+## Mi registro de ejemplo
+
+Para mostrar cómo llenaría el registro, usé dos perfiles ficticios: S1, con experiencia media y un computador, y S2, con poca experiencia y un celular. No corresponden a participantes reales.
+
+**Tabla 1**
+
+*Resultados simulados de las tareas*
+
+| Perfil ficticio | Tarea | Resultado de ejemplo | Tiempo de ejemplo |
 | --- | --- | --- | --- |
 | S1 | Entrar | Sin ayuda | 35 s |
-| S1 | Registrar y editar corte | Con ayuda para ubicar el historial | 4 min 10 s |
-| S1 | Registrar NDT | Con ayuda para distinguir el resultado de la validación | 3 min 20 s |
-| S1 | Revisar dossier y descargar | Sin ayuda | 2 min 05 s |
+| S1 | Registrar y editar un corte | Con ayuda para encontrar el historial | 4 min 10 s |
+| S1 | Registrar un NDT | Con ayuda sobre la validación | 3 min 20 s |
+| S1 | Revisar el dossier y descargar | Sin ayuda | 2 min 05 s |
 | S2 | Entrar | Sin ayuda | 45 s |
-| S2 | Registrar y editar corte | Con ayuda sobre las horas del trabajador | 4 min 30 s |
-| S2 | Registrar NDT | Sin ayuda en el escenario propuesto | 2 min 50 s |
-| S2 | Revisar dossier y descargar | Sin ayuda | 2 min 15 s |
+| S2 | Registrar y editar un corte | Con ayuda sobre las horas del trabajador | 4 min 30 s |
+| S2 | Registrar un NDT | Sin ayuda en este ejemplo | 2 min 50 s |
+| S2 | Revisar el dossier y descargar | Sin ayuda | 2 min 15 s |
 
-Comentario SIMULADO de S1: «Pensé que Conforme significaba que ya estaba aprobado el documento».
+*Nota.* Todos los resultados y tiempos de la tabla son simulados. No los medí en sesiones con usuarios.
 
-## Mejora de ejemplo: SIMULADA y NO aplicada
+## Qué cambiaría
 
-| Problema inventado | Cambio que se podría probar |
-| --- | --- |
-| Confundir el resultado del laboratorio con la validación del documento. | Agregar una ayuda junto al resultado: un ensayo puede ser Conforme y su PDF seguir esperando revisión. |
+En mi ejemplo, S1 confunde el resultado del laboratorio con la validación del documento. Para aclararlo, propondría un mensaje junto al resultado: un ensayo puede ser Conforme y su PDF todavía puede estar pendiente de revisión.
 
-S2 representa una segunda sesión hipotética. No se hizo la prueba ni se aplicó el cambio. Las capturas actuales no muestran a S1 o S2.
+No apliqué ese cambio ni lo evalué con personas. El caso de S2 solo muestra cómo podría registrar una segunda sesión después de una mejora; no demuestra que la aplicación sea más fácil de usar.
 
-## Qué falta para cerrar este punto
+## Qué me falta
 
-Faltan dos sesiones reales. Registrar perfil, fecha, dispositivo, resultados, ayuda y comentarios. Después, reemplazar estas tablas de ejemplo y guardar solo los cambios que sí se hicieron.
+Me falta probar con dos personas reales y anotar la fecha, el dispositivo, las dificultades y la ayuda que necesite cada una. Cuando lo haga, reemplazaré esta tabla por mis resultados y guardaré evidencia de los cambios que realmente aplique.

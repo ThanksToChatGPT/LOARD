@@ -23,7 +23,9 @@ Esta carpeta reúne nuestra parte. Los documentos del equipo conservan sus pági
 
 Las capturas de la carpeta capturas son reales de la versión actual. La aplicación muestra datos ficticios y usa el día fijo 17/11/2026. El registro de captura guarda la fecha real. Las comprobaciones técnicas se hicieron con un navegador y se volvieron a ejecutar las 101 pruebas automáticas y la compilación.
 
-El documento 05-rite-ejemplo es SIMULADO. Se aclara en su título, al inicio, en las tablas, en el comentario, en la mejora propuesta y al pie de todas sus páginas PDF. S1 y S2 no son personas reales. El informe de IA y la matriz también lo recuerdan al mencionar esa evaluación.
+El documento 05-rite-ejemplo es simulado. Se aclara en el título, al inicio, en la nota de la tabla y al explicar la mejora propuesta. S1 y S2 no son personas reales. El informe de IA y la matriz también lo recuerdan al mencionar esa evaluación.
+
+El informe RITE está escrito en primera persona y usa formato APA: papel carta, márgenes de 2,54 cm, Times New Roman de 12 puntos, texto a doble espacio y número de página arriba a la derecha. Es blanco y negro. Los datos de la portada se completan en portada_rite.json. Para actualizar solo ese PDF: `python generar_pdf.py --solo-rite`. Se siguió la [guía de trabajos estudiantiles de APA](https://apastyle.apa.org/instructional-aids/student-paper-setup-guide.pdf).
 
 La propuesta de datos y API describe un trabajo futuro. No significa que exista un servidor activo.
 

@@ -14,8 +14,8 @@ import textwrap
 from PIL import Image as PILImage
 from pypdf import PdfReader, PdfWriter
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_LEFT
-from reportlab.lib.pagesizes import A4
+from reportlab.lib.enums import TA_LEFT, TA_CENTER
+from reportlab.lib.pagesizes import A4, letter
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -101,7 +101,68 @@ def diagrama():
     return d
 
 
+def render_rite_apa(md, output):
+    """Formato APA para el informe RITE, sin cambiar los otros documentos."""
+    for face, file in [('Times', 'times.ttf'), ('Times-Bold', 'timesbd.ttf'), ('Times-Italic', 'timesi.ttf')]:
+        pdfmetrics.registerFont(TTFont(face, str(Path('C:/Windows/Fonts') / file)))
+    pdfmetrics.registerFontFamily('Times', normal='Times', bold='Times-Bold', italic='Times-Italic', boldItalic='Times-Bold')
+    base = ParagraphStyle('APA', fontName='Times', fontSize=12, leading=24, textColor=colors.black,
+                          alignment=TA_LEFT, firstLineIndent=36, spaceBefore=0, spaceAfter=0)
+    heading = ParagraphStyle('APATitulo', parent=base, fontName='Times-Bold', alignment=TA_CENTER,
+                             firstLineIndent=0, keepWithNext=True)
+    cover = ParagraphStyle('APAPortada', parent=base, alignment=TA_CENTER, firstLineIndent=0)
+    plain = ParagraphStyle('APASinSangria', parent=base, firstLineIndent=0)
+    label = ParagraphStyle('APATablaNumero', parent=plain, fontName='Times-Bold', keepWithNext=True)
+    caption = ParagraphStyle('APATablaTitulo', parent=plain, fontName='Times-Italic', keepWithNext=True)
+    cell = ParagraphStyle('APACelda', parent=plain, fontSize=11, leading=14)
+    cellhead = ParagraphStyle('APACeldaTitulo', parent=cell, fontName='Times-Bold')
+    metadata = json.loads((HERE / 'portada_rite.json').read_text(encoding='utf-8'))
+    lines = md.read_text(encoding='utf-8').splitlines()
+    title = lines[0][2:]
+    paragraph = lambda text, style=base: Paragraph(html.escape(text), style)
+    story = [Spacer(1, 72), paragraph(title, heading), Spacer(1, 24)]
+    for key in ['estudiante', 'institucion', 'asignatura', 'docente', 'fecha']:
+        story.append(paragraph(metadata[key], cover))
+    story.extend([PageBreak(), paragraph(title, heading)])
+    i = 1
+    while i < len(lines):
+        line = lines[i].strip()
+        if not line: i += 1; continue
+        if line.startswith('## '): story.append(paragraph(line[3:], heading))
+        elif line.startswith('**Tabla '): story.append(paragraph(line.strip('*'), label))
+        elif line.startswith('*Resultados'): story.append(paragraph(line.strip('*'), caption))
+        elif line.startswith('*Nota.*'):
+            story.append(Paragraph('<i>Nota.</i>' + html.escape(line[len('*Nota.*'):]), plain))
+        elif line.startswith('|'):
+            rows = []
+            while i < len(lines) and lines[i].strip().startswith('|'):
+                values = [c.strip() for c in lines[i].strip().strip('|').split('|')]
+                if not all(re.fullmatch(r'[:\- ]+', v) for v in values): rows.append(values)
+                i += 1
+            data = [[paragraph(value, cellhead if n == 0 else cell) for value in row] for n, row in enumerate(rows)]
+            t = Table(data, colWidths=[51, 140, 197, 80], repeatRows=1, hAlign='LEFT')
+            t.setStyle(TableStyle([
+                ('VALIGN', (0, 0), (-1, -1), 'TOP'), ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+                ('LINEABOVE', (0, 0), (-1, 0), .8, colors.black),
+                ('LINEBELOW', (0, 0), (-1, 0), .5, colors.black),
+                ('LINEBELOW', (0, -1), (-1, -1), .8, colors.black),
+                ('LEFTPADDING', (0, 0), (-1, -1), 4), ('RIGHTPADDING', (0, 0), (-1, -1), 4),
+                ('TOPPADDING', (0, 0), (-1, -1), 4), ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+            ]))
+            story.append(t); continue
+        else: story.append(paragraph(line))
+        i += 1
+    def header(c, doc):
+        c.saveState(); c.setFont('Times', 12); c.setFillColor(colors.black)
+        c.drawRightString(letter[0] - 72, letter[1] - 36, str(doc.page)); c.restoreState()
+    SimpleDocTemplate(str(output), pagesize=letter, leftMargin=72, rightMargin=72,
+                      topMargin=72, bottomMargin=72, title=title,
+                      author='' if metadata['estudiante'].startswith('[') else metadata['estudiante']).build(story, onFirstPage=header, onLaterPages=header)
+
+
 def render(md, output, simulated=False):
+    if md.name == '05-rite-ejemplo.md':
+        return render_rite_apa(md, output)
     lines = md.read_text(encoding='utf-8').splitlines()
     story = []
     i = 0
@@ -272,6 +333,11 @@ def technical_evidence():
 
 
 if __name__ == '__main__':
+    import sys
+    if '--solo-rite' in sys.argv:
+        render_rite_apa(HERE / '05-rite-ejemplo.md', HERE / '05-rite-ejemplo.pdf')
+        print('Informe RITE actualizado con formato APA.')
+        raise SystemExit(0)
     coverage()
     technical_evidence()
     for md in sorted(HERE.glob('[0-9][0-9]-*.md')):
