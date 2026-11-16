@@ -12,6 +12,9 @@ import { ListaCortes } from '@/features/cortes/ListaCortes';
 import { DetalleCorte } from '@/features/cortes/DetalleCorte';
 import { FormularioCorte } from '@/features/cortes/FormularioCorte';
 import { CargasDossierProvider, ChecklistDossier, DocumentosSig, DossierLayout, DossierProvider, PublicarDocumento } from '@/features/dossier';
+import { Bitacora } from '@/features/dossier/Bitacora';
+import { Tablero } from '@/features/tablero/Tablero';
+import { SeguimientoLayout } from '@/lib/seguimiento/consulta';
 
 /** Rutas de la aplicación. Cada módulo de `src/features` conecta aquí sus pantallas. */
 export function App() {
@@ -67,6 +70,14 @@ function ContenidoDemo() {
                 <Route path="documentos/publicar" element={<PublicarDocumento />} />
               </Route>
             </Route>
+            </Route>
+
+            {/* HU-M11 · Bitácora del registro y HU-M12 · Tablero del proyecto */}
+            <Route element={<PermisoDemo roles={['calidad']} />}>
+              <Route element={<SeguimientoLayout />}><Route path="dossier/bitacora" element={<Bitacora />} /></Route>
+            </Route>
+            <Route element={<PermisoDemo roles={['director', 'gerencia']} />}>
+              <Route element={<SeguimientoLayout />}><Route path="dashboard" element={<Tablero />} /></Route>
             </Route>
 
             <Route path="muestra" element={<Muestra />} />
