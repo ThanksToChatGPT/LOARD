@@ -12,7 +12,7 @@ const Contexto = createContext<CargasApi | null>(null);
 /**
  * HU-M06 · Cola de soportes en carga, una por requisito (la clave es el id del requisito).
  * Vive por encima de las pantallas: el archivo sigue subiendo, o esperando la señal,
- * aunque se cierre el panel del requisito o se cambie de módulo (§8.3).
+ * aunque se cierre el panel del requisito o se cambie de módulo (#8.3).
  */
 export function CargasDossierProvider({ children }: { children: ReactNode }) {
   const { usuario } = useAuthDemo();

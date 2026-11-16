@@ -16,7 +16,7 @@ export interface SelectorPersonalProps {
 }
 
 /**
- * Selector de personal del corte (§6.2A, opción A «Transparencia operativa»):
+ * Selector de personal del corte (#6.2A, opción A «Transparencia operativa»):
  * salen todos los trabajadores; los vencidos o No Habilitado van abajo, en rojo,
  * con candado y el motivo exacto, y no se pueden marcar.
  */

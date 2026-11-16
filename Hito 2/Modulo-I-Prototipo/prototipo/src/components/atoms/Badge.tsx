@@ -12,7 +12,7 @@ export interface BadgeProps {
   children: ReactNode;
 }
 
-// Texto del token sobre su *-subtle, con borde *-border (§10).
+// Texto del token sobre su *-subtle, con borde *-border (#10).
 const TONO: Record<Tono, string> = {
   success: 'border-success-border bg-success-subtle text-success',
   warning: 'border-warning-border bg-warning-subtle text-warning',

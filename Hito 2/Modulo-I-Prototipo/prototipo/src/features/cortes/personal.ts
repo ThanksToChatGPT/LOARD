@@ -1,5 +1,5 @@
 /**
- * Reglas del selector de personal del corte (HU-M10, design.md §6.2A).
+ * Reglas del selector de personal del corte (HU-M10, design.md #6.2A).
  * Funciones puras para poder probarlas sin pantalla.
  */
 

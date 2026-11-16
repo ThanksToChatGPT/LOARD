@@ -17,7 +17,7 @@ const ESTADO: Record<ConnectionState, { texto: string; color: string; Icono: typ
   error: { texto: 'Un envío falló', color: 'text-error', Icono: CloudAlert },
 };
 
-/** Indicador permanente de conexión de la topbar (§8.3). En móvil muestra solo el ícono. */
+/** Indicador permanente de conexión de la topbar (#8.3). En móvil muestra solo el ícono. */
 export function ConnectionIndicator({ state, text, className }: ConnectionIndicatorProps) {
   const { texto, color, Icono } = ESTADO[state];
   const visible = text ?? texto;

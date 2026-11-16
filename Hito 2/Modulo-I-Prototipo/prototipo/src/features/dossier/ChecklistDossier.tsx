@@ -31,7 +31,7 @@ function accionDe(item: ItemChecklist, usuario: UsuarioDemo | null): string {
   return 'Ver detalle';
 }
 
-/** Carga en curso de un requisito. Se ve en la lista aunque su panel esté cerrado (§8.3). */
+/** Carga en curso de un requisito. Se ve en la lista aunque su panel esté cerrado (#8.3). */
 function AvisoCarga({ carga }: { carga: CargaSimulada }) {
   const nombre = `«${carga.archivo.name}»`;
   if (carga.estado === 'error') return <p className="break-words text-body-sm text-error">No se pudo cargar {nombre}. Abre el requisito para reintentar.</p>;

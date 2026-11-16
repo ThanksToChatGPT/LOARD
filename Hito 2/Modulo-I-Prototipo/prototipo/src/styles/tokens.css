@@ -1,5 +1,5 @@
 /*
- * Tokens de color y elevación (design.md §2).
+ * Tokens de color y elevación (design.md #2).
  * Único archivo del proyecto donde se escriben códigos de color.
  */
 
@@ -42,7 +42,7 @@
   --shadow-1: 0 1px 2px rgba(10, 31, 46, 0.06);
   --shadow-2: 0 10px 25px -5px rgba(10, 31, 46, 0.14), 0 8px 10px -6px rgba(10, 31, 46, 0.08);
 
-  /* Color del espacio entre un control y su anillo de foco (§2.2). */
+  /* Color del espacio entre un control y su anillo de foco (#2.2). */
   --focus-offset: var(--surface);
 
   color-scheme: light;

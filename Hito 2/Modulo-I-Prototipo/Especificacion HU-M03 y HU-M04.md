@@ -2,7 +2,7 @@
 
 Documento de trabajo para construir el prototipo de alta fidelidad de las historias 3 y 4 del MVP. Sigue el mismo método que las HU-M09 y HU-M10 (ver *Creación de prototipo - Uso de IA*): **prompt inicial → resultado de la IA → refactorización humana**, sobre los componentes compartidos y las reglas de `Hito 2/design.md`.
 
-> **Ojo con la paleta.** El código usa `Hito 2/design.md` (azul petróleo, contraste 7:1, «Deshacer» de 5 s, cola sin conexión). El `design.md` de la raíz del repo es la versión anterior (pizarra `#1E293B`). Como las pantallas solo usan tokens (`bg-primary`, `text-warning`…), no hay que escribir colores: basta con seguir `Hito 2/design.md`.
+> **Ojo con la paleta.** El código usa `Hito 2/design.md` (azul petróleo, contraste 7:1, «Deshacer» de 5 s, cola sin conexión). El `design.md` de la raíz del repo es una copia idéntica. Como las pantallas solo usan tokens (`bg-primary`, `text-warning`…), no hay que escribir colores: basta con seguir `Hito 2/design.md`.
 
 ---
 
@@ -63,7 +63,7 @@ Datos de ejemplo ya disponibles: tres cortes (#06 Visado, #07 Devuelto con Obser
 | Corte Visado | No hay zona de carga ni «Quitar». Aviso: «El corte está visado. Sus soportes ya no se pueden modificar.» |
 | Perfil sin permiso (Director, Calidad, Gerencia) | Solo consulta y descarga. |
 | Corte sin soportes | Estado vacío: «Este corte aún no tiene soportes. Agrega fotografías o PDF del periodo.» Para el director: «El residente no adjuntó soportes en este corte.» |
-| Intentar salir con archivos subiendo | Aviso nativo `beforeunload` (design.md §8.2). |
+| Intentar salir con archivos subiendo | Aviso nativo `beforeunload` (design.md #8.2). |
 
 ---
 
@@ -99,11 +99,11 @@ Chips de causas frecuentes sugeridos: «Desfase en horas-hombre», «Falta sopor
 | --- | --- |
 | Observación con menos de 10 caracteres | «Confirmar devolución» deshabilitado. Debajo del campo: «Escribe al menos 10 caracteres (faltan 4).» |
 | Cerrar el diálogo con texto escrito | Pregunta «¿Descartar la observación?» (`Dialog` con `dirty`). |
-| Sin conexión | «Visar corte» y «Devolver» se ven deshabilitados con el motivo «Necesitas conexión para visar cortes» (design.md §8.3). |
+| Sin conexión | «Visar corte» y «Devolver» se ven deshabilitados con el motivo «Necesitas conexión para visar cortes» (design.md #8.3). |
 | El residente editó el corte mientras el director lo revisaba | «El corte cambió (versión 3). Revisa la versión actual antes de visar.» Usa la misma regla de `versionEsperada` que ya existe. |
 | Corte ya Visado o Devuelto | No hay acciones para el director. Solo consulta. |
 | Corte sin soportes | Aviso informativo al director antes de visar: «Este corte no tiene soportes adjuntos.» No bloquea la decisión. |
-| Clic doble en «Confirmar» | El botón pasa a «Registrando visado…» y se deshabilita (design.md §6.1). |
+| Clic doble en «Confirmar» | El botón pasa a «Registrando visado…» y se deshabilita (design.md #6.1). |
 | Perfil Calidad o Gerencia | Consulta sin acciones. |
 
 ---

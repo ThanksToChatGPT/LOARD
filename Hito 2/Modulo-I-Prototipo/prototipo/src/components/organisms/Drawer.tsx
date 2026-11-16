@@ -16,7 +16,7 @@ export interface DrawerProps {
   children: ReactNode;
   /** Acciones fijas al pie: «Validar Documento», «Observar Documento». */
   footer?: ReactNode;
-  /** Atenúa la página de fondo. Sin él, la lista de la izquierda sigue visible (§7.2). */
+  /** Atenúa la página de fondo. Sin él, la lista de la izquierda sigue visible (#7.2). */
   scrim?: boolean;
 }
 

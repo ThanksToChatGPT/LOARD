@@ -9,7 +9,7 @@ import { guardarPersonal, leerPersonal } from './almacenamiento';
 import { ResumenPersonal } from './ResumenPersonal';
 import { SelectorPersonal } from './SelectorPersonal';
 
-/** HU-M10: personal del corte de obra con bloqueo estricto SST (§6.2A). */
+/** HU-M10: personal del corte de obra con bloqueo estricto SST (#6.2A). */
 export function PersonalCorte() {
   const { filas } = useSst();
   const toast = useToast();
@@ -61,7 +61,7 @@ export function PersonalCorte() {
         onQuitar={(id) => cambiar(id, false)}
       />
 
-      {/* Pie fijo de acciones (§11.3). */}
+      {/* Pie fijo de acciones (#11.3). */}
       <div className="sf-page sticky bottom-0 z-10 col-span-full flex flex-wrap items-center justify-end gap-gutter-sm border-t border-outline-variant py-gutter-md">
         <p className="mr-auto text-body-md tabular-nums text-on-surface-muted">
           {plural(elegidos.length, 'trabajador seleccionado', 'trabajadores seleccionados')}

@@ -20,7 +20,7 @@ export interface FileUploadProps {
 }
 
 /**
- * Zona de carga (§7.2). El botón abre el selector del dispositivo con toque o teclado;
+ * Zona de carga (#7.2). El botón abre el selector del dispositivo con toque o teclado;
  * con puntero también se puede arrastrar. Rechaza en el navegador lo que no es
  * PDF/JPG/PNG o supera 15 MB, sin gastar datos.
  */

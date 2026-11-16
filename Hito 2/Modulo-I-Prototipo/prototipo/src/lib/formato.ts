@@ -56,7 +56,7 @@ export function formatoHora(fecha: Date): string {
   return `${p.hour}:${p.minute}`;
 }
 
-/** DD/MM/AAAA HH:mm:ss, formato de la bitácora (§10). */
+/** DD/MM/AAAA HH:mm:ss, formato de la bitácora (#10). */
 export function formatoFechaHora(fecha: Date): string {
   const p = descomponer(fecha);
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}:${p.second}`;

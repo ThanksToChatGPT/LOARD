@@ -36,7 +36,7 @@ export interface ResponsiveTableProps<T> {
   rowTone?: (fila: T) => 'error' | 'warning' | undefined;
   /**
    * Conserva la tabla en móvil con desplazamiento horizontal dentro de su contenedor.
-   * Solo cuando comparar columnas es parte de la tarea (§11.2).
+   * Solo cuando comparar columnas es parte de la tarea (#11.2).
    */
   keepTableOnMobile?: boolean;
   className?: string;
@@ -177,7 +177,7 @@ export function ResponsiveTable<T>({
   return (
     <div className={cn('card relative overflow-hidden', className)}>
       {barra}
-      {/* El contenedor con desplazamiento recibe foco para recorrerlo con las flechas (§11.4). */}
+      {/* El contenedor con desplazamiento recibe foco para recorrerlo con las flechas (#11.4). */}
       <div role="region" aria-label={caption} tabIndex={0} className="overflow-x-auto">
         {tabla}
       </div>

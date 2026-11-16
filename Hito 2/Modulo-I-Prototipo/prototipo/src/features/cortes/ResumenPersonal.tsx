@@ -18,7 +18,7 @@ export interface ResumenPersonalProps {
 export function ResumenPersonal({ elegidos, onQuitar, className }: ResumenPersonalProps) {
   const titulo = useRef<HTMLHeadingElement>(null);
   const { d15, d30 } = conteoAlertas(elegidos);
-  // Pudo vencerse después de agregarlo (p. ej. al sincronizar, §8.3).
+  // Pudo vencerse después de agregarlo (p. ej. al sincronizar, #8.3).
   const bloqueados = elegidos.filter((f) => !esAsignable(f.evaluacion.estado));
 
   return (

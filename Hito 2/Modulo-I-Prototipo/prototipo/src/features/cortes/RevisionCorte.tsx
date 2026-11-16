@@ -57,7 +57,7 @@ export function RevisionCorte({ corte, onDecidido }: { corte: CorteDemo; onDecid
   function abrir(decision: DecisionCorte) { setError(''); setDialogo(decision); }
 
   // Dos piezas dentro de la retícula de la página: la explicación y los avisos van en el flujo,
-  // y solo la fila de acciones queda fija al pie para no tapar los datos en móvil (§11.3).
+  // y solo la fila de acciones queda fija al pie para no tapar los datos en móvil (#11.3).
   return (
     <>
       <section aria-labelledby={tituloId} className="card col-span-full flex flex-col gap-gutter-sm p-gutter-md">

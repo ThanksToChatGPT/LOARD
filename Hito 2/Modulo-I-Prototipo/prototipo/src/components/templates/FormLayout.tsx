@@ -12,7 +12,7 @@ export interface FormLayoutProps {
 }
 
 /**
- * Formulario sobre la retícula (§11.1): 4 de 4 columnas en móvil, 8 de 8 en tableta
+ * Formulario sobre la retícula (#11.1): 4 de 4 columnas en móvil, 8 de 8 en tableta
  * y 8 de 12 centradas en escritorio. El pie se mantiene visible sin tapar el último campo.
  */
 export function FormLayout({ header, status, children, footer, onSubmit }: FormLayoutProps) {

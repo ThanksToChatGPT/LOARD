@@ -1,7 +1,7 @@
 import { Skeleton } from '../atoms/Skeleton';
 
 export interface SkeletonRowsProps {
-  /** Entre 5 y 8 (§7.1). */
+  /** Entre 5 y 8 (#7.1). */
   rows?: number;
   /** Igual al número de columnas de la tabla real. */
   columns: number;

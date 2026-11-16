@@ -14,8 +14,8 @@ import {
 
 /**
  * HU-M06 · Detalle de un requisito de la checklist.
- * Visor lateral desde 1024 px y de pantalla completa en móvil (§7.2). El Residente y Calidad
- * cargan o reemplazan el PDF. Calidad lo valida con «Deshacer» o lo observa con motivo (§6.2B).
+ * Visor lateral desde 1024 px y de pantalla completa en móvil (#7.2). El Residente y Calidad
+ * cargan o reemplazan el PDF. Calidad lo valida con «Deshacer» o lo observa con motivo (#6.2B).
  */
 export function DetalleItem({ item, onClose }: { item: ItemChecklist | null; onClose: () => void }) {
   const { usuario } = useAuthDemo();
@@ -203,7 +203,7 @@ function SoporteActual({ soporte }: { soporte: SoporteItem }) {
   );
 }
 
-/** «Observar requisito» (§6.2B): motivo obligatorio de 10 caracteres, con causas frecuentes. */
+/** «Observar requisito» (#6.2B): motivo obligatorio de 10 caracteres, con causas frecuentes. */
 function DialogoObservar({ open, nombre, bloqueo, error, onClose, onConfirm }: {
   open: boolean; nombre: string; bloqueo?: string; error: string; onClose: () => void; onConfirm: (texto: string) => void;
 }) {

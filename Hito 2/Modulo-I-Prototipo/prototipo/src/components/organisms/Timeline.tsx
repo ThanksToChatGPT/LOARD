@@ -23,7 +23,7 @@ export interface TimelineProps {
 }
 
 /**
- * Bitácora de auditoría de solo lectura (§10, HU-M11). Formato fijo:
+ * Bitácora de auditoría de solo lectura (#10, HU-M11). Formato fijo:
  * [DD/MM/AAAA HH:mm:ss] — [Nombre y Rol] cambió el estado de [Anterior] a [Nuevo]. Motivo/Observación: "…"
  */
 export function Timeline({

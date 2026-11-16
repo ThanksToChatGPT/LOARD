@@ -19,7 +19,7 @@ export interface DialogoObservacionProps {
 }
 
 /**
- * «Devolver con observaciones» (§6.2B). El campo recibe el foco al abrir, los chips
+ * «Devolver con observaciones» (#6.2B). El campo recibe el foco al abrir, los chips
  * completan el texto y la confirmación espera al menos 10 caracteres.
  * Pensado para reutilizarse en «Observar requisito» del dossier (HU-M06).
  */
