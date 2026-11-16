@@ -11,6 +11,7 @@ import { CortesDemoProvider } from '@/features/cortes/CortesDemoContext';
 import { ListaCortes } from '@/features/cortes/ListaCortes';
 import { DetalleCorte } from '@/features/cortes/DetalleCorte';
 import { FormularioCorte } from '@/features/cortes/FormularioCorte';
+import { CargasDossierProvider, ChecklistDossier, DocumentosSig, DossierLayout, DossierProvider, PublicarDocumento } from '@/features/dossier';
 
 /** Rutas de la aplicación. Cada módulo de `src/features` conecta aquí sus pantallas. */
 export function App() {
@@ -24,6 +25,8 @@ function ContenidoDemo() {
       {/* Datos SST compartidos: lo que registra Coordinación SST se refleja en el selector del corte. */}
       <SstProvider puedeGestionar={!usuario || usuario.rol === 'sst'}>
         <CortesDemoProvider>
+        <DossierProvider>
+        <CargasDossierProvider>
         <BrowserRouter>
           <Routes>
             <Route path="acceso" element={<Acceso />} />
@@ -55,11 +58,24 @@ function ContenidoDemo() {
             </Route>
             </Route>
 
+            {/* HU-M05 y HU-M06 · Dossier de calidad: checklist y documentos del SIG */}
+            <Route element={<PermisoDemo roles={['residente', 'director', 'calidad', 'gerencia']} />}>
+            <Route path="dossier" element={<DossierLayout />}>
+              <Route index element={<ChecklistDossier />} />
+              <Route path="documentos" element={<DocumentosSig />} />
+              <Route element={<PermisoDemo roles={['calidad']} />}>
+                <Route path="documentos/publicar" element={<PublicarDocumento />} />
+              </Route>
+            </Route>
+            </Route>
+
             <Route path="muestra" element={<Muestra />} />
             <Route path="*" element={<InicioDemo />} />
             </Route>
           </Routes>
         </BrowserRouter>
+        </CargasDossierProvider>
+        </DossierProvider>
         </CortesDemoProvider>
       </SstProvider>
     </ToastProvider>

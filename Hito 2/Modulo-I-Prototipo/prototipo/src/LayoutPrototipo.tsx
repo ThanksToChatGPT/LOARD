@@ -1,4 +1,4 @@
-import { ClipboardList, HardHat, Layers, LogOut, Moon, Sun, Wifi, WifiOff } from 'lucide-react';
+import { ClipboardList, FolderCheck, HardHat, Layers, LogOut, Moon, Sun, Wifi, WifiOff } from 'lucide-react';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AppShell, Banner, ConnectionIndicator, IconButton, OfflineQueueBanner } from '@/components';
@@ -20,6 +20,7 @@ export interface LayoutPrototipoProps {
 
 const NAV = [
   { id: 'cortes', ruta: '/cortes', label: 'Cortes de obra', icon: <ClipboardList aria-hidden="true" className="h-5 w-5" /> },
+  { id: 'dossier', ruta: '/dossier', label: 'Dossier de calidad', icon: <FolderCheck aria-hidden="true" className="h-5 w-5" /> },
   { id: 'sst', ruta: '/sst', label: 'Personal SST', icon: <HardHat aria-hidden="true" className="h-5 w-5" /> },
   { id: 'muestra', ruta: '/muestra', label: 'Componentes', icon: <Layers aria-hidden="true" className="h-5 w-5" /> },
 ];
@@ -32,7 +33,8 @@ export function LayoutPrototipo({ usuario, mensajeSinSenal }: LayoutPrototipoPro
   const { usuario: cuenta, salir } = useAuthDemo();
   const nombre = cuenta?.nombre ?? usuario.nombre;
   const rol = cuenta?.etiqueta ?? usuario.rol;
-  const nav = NAV.filter(item => item.id === 'muestra' || (item.id === 'cortes' ? cuenta?.rol !== 'sst' : cuenta?.rol !== 'residente'));
+  // Cortes y dossier: todos menos SST. Personal SST: todos menos el residente.
+  const nav = NAV.filter(item => item.id === 'muestra' || (item.id === 'sst' ? cuenta?.rol !== 'residente' : cuenta?.rol !== 'sst'));
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { tema, alternar } = useTheme();
