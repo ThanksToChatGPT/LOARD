@@ -1,16 +1,18 @@
 import { Save } from 'lucide-react';
-import { useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Banner, Button, DateField, FormLayout, PageHeader, Select, TextArea, TextField, useToast } from '@/components';
 import { useAuthDemo } from '@/features/acceso/AuthDemo';
 import { Volver } from '@/features/sst/componentes';
 import { useSst } from '@/lib/sst/SstContext';
 import { esAsignable } from '@/lib/semaforo';
-import { formatoFechaHora } from '@/lib/formato';
+import { formatoFechaHora, plural } from '@/lib/formato';
 import { useCortesDemo } from './CortesDemoContext';
-import { ACTIVIDADES_DEMO, FRENTES_DEMO, INSUMOS_DEMO, MOTIVO_CORTE_VISADO, esEditable, formularioVacio, validarCorteDemo, type CorteDemo, type FormularioCorteDemo } from './modeloDemo';
+import { ACTIVIDADES_DEMO, CIUDADES_DEMO, CLIENTES_DEMO, FRENTES_DEMO, INSUMOS_DEMO, MOTIVO_CORTE_VISADO, esEditable, formularioVacio, validarCorteDemo, type CorteDemo, type FormularioCorteDemo } from './modeloDemo';
 import { RecursosCorte } from './RecursosCorte';
+import { registrarUrlSoporte } from './soportes';
 import { SoportesCorte } from './SoportesCorte';
+import { SoportesPorGuardar, type SoportePendiente } from './SoportesPorGuardar';
 import { SelectorPersonal } from './SelectorPersonal';
 import { useBorradorDemo } from './useBorradorDemo';
 
@@ -29,7 +31,7 @@ export function FormularioCorte() {
 
 function EditorCorte({ corte }: { corte?: CorteDemo }) {
   const { usuario } = useAuthDemo();
-  const { guardar } = useCortesDemo();
+  const { guardar, agregarSoporte } = useCortesDemo();
   const { filas } = useSst();
   const navigate = useNavigate();
   const toast = useToast();
@@ -40,6 +42,11 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState('');
   const [version] = useState(() => corte?.versiones[0].version ?? 0);
+  // Fotografías y PDF elegidos antes de guardar un corte nuevo: se asocian al corte al guardarlo.
+  const [adjuntos, setAdjuntos] = useState<SoportePendiente[]>([]);
+  const sinAsociar = useRef(adjuntos);
+  useEffect(() => () => sinAsociar.current.forEach(item => URL.revokeObjectURL(item.url)), []);
+  function cambiarAdjuntos(lista: SoportePendiente[]) { sinAsociar.current = lista; setAdjuntos(lista); }
   const contenido = useMemo(() => ({ datos, solicitud, motivo, version }), [datos, solicitud, motivo, version]);
   const borrador = useBorradorDemo(`loard_prototipo_borrador_${usuario!.correo}_${corte?.id ?? 'nuevo'}`, contenido, sucio);
   const bloqueados = datos.personal.map(row => filas.find(fila => fila.trabajador.id === row.id))
@@ -63,8 +70,20 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       const saved = guardar({ id: corte?.id ?? solicitud, anterior: corte, datos, usuario: usuario!, motivo, versionEsperada: version });
       borrador.completar();
       setSucio(false);
+      const fallidos: SoportePendiente[] = [];
+      for (const item of adjuntos) {
+        try {
+          const soporte = agregarSoporte({ id: item.clave, corte: saved, archivo: item.archivo, usuario: usuario! });
+          registrarUrlSoporte(soporte.id, item.url);
+        } catch { fallidos.push(item); }
+      }
+      // Los archivos ya asociados conservan su vista previa; los que fallaron se liberan al salir.
+      cambiarAdjuntos(fallidos);
+      const cargados = adjuntos.length - fallidos.length;
       toast.show({ message: corte ? `Corte #${saved.numero} de ejemplo guardado. Versión ${saved.versiones[0].version}.`
-        : `Corte #${saved.numero} de ejemplo guardado. Ahora puedes adjuntar sus fotografías y PDF.` });
+        : fallidos.length ? `Corte #${saved.numero} de ejemplo guardado. No se pudo adjuntar: ${fallidos.map(item => `«${item.archivo.name}»`).join(', ')}. Agrégalo de nuevo en «Soportes del corte».`
+        : cargados ? `Corte #${saved.numero} de ejemplo guardado con ${plural(cargados, 'soporte', 'soportes')}.`
+        : `Corte #${saved.numero} de ejemplo guardado. Puedes agregar fotografías y PDF en «Soportes del corte».` });
       navigate(`/cortes/${saved.id}`, { replace: true });
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'No se pudo guardar el ejemplo. Intenta de nuevo.'); }
     finally { setGuardando(false); }
@@ -90,10 +109,12 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
     <fieldset disabled={guardando || Boolean(borrador.pendiente)} className="flex min-w-0 flex-col gap-gutter-lg">
       <section className="card flex flex-col gap-gutter-md p-gutter-md"><h2 className="text-headline-sm">Información del corte</h2>
         <Select label="Frente de obra" value={datos.frente} options={FRENTES_DEMO.map(value => ({ value, label: value }))} onChange={event => cambiar({ frente: event.target.value })} />
+        <div className="grid grid-cols-1 gap-gutter-md tablet:grid-cols-2"><Select label="Ciudad" required placeholder="Selecciona la ciudad" value={datos.ciudad ?? ''} options={CIUDADES_DEMO.map(value => ({ value, label: value }))} onChange={event => cambiar({ ciudad: event.target.value })} />
+          <Select label="Cliente" required placeholder="Selecciona el cliente" value={datos.cliente ?? ''} options={CLIENTES_DEMO.map(value => ({ value, label: value }))} onChange={event => cambiar({ cliente: event.target.value })} /></div>
         <div className="grid grid-cols-1 gap-gutter-md tablet:grid-cols-2"><DateField label="Inicio del periodo" required value={datos.inicio} onChange={event => cambiar({ inicio: event.target.value })} />
           <DateField label="Fin del periodo" required value={datos.fin} min={datos.inicio} onChange={event => cambiar({ fin: event.target.value })} /></div>
       </section>
-      <RecursosCorte titulo="Actividades ejecutadas" etiqueta="Actividad" valorLabel="Cantidad ejecutada" opciones={ACTIVIDADES_DEMO} filas={datos.actividades} onChange={actividades => cambiar({ actividades })} />
+      <RecursosCorte titulo="Actividades ejecutadas" etiqueta="Actividad" valorLabel="Cantidad ejecutada" opciones={ACTIVIDADES_DEMO} filas={datos.actividades} onChange={actividades => cambiar({ actividades })} permitePropia entero />
       <SelectorPersonal seleccionados={datos.personal.map(row => row.id)} onCambiar={cambiarPersonal} />
       <section className="card flex flex-col gap-gutter-md p-gutter-md"><h2 className="text-headline-sm">Horas-hombre del periodo</h2>
         {!datos.personal.length && <p className="text-body-md text-on-surface-muted">Selecciona trabajadores habilitados para registrar sus horas.</p>}
@@ -104,7 +125,6 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       <TextArea label="Observaciones del residente" value={datos.observaciones} maxLength={5000} onChange={event => cambiar({ observaciones: event.target.value })} />
       {corte && <TextArea label="Motivo de la edición" required minCharacters={10} maxLength={1000} value={motivo} onChange={event => { setMotivo(event.target.value); setSucio(true); }} />}
     </fieldset>
-    {corte ? <SoportesCorte corte={corte} /> : <section className="card flex flex-col gap-gutter-sm p-gutter-md"><h2 className="text-headline-sm">Soportes del corte</h2>
-      <p className="text-body-md text-on-surface-muted">Guarda el corte para adjuntar fotografías y PDF. Al guardar se abre el detalle del corte, donde puedes agregarlos.</p></section>}
+    {corte ? <SoportesCorte corte={corte} /> : <SoportesPorGuardar pendientes={adjuntos} onChange={cambiarAdjuntos} />}
   </FormLayout>;
 }

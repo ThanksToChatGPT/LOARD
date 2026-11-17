@@ -9,7 +9,10 @@ import { Volver } from '@/features/sst/componentes';
 import { useCortesDemo } from './CortesDemoContext';
 import { SoportesCorte } from './SoportesCorte';
 import { AvisoDevolucion, RevisionCorte } from './RevisionCorte';
-import { ACTIVIDADES_DEMO, INSUMOS_DEMO, MOTIVO_CORTE_VISADO, esEditable, horasTotales, type FormularioCorteDemo, type RecursoDemo } from './modeloDemo';
+import { ACTIVIDADES_DEMO, INSUMOS_DEMO, MOTIVO_CORTE_VISADO, describirRecurso, esEditable, horasTotales, type FormularioCorteDemo, type RecursoDemo } from './modeloDemo';
+
+/** Contrato de ejemplo del prototipo. La obra es el frente del corte. */
+const CONTRATO = 'Contrato CW-118';
 
 export function DetalleCorte() {
   const { id } = useParams();
@@ -34,9 +37,21 @@ export function DetalleCorte() {
   const visado = !esEditable(corte);
   return <div className="grid-page gap-y-gutter-lg"><div className="col-span-full"><Volver to="/cortes">Cortes de obra</Volver></div>
     <PageHeader className="col-span-full" title={`Corte #${corte.numero}`} description={`${actual.datos.frente} · ${formatoFecha(actual.datos.inicio)} – ${formatoFecha(actual.datos.fin)}`}
-      meta={`${corte.autorNombre} · Versión ${actual.version} · Actualizado ${formatoFechaHora(new Date(actual.fecha))}`}
+      meta={`Versión ${actual.version} · Actualizado ${formatoFechaHora(new Date(actual.fecha))}`}
       actions={esAutor && <Button variant="secondary" icon={<Pencil className="h-4 w-4" />} blocked={visado} blockedReason={MOTIVO_CORTE_VISADO}
         onClick={() => navigate(`/cortes/${corte.id}/editar`)}>Editar corte</Button>} />
+    {/* Ciudad, residente y contrato u obra: grandes y a la vista en el encabezado del corte. */}
+    <dl aria-label="Datos principales del corte" className="card col-span-full grid grid-cols-1 gap-gutter-md p-gutter-md tablet:grid-cols-3">
+      {[
+        { etiqueta: 'Ciudad', valor: actual.datos.ciudad || 'Sin ciudad registrada' },
+        { etiqueta: 'Residente', valor: corte.autorNombre },
+        { etiqueta: 'Contrato u obra', valor: `${CONTRATO} · ${actual.datos.frente}`, extra: actual.datos.cliente && `Cliente: ${actual.datos.cliente}` },
+      ].map(dato => <div key={dato.etiqueta} className="flex min-w-0 flex-col gap-gutter-xs">
+        <dt className="text-label-lg text-on-surface-muted">{dato.etiqueta}</dt>
+        <dd className="break-words text-headline-md text-on-surface">{dato.valor}</dd>
+        {dato.extra && <dd className="text-body-md text-on-surface-muted">{dato.extra}</dd>}
+      </div>)}
+    </dl>
     <div ref={estadoRef} tabIndex={-1} className="col-span-full flex flex-col gap-gutter-md rounded focus:outline-none">
       <div><StatusBadge estado={actual.estado} /></div>
       <AvisoDevolucion corte={corte} />
@@ -67,8 +82,8 @@ function ValoresCorte({ datos }: { datos: FormularioCorteDemo }) {
     <div className="flex justify-between gap-gutter-sm"><h2 className="text-headline-sm">{bloque.titulo}</h2>{bloque.titulo === 'Horas-hombre' && <span className="tabular-nums text-on-surface-muted">Total {horasTotales(datos)} HH</span>}</div>
     <ResponsiveTable caption={bloque.titulo} rows={bloque.filas} rowKey={row => row.id} empty="Sin consumos registrados en este periodo."
       columns={[
-        { key: 'recurso', header: 'Recurso', primary: true, cell: (row: RecursoDemo) => bloque.catalogo.find(item => item.id === row.id)?.nombre ?? row.id },
-        { key: 'cantidad', header: 'Cantidad del periodo', numeric: true, cell: (row: RecursoDemo) => `${row.cantidad} ${bloque.catalogo.find(item => item.id === row.id)?.unidad ?? ''}` },
+        { key: 'recurso', header: 'Recurso', primary: true, cell: (row: RecursoDemo) => describirRecurso(row, bloque.catalogo).nombre },
+        { key: 'cantidad', header: 'Cantidad del periodo', numeric: true, cell: (row: RecursoDemo) => `${row.cantidad} ${describirRecurso(row, bloque.catalogo).unidad}`.trim() },
       ]} />
   </section>)}<section className="card flex flex-col gap-gutter-sm p-gutter-md"><h2 className="text-headline-sm">Observaciones</h2><p className="whitespace-pre-wrap text-body-md">{datos.observaciones || 'Sin observaciones del residente.'}</p></section></div>;
 }

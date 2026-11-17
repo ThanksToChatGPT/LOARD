@@ -75,11 +75,13 @@
 .demo-login { min-height: 100dvh; display: grid; grid-template-columns: 1fr 1fr; }
 .demo-login-brand { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: 48px; }
 .demo-login-form { display: flex; align-items: center; justify-content: center; padding: 48px; }
+/* Actividad, cantidad y «Quitar» en una sola fila: misma base y mismo alto (48 px) en escritorio y en móvil. */
 .demo-resource-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 190px) 48px; align-items: end; gap: 16px; }
+.demo-resource-row select, .demo-resource-row input, .demo-resource-row button { height: 48px; min-height: 48px; }
+.demo-resource-row button { padding-inline: 0; }
 @media (max-width: 767px) {
   .demo-login { grid-template-columns: 1fr; }
   .demo-login-brand { padding: 24px; gap: 32px; }
   .demo-login-form { padding: 32px 16px; }
-  .demo-resource-row { grid-template-columns: minmax(0, 1fr) 48px; }
-  .demo-resource-row > :first-child { grid-column: 1 / -1; }
+  .demo-resource-row { grid-template-columns: minmax(0, 1fr) 96px 48px; gap: 8px; }
 }

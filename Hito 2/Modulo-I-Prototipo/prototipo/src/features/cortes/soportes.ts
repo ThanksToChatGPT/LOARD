@@ -140,7 +140,7 @@ export function retirarSoporteDemo({ corte, soporteId, usuario }: RetiroSoporteD
 }
 
 /** «3 soportes · 2 fotografías, 1 PDF» */
-export function resumenSoportes(soportes: SoporteDemo[]): string {
+export function resumenSoportes(soportes: { nombre: string; tipoMime: string }[]): string {
   if (!soportes.length) return 'Sin soportes';
   const fotos = soportes.filter(s => tipoSoporte(s) === 'foto').length;
   const pdfs = soportes.length - fotos;

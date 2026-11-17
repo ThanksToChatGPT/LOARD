@@ -1,6 +1,6 @@
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { CUENTAS_DEMO } from '@/features/acceso/AuthDemo';
-import { cortesIniciales, esEditable, guardarCorteDemo, leerCortes, revisarCorteDemo, validarCorteDemo } from './modeloDemo';
+import { cortesIniciales, describirRecurso, esActividadPropia, esEditable, guardarCorteDemo, leerCortes, nuevaActividadPropia, revisarCorteDemo, validarCorteDemo, ACTIVIDADES_DEMO } from './modeloDemo';
 
 describe('cortes del prototipo', () => {
   beforeEach(() => {
@@ -93,6 +93,71 @@ describe('cortes del prototipo', () => {
     expect(validarCorteDemo(datos)).toContain('fin del periodo');
     datos.fin = datos.inicio;
     expect(validarCorteDemo(datos)).toContain('horas disponibles');
+  });
+  it('las cantidades ejecutadas solo aceptan enteros; los insumos conservan decimales', () => {
+    const datos = structuredClone(cortesIniciales()[0].versiones[0].datos);
+    for (const cantidad of ['1.5', '1e2', '3.0']) {
+      datos.actividades[0].cantidad = cantidad;
+      expect(validarCorteDemo(datos)).toContain('enteros');
+    }
+    datos.actividades[0].cantidad = '3';
+    expect(datos.insumos[0].cantidad).toBe('12.5');
+    expect(validarCorteDemo(datos)).toBeNull();
+  });
+  it('guarda una actividad propia con su nombre, unidad y cantidad', () => {
+    const datos = structuredClone(cortesIniciales()[0].versiones[0].datos);
+    const propia = { ...nuevaActividadPropia(), nombre: 'Pintura de tubería', unidad: 'm²', cantidad: '35' };
+    expect(esActividadPropia(propia)).toBe(true);
+    datos.actividades.push(propia);
+    expect(validarCorteDemo(datos)).toBeNull();
+    guardarCorteDemo({ id: 'con-propia', datos, usuario: CUENTAS_DEMO[0], motivo: '' });
+    const guardada = leerCortes().find(corte => corte.id === 'con-propia')!.versiones[0].datos.actividades[1];
+    expect(guardada).toEqual(propia);
+    expect(describirRecurso(guardada, ACTIVIDADES_DEMO)).toEqual({ nombre: 'Pintura de tubería', unidad: 'm²' });
+    expect(describirRecurso(datos.actividades[0], ACTIVIDADES_DEMO)).toEqual({ nombre: 'Soldadura y tendido de tubería', unidad: 'm' });
+  });
+  it('una actividad propia exige nombre, unidad válida y no repetir una actividad', () => {
+    const datos = structuredClone(cortesIniciales()[0].versiones[0].datos);
+    const propia = { ...nuevaActividadPropia(), cantidad: '4' };
+    datos.actividades.push(propia);
+    expect(validarCorteDemo(datos)).toContain('nombre de la actividad');
+    propia.nombre = 'Pintura de tubería';
+    propia.unidad = 'litros';
+    expect(validarCorteDemo(datos)).toContain('unidad de medida');
+    propia.unidad = 'kg';
+    propia.cantidad = '4.5';
+    expect(validarCorteDemo(datos)).toContain('enteros');
+    propia.cantidad = '4';
+    propia.nombre = ' soldadura y tendido de tuberia ';
+    expect(validarCorteDemo(datos)).toContain('Ya hay una actividad');
+    propia.nombre = 'Pintura de tubería';
+    datos.actividades.push({ ...nuevaActividadPropia(), nombre: 'PINTURA DE TUBERIA', cantidad: '2' });
+    expect(validarCorteDemo(datos)).toContain('Ya hay una actividad');
+    datos.actividades.pop();
+    datos.actividades.push({ id: 'inventada', cantidad: '2' });
+    expect(validarCorteDemo(datos)).toContain('recursos disponibles');
+  });
+  it('exige ciudad y cliente al guardar', () => {
+    const datos = structuredClone(cortesIniciales()[0].versiones[0].datos);
+    expect(validarCorteDemo({ ...datos, ciudad: '' })).toContain('ciudad');
+    expect(validarCorteDemo({ ...datos, cliente: undefined })).toContain('cliente');
+  });
+  it('lee cortes guardados antes de existir ciudad y cliente', () => {
+    const viejos = cortesIniciales().map(corte => ({ ...corte, versiones: corte.versiones.map(version => {
+      const { ciudad: _ciudad, cliente: _cliente, ...datos } = version.datos;
+      return { ...version, datos };
+    }) }));
+    viejos.push({ ...viejos[2], id: 'propio-viejo', numero: '09' });
+    localStorage.setItem('loard_prototipo_cortes_v1', JSON.stringify(viejos));
+    const leidos = leerCortes();
+    expect(leidos).toHaveLength(4);
+    // Los ejemplos reciben la ciudad y el cliente de los datos iniciales, en todas sus versiones.
+    expect(leidos[0].versiones.map(version => version.datos.ciudad)).toEqual(['Medellín', 'Medellín']);
+    expect(leidos[1].versiones[0].datos).toMatchObject({ ciudad: 'Cartagena', cliente: 'Energía del Valle S.A.S.' });
+    // Un corte propio antiguo se conserva sin esos datos y se puede seguir revisando.
+    expect(leidos[3].versiones[0].datos.ciudad).toBeUndefined();
+    const visado = revisarCorteDemo({ corte: leidos[3], usuario: CUENTAS_DEMO[1], decision: 'Visado', observacion: '', versionEsperada: 1 });
+    expect(visado.versiones[0].estado).toBe('Visado');
   });
   it('informa un fallo de almacenamiento y conserva las versiones anteriores', () => {
     vi.mocked(localStorage.setItem).mockImplementation(() => { throw new Error('Sin espacio'); });

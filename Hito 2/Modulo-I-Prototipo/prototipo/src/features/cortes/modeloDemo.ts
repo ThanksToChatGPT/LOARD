@@ -12,9 +12,21 @@ export const INSUMOS_DEMO = [
   { id: 'discos', nombre: 'Discos de corte', unidad: 'und' },
 ];
 export const FRENTES_DEMO = ['Estación compresora', 'Línea de flujo L-3', 'Patio de tuberías'];
-export interface RecursoDemo { id: string; cantidad: string }
+/** Ciudades y clientes de los cortes de ejemplo (filtros de la lista y encabezado del corte). */
+export const CIUDADES_DEMO = ['Medellín', 'Cartagena', 'Cartago'];
+export const CLIENTES_DEMO = ['Gases del Litoral S.A.', 'Energía del Valle S.A.S.', 'Tuberías Andinas S.A.'];
+/** Unidades de medida de una actividad escrita por el residente. */
+export const UNIDADES_DEMO = ['m', 'm²', 'm³', 'kg', 'und'];
+const PREFIJO_PROPIA = 'propia-';
+export interface RecursoDemo {
+  id: string; cantidad: string;
+  /** Solo en actividades propias (escritas por el residente): su nombre y su unidad de medida. */
+  nombre?: string; unidad?: string;
+}
 export interface FormularioCorteDemo {
   frente: string; inicio: string; fin: string; observaciones: string;
+  /** Opcionales: los cortes guardados antes de existir estos datos no los traen. */
+  ciudad?: string; cliente?: string;
   actividades: RecursoDemo[]; personal: RecursoDemo[]; insumos: RecursoDemo[];
 }
 export interface VersionDemo {
@@ -36,8 +48,24 @@ export function esEditable(corte: CorteDemo): boolean {
   return corte.versiones[0].estado !== 'Visado';
 }
 
+/** Actividad que el residente escribe a mano, fuera de la lista del ejemplo. */
+export function esActividadPropia(row: RecursoDemo): boolean {
+  return row.id.startsWith(PREFIJO_PROPIA);
+}
+export function nuevaActividadPropia(): RecursoDemo {
+  return { id: `${PREFIJO_PROPIA}${crypto.randomUUID()}`, cantidad: '', nombre: '', unidad: UNIDADES_DEMO[0] };
+}
+/** Nombre y unidad de un recurso: del catálogo, o los escritos por el residente. */
+export function describirRecurso(row: RecursoDemo, catalogo: { id: string; nombre: string; unidad: string }[]): { nombre: string; unidad: string } {
+  const item = catalogo.find(opcion => opcion.id === row.id);
+  return { nombre: item?.nombre ?? (row.nombre?.trim() || row.id), unidad: item?.unidad ?? row.unidad ?? '' };
+}
+const clave = (texto: string) => texto.trim().normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+
 export function validarCorteDemo(form: FormularioCorteDemo): string | null {
   if (!FRENTES_DEMO.includes(form.frente)) return 'Selecciona un frente del proyecto.';
+  if (!form.ciudad || !CIUDADES_DEMO.includes(form.ciudad)) return 'Selecciona la ciudad del corte.';
+  if (!form.cliente || !CLIENTES_DEMO.includes(form.cliente)) return 'Selecciona el cliente del corte.';
   if (!form.inicio || !form.fin || !Number.isFinite(Date.parse(form.inicio)) || !Number.isFinite(Date.parse(form.fin))) return 'Completa las fechas del periodo.';
   if (form.fin < form.inicio) return 'El fin del periodo debe ser igual o posterior al inicio.';
   if (!form.actividades.length) return 'Agrega al menos una actividad ejecutada.';
@@ -46,7 +74,14 @@ export function validarCorteDemo(form: FormularioCorteDemo): string | null {
     if (new Set(rows.map(row => row.id)).size !== rows.length) return 'Cada recurso se puede registrar una vez por corte.';
     if (rows.some(row => !row.id || !Number.isFinite(Number(row.cantidad)) || Number(row.cantidad) <= 0)) return 'Las cantidades y las horas deben ser números positivos.';
   }
-  if (form.actividades.some(row => !ACTIVIDADES_DEMO.some(item => item.id === row.id)) ||
+  if (form.actividades.some(row => !/^\d+$/.test(row.cantidad.trim()))) return 'Las cantidades ejecutadas deben ser números enteros (1, 2, 3…), sin decimales.';
+  const propias = form.actividades.filter(esActividadPropia);
+  if (propias.some(row => !row.nombre?.trim())) return 'Escribe el nombre de la actividad propia.';
+  if (propias.some(row => row.nombre!.trim().length > 80)) return 'El nombre de la actividad propia admite hasta 80 caracteres.';
+  if (propias.some(row => !UNIDADES_DEMO.includes(row.unidad ?? ''))) return 'Elige la unidad de medida de la actividad propia.';
+  const nombres = [...ACTIVIDADES_DEMO.map(item => item.nombre), ...propias.map(row => row.nombre!)].map(clave);
+  if (new Set(nombres).size !== nombres.length) return 'Ya hay una actividad con ese nombre. Usa la de la lista o cambia el nombre.';
+  if (form.actividades.some(row => !esActividadPropia(row) && !ACTIVIDADES_DEMO.some(item => item.id === row.id)) ||
       form.insumos.some(row => !INSUMOS_DEMO.some(item => item.id === row.id))) return 'Selecciona los recursos disponibles en el ejemplo.';
   const dias = (Date.parse(form.fin) - Date.parse(form.inicio)) / 86_400_000 + 1;
   if (form.personal.some(row => Number(row.cantidad) > dias * 24)) return 'Las horas por trabajador superan las horas disponibles en el periodo.';
@@ -54,13 +89,13 @@ export function validarCorteDemo(form: FormularioCorteDemo): string | null {
 }
 
 export function formularioVacio(): FormularioCorteDemo {
-  return { frente: FRENTES_DEMO[0], inicio: HOY_SST, fin: HOY_SST, observaciones: '',
+  return { frente: FRENTES_DEMO[0], ciudad: '', cliente: '', inicio: HOY_SST, fin: HOY_SST, observaciones: '',
     actividades: [{ id: 'tuberia', cantidad: '' }], personal: [], insumos: [] };
 }
 
 export function cortesIniciales(): CorteDemo[] {
   return ['Visado', 'Devuelto con Observaciones', 'En Revisión (Enviado)'].map((estado, index) => {
-    const datos: FormularioCorteDemo = { ...formularioVacio(), inicio: '2026-11-10', fin: HOY_SST,
+    const datos: FormularioCorteDemo = { ...formularioVacio(), ciudad: CIUDADES_DEMO[index], cliente: CLIENTES_DEMO[index], inicio: '2026-11-10', fin: HOY_SST,
       actividades: [{ id: 'tuberia', cantidad: String([214, 92, 168][index]) }],
       personal: [{ id: 't12', cantidad: '40' }], insumos: [{ id: 'electrodo', cantidad: '12.5' }],
       observaciones: 'Avance del periodo. Registro de ejemplo para la presentación del prototipo.' };
@@ -75,12 +110,14 @@ export function cortesIniciales(): CorteDemo[] {
 
 function esRecurso(value: unknown): value is RecursoDemo {
   return typeof value === 'object' && value !== null && 'id' in value && typeof value.id === 'string' &&
-    'cantidad' in value && typeof value.cantidad === 'string' && Number.isFinite(Number(value.cantidad));
+    'cantidad' in value && typeof value.cantidad === 'string' && Number.isFinite(Number(value.cantidad)) &&
+    (!('nombre' in value) || typeof value.nombre === 'string') && (!('unidad' in value) || typeof value.unidad === 'string');
 }
 export function esFormulario(value: unknown): value is FormularioCorteDemo {
   if (!value || typeof value !== 'object') return false;
   const form = value as Partial<FormularioCorteDemo>;
   return typeof form.frente === 'string' && typeof form.inicio === 'string' && typeof form.fin === 'string' &&
+    (form.ciudad === undefined || typeof form.ciudad === 'string') && (form.cliente === undefined || typeof form.cliente === 'string') &&
     typeof form.observaciones === 'string' && [form.actividades, form.personal, form.insumos].every(rows => Array.isArray(rows) && rows.every(esRecurso));
 }
 
@@ -109,7 +146,18 @@ export function leerCortes(): CorteDemo[] {
   if (!Array.isArray(value) || !value.every(esCorte)) {
     throw new Error('El formato de los cortes guardados es incompatible. Conserva los datos del navegador antes de restablecer la demostración.');
   }
-  return value as CorteDemo[];
+  return (value as CorteDemo[]).map(completarEjemplo);
+}
+
+/**
+ * Los cortes de ejemplo guardados antes de existir ciudad y cliente los reciben de los datos iniciales.
+ * Los demás cortes antiguos se conservan tal cual, sin esos datos.
+ */
+function completarEjemplo(corte: CorteDemo): CorteDemo {
+  const base = cortesIniciales().find(item => item.id === corte.id)?.versiones[0].datos;
+  if (!base || corte.versiones.every(version => version.datos.ciudad !== undefined && version.datos.cliente !== undefined)) return corte;
+  return { ...corte, versiones: corte.versiones.map(version => ({ ...version,
+    datos: { ...version.datos, ciudad: version.datos.ciudad ?? base.ciudad, cliente: version.datos.cliente ?? base.cliente } })) };
 }
 
 export function guardarCorteDemo({ id, anterior, datos, usuario, motivo, versionEsperada }: SolicitudCorteDemo): CorteDemo {
