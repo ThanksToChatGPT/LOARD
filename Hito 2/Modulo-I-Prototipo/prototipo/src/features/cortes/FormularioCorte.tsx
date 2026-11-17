@@ -64,7 +64,8 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       borrador.completar();
       setSucio(false);
       toast.show({ message: corte ? `Corte #${saved.numero} de ejemplo guardado. Versión ${saved.versiones[0].version}.`
-        : `Corte #${saved.numero} de ejemplo guardado. Ahora puedes adjuntar sus fotografías y PDF.` });
+        : `Corte #${saved.numero} de ejemplo guardado. Ahora puedes adjuntar sus fotografías y PDF.`,
+        actionLabel: 'Ver historial', onAction: () => navigate(`/cortes/${saved.id}?vista=historial`) });
       navigate(`/cortes/${saved.id}`, { replace: true });
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'No se pudo guardar el ejemplo. Intenta de nuevo.'); }
     finally { setGuardando(false); }

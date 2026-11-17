@@ -103,6 +103,9 @@ def diagrama():
 
 def render_rite_apa(md, output):
     """Formato APA para el informe RITE, sin cambiar los otros documentos."""
+    if json.loads((HERE / 'portada_rite.json').read_text(encoding='utf-8')).get('fuente') == 'word':
+        print('RITE: se conserva el PDF exportado del Word aportado por el autor.')
+        return
     for face, file in [('Times', 'times.ttf'), ('Times-Bold', 'timesbd.ttf'), ('Times-Italic', 'timesi.ttf')]:
         pdfmetrics.registerFont(TTFont(face, str(Path('C:/Windows/Fonts') / file)))
     pdfmetrics.registerFontFamily('Times', normal='Times', bold='Times-Bold', italic='Times-Italic', boldItalic='Times-Bold')
@@ -235,8 +238,9 @@ SHARED = [
 ]
 
 
-def consolidate():
+def consolidate(only=None):
     for name, relative in SHARED:
+        if only is not None and name not in only: continue
         target = ROOT / 'Hito 2' / (relative + '.pdf')
         git_path = target.relative_to(ROOT).as_posix()
         original = subprocess.check_output(['git', 'show', f'{BASE}:{git_path}'], cwd=ROOT)
@@ -281,14 +285,14 @@ def coverage():
     intro = ('Cubierta: flujo documentado para el prototipo; en HU3/4/9/10 se conserva la cobertura previa del equipo. Integrada: se verificó su presencia y conexión en el código actual, pero este aporte no sustituye la validación detallada de su responsable. Los estados describen el prototipo, no un backend productivo.\n\n')
     md = title + intro + '| HU | Historia | Pantallas y evidencia | Estado |\n| --- | --- | --- | --- |\n'
     md += '\n'.join('| ' + ' | '.join(r) + ' |' for r in rows)
-    md += '\n\n## Resumen\n\nOcho historias con cobertura documentada y cuatro integradas con validación detallada a cargo de sus responsables. Ninguna carece de ruta en el código actual. Las cuatro historias de este aporte cuentan con capturas actuales, inspección técnica y pruebas automatizadas compartidas. Las sesiones RITE de ejemplo son SIMULADAS y no justifican ninguno de estos estados.\n'
+    md += '\n\n## Resumen\n\nOcho historias con cobertura documentada y cuatro integradas con validación detallada a cargo de sus responsables. Ninguna carece de ruta en el código actual. Las cuatro historias de este aporte cuentan con capturas actuales, inspección técnica y pruebas automatizadas compartidas. El informe RITE aportado por el autor se consulta por separado y no sustituye esta revisión de las pantallas.\n'
     (HERE / '07-cobertura.md').write_text(md, encoding='utf-8')
     def tex(s):
         return s.replace('\\', '\\textbackslash{}').replace('_', '\\_').replace('#', '\\#').replace('%', '\\%').replace('&', '\\&').replace('{id}', ':id')
     source = '\\documentclass[11pt]{article}\n\\usepackage[utf8]{inputenc}\n\\usepackage[T1]{fontenc}\n\\usepackage[spanish]{babel}\n\\usepackage{lmodern,array,longtable,booktabs}\n\\usepackage[a4paper,margin=2cm]{geometry}\n\\setlength{\\parindent}{0pt}\n\\setlength{\\parskip}{0.5em}\n\\begin{document}\n\\section*{Cobertura de historias de usuario}\n' + tex(intro)
     source += '\\small\n\\begin{longtable}{p{1.4cm}p{2.5cm}p{8.2cm}p{1.6cm}}\n\\toprule HU & Historia & Pantallas y evidencia & Estado \\\\\n\\midrule\\endhead\n'
     source += '\n'.join(' & '.join(tex(c) for c in r) + ' \\\\ \\addlinespace' for r in rows)
-    source += '\n\\bottomrule\\end{longtable}\n\\normalsize\\section*{Resumen}\nOcho historias con cobertura documentada y cuatro integradas. Las pruebas RITE de ejemplo son SIMULADAS y no justifican estos estados.\\end{document}\n'
+    source += '\n\\bottomrule\\end{longtable}\n\\normalsize\\section*{Resumen}\nOcho historias con cobertura documentada y cuatro integradas. El informe RITE del autor se consulta por separado.\\end{document}\n'
     path = ROOT / 'Hito 2/Modulo-I-Prototipo/Cobertura de HU/Cobertura de HU.tex'
     path.write_text(source, encoding='utf-8')
 
@@ -337,12 +341,18 @@ def technical_evidence():
 if __name__ == '__main__':
     import sys
     if '--solo-rite' in sys.argv:
+        if json.loads((HERE / 'portada_rite.json').read_text(encoding='utf-8')).get('fuente') == 'word':
+            print('El informe RITE se edita en su Word y se exporta desde Word a PDF. Se conservan los archivos actuales.')
+            raise SystemExit(0)
         render_rite_apa(HERE / '05-rite-ejemplo.md', HERE / '05-rite-ejemplo.pdf')
         print('Informe RITE actualizado con formato APA.')
         raise SystemExit(0)
     coverage()
     technical_evidence()
     for md in sorted(HERE.glob('[0-9][0-9]-*.md')):
+        if md.name == '05-rite-ejemplo.md' and json.loads((HERE / 'portada_rite.json').read_text(encoding='utf-8')).get('fuente') == 'word':
+            print('Conservado: informe RITE del Word aportado por el autor.')
+            continue
         target = ROOT / 'Hito 2/Modulo-I-Prototipo/Cobertura de HU/Cobertura de HU.pdf' if md.name.startswith('07-') else md.with_suffix('.pdf')
         render(md, target, md.name.startswith('05-'))
         print('Generado:', md.name)

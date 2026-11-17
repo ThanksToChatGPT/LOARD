@@ -21,4 +21,4 @@ Cubierta: flujo documentado para el prototipo; en HU3/4/9/10 se conserva la cobe
 
 ## Resumen
 
-Ocho historias con cobertura documentada y cuatro integradas con validación detallada a cargo de sus responsables. Ninguna carece de ruta en el código actual. Las cuatro historias de este aporte cuentan con capturas actuales, inspección técnica y pruebas automatizadas compartidas. Las sesiones RITE de ejemplo son SIMULADAS y no justifican ninguno de estos estados.
+Ocho historias con cobertura documentada y cuatro integradas con validación detallada a cargo de sus responsables. Ninguna carece de ruta en el código actual. Las cuatro historias de este aporte cuentan con capturas actuales, inspección técnica y pruebas automatizadas compartidas. El informe RITE aportado por el autor se consulta por separado y no sustituye esta revisión de las pantallas.

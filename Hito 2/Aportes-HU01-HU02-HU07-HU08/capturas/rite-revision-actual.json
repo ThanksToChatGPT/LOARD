@@ -1,0 +1,40 @@
+{
+  "fechaCaptura": "2026-11-16T23:48:23.435Z",
+  "procedencia": "Revisión técnica posterior. No son capturas de las sesiones S1/S2.",
+  "sesionesDeclaradasPorAutor": "2026-11-16",
+  "comprobaciones": {
+    "accesoDesdeAviso": true,
+    "historialTrasRecarga": true,
+    "volverDetalle": true,
+    "ayudaNdtVisible": true,
+    "movil": {
+      "pantalla": 390,
+      "documento": 375
+    }
+  },
+  "archivos": [
+    "rite-actual-acceso-historial.png",
+    "rite-actual-ayuda-ndt.png"
+  ],
+  "baseGit": "737173cb608c6e9bd6eeaa362f45cd0c4ac8c25b",
+  "cambiosLocales": "Ajustes añadidos durante esta revisión; no son una reconstrucción del momento de S1/S2.",
+  "codigo": {
+    "cortes/FormularioCorte.tsx": "b9c50f27742e7ebb01f470a184d8a588d6693fd10e2db3fb2e87f447db228b92",
+    "cortes/DetalleCorte.tsx": "0037ce58dec6d2758c500e8b13f306afeb9cc71e16c4bbcfa19b44dfa57b93a6",
+    "dossier/EnsayosNdt.tsx": "339010cb39826e7c0a85ca7f5f429a809861976d6f785d8d3eb60cc7816e43c3"
+  },
+  "imagenes": [
+    {
+      "original": "rite-actual-acceso-historial.png",
+      "blancoNegro": "rite-actual-acceso-historial-bn.png",
+      "sha256": "ee9d13a1e2cb2e4ff59af9f60adb489401eea9b74b03eab83ae4e8340d8706eb",
+      "nota": "Mismo contenido de la captura; solo conversión a escala de grises."
+    },
+    {
+      "original": "rite-actual-ayuda-ndt.png",
+      "blancoNegro": "rite-actual-ayuda-ndt-bn.png",
+      "sha256": "5c5159380114c7a1e1a9b1415d330894843b1aa6188afe0c691b4aa1e807741f",
+      "nota": "Mismo contenido de la captura; solo conversión a escala de grises."
+    }
+  ]
+}

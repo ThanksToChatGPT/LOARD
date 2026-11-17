@@ -8,7 +8,7 @@ Esta carpeta reúne nuestra parte. Los documentos del equipo conservan sus pági
 | Cómo se ve en computador y celular | [Diseño responsivo](02-responsivo.md) | [Aporte](02-responsivo.pdf) |
 | Componentes y seis reglas de usabilidad | [Componentes](03-componentes-heuristicas.md) | [Aporte](03-componentes-heuristicas.pdf) |
 | Teclado, mensajes, tamaño y contraste del texto | [Accesibilidad](04-accesibilidad.md) | [Aporte](04-accesibilidad.pdf) |
-| Cómo llenar una prueba con usuarios | [Ejemplo RITE](05-rite-ejemplo.md) | [Ejemplo SIMULADO](05-rite-ejemplo.pdf) |
+| Informe de las pruebas con usuarios | [Word del autor](05-rite-ejemplo.docx) | [Informe RITE](05-rite-ejemplo.pdf) |
 | Qué datos y conexiones necesitaríamos después | [Propuesta de datos y API](06-persistencia-api.md) | [Propuesta](06-persistencia-api.pdf) |
 | Pantallas de cada historia | [Cobertura](07-cobertura.md) | [Matriz del equipo](../Modulo-I-Prototipo/Cobertura%20de%20HU/Cobertura%20de%20HU.pdf) |
 
@@ -23,9 +23,11 @@ Esta carpeta reúne nuestra parte. Los documentos del equipo conservan sus pági
 
 Las capturas de la carpeta capturas son reales de la versión actual. La aplicación muestra datos ficticios y usa el día fijo 17/11/2026. El registro de captura guarda la fecha real. Las comprobaciones técnicas se hicieron con un navegador y se volvieron a ejecutar las 101 pruebas automáticas y la compilación.
 
-El documento 05-rite-ejemplo contiene un caso simulado completo: datos de entrada, dos recorridos, dificultades, cambios supuestos, resultados y tiempos. Se aclara en el título, al inicio, en las notas de las tablas y al explicar la mejora. S1 y S2 no son personas reales y los cambios de esa comparación no se implementaron. El informe de IA y la matriz también recuerdan que esa evaluación es de ejemplo.
+El informe RITE actual viene del Word aportado por Juan David Peña. El autor confirmó que S1 y S2 corresponden a dos personas reales y que ambas sesiones fueron el 16 de noviembre de 2026. Se quitó el color azul y se corrigieron las sangrías de las tablas. El ejemplo simulado anterior se conserva en el historial de Git.
 
-El informe RITE está escrito en primera persona y usa formato APA: papel carta, márgenes de 2,54 cm, Times New Roman de 12 puntos, texto a doble espacio y número de página arriba a la derecha. Es blanco y negro. Los datos de la portada se completan en portada_rite.json. Para actualizar solo ese PDF: `python generar_pdf.py --solo-rite`. Se siguió la [guía de trabajos estudiantiles de APA](https://apastyle.apa.org/instructional-aids/student-paper-setup-guide.pdf).
+No se tomaron capturas durante esas sesiones. Las dos figuras del anexo muestran una revisión posterior del mismo día. En esta revisión se completaron los ajustes que faltaban en la rama del repositorio: el acceso al historial desde el aviso de guardado y la ayuda junto al resultado NDT. Estas imágenes muestran la versión actual; no se presentan como fotos de las pruebas. Los originales y las comprobaciones están en [el registro de la revisión](capturas/rite-revision-actual.json).
+
+El Word es la fuente principal del informe. El PDF y el texto .md reflejan esa versión. Para cambiar el contenido, editar el Word y exportar otra vez el PDF. El generador conserva este PDF y no lo sustituye por el ejemplo antiguo.
 
 La propuesta de datos y API describe un trabajo futuro. No significa que exista un servidor activo.
 
@@ -37,12 +39,14 @@ La propuesta de datos y API describe un trabajo futuro. No significa que exista 
 - [x] Componentes reutilizados y seis reglas de usabilidad explicadas.
 - [x] Revisión técnica de accesibilidad con resultados y límites.
 - [x] Idea de tablas, relaciones y API para compartir con el equipo.
-- [x] Ejemplo de informe RITE, claramente marcado como simulado.
-- [ ] Realizar y documentar las sesiones con dos personas reales.
+- [x] Incorporar el informe RITE aportado por el autor, quien confirma dos participantes reales.
+- [x] Registrar la fecha de S1 y S2: 16 de noviembre de 2026, confirmada por el autor.
+- [x] Completar y comprobar los dos ajustes en el código del repositorio.
+- [x] Añadir capturas de la revisión actual con su fecha y una nota que las distingue de las sesiones originales.
 
 ## Cómo actualizar los PDF
 
-Las fuentes de nuestros aportes son los archivos .md de esta carpeta. El script generar_pdf.py crea los PDF y agrega nuestros aportes a las páginas originales del equipo. Necesita Python con reportlab, pypdf y Pillow.
+Las fuentes de nuestros aportes son los archivos .md de esta carpeta, salvo el informe RITE, que se edita en Word. El script generar_pdf.py crea los demás PDF y agrega nuestros aportes a las páginas originales del equipo. Conserva el RITE sin modificarlo. Necesita Python con reportlab, pypdf y Pillow.
 
 Ejecutar desde cualquier carpeta: `python "Hito 2/Aportes-HU01-HU02-HU07-HU08/generar_pdf.py"`, usando la ruta correcta del repositorio si se ejecuta fuera de su raíz.
 

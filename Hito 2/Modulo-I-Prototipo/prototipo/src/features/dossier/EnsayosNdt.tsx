@@ -112,7 +112,7 @@ export function RegistrarEnsayoNdt() {
         <TextField label="Laboratorio" required maxLength={120} value={datos.laboratorio} onChange={e => cambiar('laboratorio', e.target.value)} />
         <TextField label="Número de informe" required maxLength={80} value={datos.informe} onChange={e => cambiar('informe', e.target.value)} />
         <DateField label="Fecha del ensayo" required max={HOY_SST} value={datos.fechaEnsayo} onChange={e => cambiar('fechaEnsayo', e.target.value)} />
-        <Select label="Resultado del laboratorio" required value={datos.resultado} options={['Conforme', 'No conforme'].map(r => ({ value: r, label: r }))} onChange={e => cambiar('resultado', e.target.value)} />
+        <Select label="Resultado del laboratorio" required value={datos.resultado} hint="Conforme es el resultado del ensayo. El PDF debe ser revisado por Calidad; este resultado no lo valida automáticamente." options={['Conforme', 'No conforme'].map(r => ({ value: r, label: r }))} onChange={e => cambiar('resultado', e.target.value)} />
         <FileUpload className="tablet:col-span-2" label="Reporte PDF del laboratorio" hint="PDF original, máximo 15 MB. Obligatorio para registrar el ensayo." multiple={false} onFiles={([f]) => { const motivo = validarPdf(f); setError(motivo ?? ''); if (!motivo) { setArchivo(f); carga.iniciar('reporte', f); } }}>
           {reporte && <ul><UploadItem name={reporte.archivo.name} sizeBytes={reporte.archivo.size} status={reporte.estado} progress={reporte.progreso} errorMessage={reporte.error} onCancel={() => { carga.cancelar(); setArchivo(null); }} onRetry={() => carga.reintentar('reporte')} /></ul>}
         </FileUpload>

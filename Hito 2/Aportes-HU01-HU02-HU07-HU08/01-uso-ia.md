@@ -31,4 +31,4 @@ Codex revisó esas indicaciones, propuso detalles, escribió el código y realiz
 
 Las capturas son actuales. No recrean imágenes antiguas ni muestran pruebas con personas. Los cambios anteriores se pueden revisar en Git. Codex también comprobó los flujos con el navegador y las pruebas automáticas.
 
-El ejemplo RITE de esta entrega es SIMULADO. Sirve para mostrar cómo registrar una prueba; todavía faltan dos participantes reales.
+El primer informe RITE era un ejemplo simulado. Después, el integrante aportó su propio Word y confirmó que corresponde a dos personas reales, con sesiones realizadas el 16 de noviembre de 2026. Ese archivo reemplaza el ejemplo anterior. Como no se tomaron capturas durante las sesiones, se añadieron imágenes de una revisión posterior del mismo día. En esa revisión se completaron los dos ajustes en el código del repositorio y se comprobaron en navegador; las figuras no se presentan como fotos de las pruebas con participantes.
