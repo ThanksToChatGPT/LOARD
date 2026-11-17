@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{pifont}
+\usepackage{hyperref}
+
+\graphicspath{{capturas/}}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.35}
+\setlist{nosep,leftmargin=1.2em}
+
+\definecolor{marca}{HTML}{0B3A5C}
+\definecolor{borde}{HTML}{B8C4CE}
+\definecolor{barra}{HTML}{E6ECF1}
+\definecolor{suave}{HTML}{F3F6F9}
+\arrayrulecolor{borde}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=marca}
+
+% Enlaces al prototipo publicado en GitHub Pages.
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
+
+% Captura con borde fino. #1 tamaño (width=... o height=...), #2 archivo
+\newcommand{\captura}[2]{{\setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.6pt}%
+  \fcolorbox{borde}{white}{\includegraphics[#1]{#2}}}}
+
+% Pie corto debajo de cada captura.
+\newcommand{\pie}[1]{{\small\color{marca}\textbf{#1}}}
+
+% Etiqueta de heurística: \h{1}{Visibilidad del estado}
+\newcommand{\h}[2]{\colorbox{barra}{\textbf{\color{marca}H#1}}\ \textbf{#2}}
+
+% Marca de la matriz.
+\newcommand{\si}{\textcolor{green!45!black}{\textbf{X}}}
+
+% Rutas donde se ve cada historia.
+\newcommand{\rutas}[1]{\textbf{Dónde verla:} #1\par}
+
+% Tabla de evidencias de una historia.
+\newenvironment{evidencias}
+  {\par\noindent\tabularx{\linewidth}{|>{\raggedright\arraybackslash}p{4.6cm}|X|}\hline
+   \rowcolor{barra}\textbf{Heurística} & \textbf{Evidencia en pantalla} \\ \hline}
+  {\endtabularx\par}
+
+\title{Heurísticas de Nielsen\\[0.3em]
+\large Loard - Hito 2 - Módulo II: Arquitectura de frontend y componentización}
+\author{}
+\date{17 de noviembre de 2026}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+
+Las \textbf{10 heurísticas de Nielsen} son reglas generales para revisar si una interfaz es fácil de usar.
+Este documento muestra, historia por historia, \textbf{dónde las cumple el prototipo}. Cada sección indica la ruta en el prototipo publicado en
+\href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}}, para comprobarla directamente.
+
+
+\begin{center}
+\begin{tabular}{|>{\centering\arraybackslash}m{0.9cm}|>{\raggedright\arraybackslash}m{5.4cm}|>{\raggedright\arraybackslash}m{7.1cm}|>{\centering\arraybackslash}m{1.6cm}|}
+\hline
+\rowcolor{barra}
+\textbf{No.} & \textbf{Heurística} & \textbf{En palabras sencillas} & \textbf{Se documenta} \\ \hline
+H1 & Visibilidad del estado del sistema & El usuario siempre sabe qué está pasando. & \si \\ \hline
+H2 & Relación con el mundo real & Usa las palabras y símbolos de la obra. & \si \\ \hline
+H3 & Control y libertad del usuario & Siempre hay una salida o forma de deshacer. & \si \\ \hline
+H4 & Consistencia y estándares & Lo mismo se ve y funciona igual en todas partes. & \si \\ \hline
+H5 & Prevención de errores & Evita que el error ocurra. & \si \\ \hline
+H6 & Reconocer antes que recordar & Muestra las opciones; no obliga a memorizar. & \si \\ \hline
+H7 & Flexibilidad y eficiencia de uso & Atajos para usuarios con experiencia. & \si \\ \hline
+H8 & Diseño estético y minimalista & Solo la información necesaria. & \si \\ \hline
+H9 & Reconocer, diagnosticar y recuperarse de errores & Mensajes claros que dicen qué pasó y cómo arreglarlo. & \si \\ \hline
+H10 & Ayuda y documentación & Ayuda fácil de encontrar. & \si \\ \hline
+\end{tabular}
+\end{center}
+
+\section{Resumen: heurísticas por historia}
+
+\begin{center}
+\small
+\begin{tabular}{|>{\raggedright\arraybackslash}m{5.0cm}|*{10}{>{\centering\arraybackslash}m{0.42cm}|}>{\centering\arraybackslash}m{1.5cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Historia de usuario} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} & \textbf{Total} \\ \hline
+HU-M01 Iniciar sesión según el rol         &     &     & \si &     &     &     &     &     & \si &     & \textbf{2} \\ \hline
+HU-M02 Registrar el corte de obra          & \si &     & \si &     & \si &     &     &     & \si &     & \textbf{4} \\ \hline
+HU-M03 Adjuntar fotos y soportes           & \si & \si & \si & \si & \si & \si & \si & \si & \si & \si & \textbf{10} \\ \hline
+HU-M04 Visar o devolver el corte           & \si & \si & \si & \si & \si & \si & \si & \si & \si & \si & \textbf{10} \\ \hline
+HU-M05 Publicar documentos y checklist     & \si &     &     & \si & \si & \si &     &     &     & \si & \textbf{5} \\ \hline
+HU-M06 Cargar soportes y buscar documentos &     &     & \si &     &     & \si &     &     & \si &     & \textbf{3} \\ \hline
+HU-M07 Registrar ensayos NDT               &     & \si &     &     & \si &     &     &     & \si & \si & \textbf{4} \\ \hline
+HU-M08 Avance del dossier y exportación    & \si & \si & \si &     & \si &     &     &     &     &     & \textbf{4} \\ \hline
+HU-M09 Cursos y aptitud con semáforo       & \si & \si &     & \si & \si &     &     &     & \si &     & \textbf{5} \\ \hline
+HU-M10 Personal del corte con bloqueo SST  & \si & \si &     &     & \si &     &     &     & \si &     & \textbf{4} \\ \hline
+HU-M11 Bitácora de cambios                 & \si &     & \si &     & \si & \si &     &     &     &     & \textbf{4} \\ \hline
+HU-M12 Tablero de avance                   & \si & \si &     & \si & \si & \si &     & \si &     &     & \textbf{6} \\ \hline
+\end{tabular}
+\end{center}
+
+
+
+% =====================================================================
+\newpage
+\section{HU-M01: Iniciar sesión y ver solo lo que corresponde al rol}
+\rutas{\app{/acceso} y \app{/sst} con un perfil sin permiso}
+
+\begin{center}
+\captura{height=7.2cm}{m01-error}\\[2pt]
+\pie{(a) Inicio de sesión con contraseña equivocada}\\[10pt]
+\captura{width=0.98\linewidth}{m01-restringido}\\[2pt]
+\pie{(b) Residente que intenta abrir Personal SST}
+\end{center}
+
+\begin{evidencias}
+\h{9}{Recuperarse de errores} & (a) Si la contraseña está mal aparece \emph{``No se pudo iniciar sesión''} y dice qué revisar: \emph{``Revisa el correo y la contraseña de ejemplo''}. Sin códigos técnicos. \\ \hline
+\h{3}{Control y libertad} & (b) Si un perfil entra a un módulo que no le corresponde, ve \emph{``Acceso restringido''} con el enlace \emph{Volver al inicio}. No queda atrapado en una pantalla vacía. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M02: Registrar el corte de obra}
+\rutas{\app{/cortes/nuevo}, \texttt{/cortes/:id} y \texttt{/cortes/:id/editar}}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{m02-error} & \captura{width=7.9cm}{m02-borrador} \\[2pt]
+\pie{(a) Guardar con datos incompletos} & \pie{(b) Volver a un formulario sin terminar} \\[8pt]
+\captura{width=7.9cm}{m02-guardado} & \captura{width=7.9cm}{m02-visado} \\[2pt]
+\pie{(c) Corte guardado} & \pie{(d) Editar un corte ya visado}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & (c) Al guardar aparece el aviso \emph{``Corte \#09 de ejemplo guardado. Versión 1.''} y el detalle muestra el estado \emph{En Revisión (Enviado)}. (a) Bajo el título se indica que los cambios se guardan como borrador. \\ \hline
+\h{9}{Recuperarse de errores} & (a) El mensaje \emph{``Revisa el corte: Agrega al menos un trabajador habilitado''} dice exactamente qué falta para poder guardar. \\ \hline
+\h{3}{Control y libertad} & (b) Si el usuario salió sin guardar, al volver puede \emph{Continuar editando} o \emph{Descartar borrador}. El botón \emph{Volver a cortes} está siempre visible. \\ \hline
+\h{5}{Prevención de errores} & (b) \emph{Guardar} queda inactivo hasta decidir qué hacer con el borrador y explica por qué. (d) Antes de editar un corte visado se advierte que la corrección volverá a revisión, y se pide un motivo. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M03: Adjuntar fotografías y soportes al corte}
+\rutas{\app{/cortes/ejemplo-3} (Corte \#08) con el perfil Residente}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{soportes-sin-senal-escritorio} & \captura{width=7.9cm}{soportes-deshacer-escritorio} \\[2pt]
+\pie{(a) Carga sin señal} & \pie{(b) Soporte retirado con ``Deshacer''} \\[8pt]
+\multicolumn{2}{c}{\captura{width=9.5cm}{soportes-cargados-escritorio}} \\[2pt]
+\multicolumn{2}{c}{\pie{(c) Soportes cargados}}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & Porcentaje de carga, ``Confirmando carga\ldots{}'', ``Archivo cargado'' y resumen ``2 soportes - 1 fotografía, 1 PDF'' (c). \\ \hline
+\h{2}{Relación con el mundo real} & ``Soportes'', ``Corte \#08'', ``fotografías del frente''. \\ \hline
+\h{3}{Control y libertad} & Cancelar una carga, ``Deshacer'' al quitar (b) y cerrar el visor con \texttt{Esc}. \\ \hline
+\h{4}{Consistencia y estándares} & Mismos \texttt{FileUpload}, \texttt{UploadItem} y mensajes que el certificado de SST. \\ \hline
+\h{5}{Prevención de errores} & Tipo y peso validados antes de subir; sin duplicados; sin cambios en cortes visados. \\ \hline
+\h{6}{Reconocer antes que recordar} & Miniaturas e íconos por tipo de archivo (c). \\ \hline
+\h{7}{Flexibilidad y eficiencia} & Arrastrar y soltar además del botón; selección múltiple; \texttt{Ctrl+Z} mientras se ve ``Deshacer''. \\ \hline
+\h{8}{Diseño estético y minimalista} & Cada rol ve solo sus acciones; el color se reserva para los estados. \\ \hline
+\h{9}{Recuperarse de errores} & Mensajes con archivo, causa y solución; ``Reintentar'' y cola sin señal: el archivo queda en espera y se sube solo al volver la conexión (a). \\ \hline
+\h{10}{Ayuda y documentación} & Formatos y límite de 15 MB visibles antes de subir. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M04: Visar o devolver el corte}
+\rutas{\app{/cortes} y \texttt{/cortes/:id} con el perfil Director}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{m04-lista} & \captura{width=7.9cm}{devolucion-escritorio} \\[2pt]
+\pie{(a) Bandeja del Director} & \pie{(b) Devolución con causas frecuentes} \\[8pt]
+\multicolumn{2}{c}{\captura{width=9.5cm}{aviso-residente-escritorio}} \\[2pt]
+\multicolumn{2}{c}{\pie{(c) El residente ve la observación}}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & Insignia de estado, indicador ``Pendientes de visado'', botón ``Registrando visado\ldots{}'' y aviso al terminar. \\ \hline
+\h{2}{Relación con el mundo real} & ``Visar'', ``Devolver con observaciones'', causas como ``Desfase en horas-hombre'' (b). Fechas dd/mm/aaaa. \\ \hline
+\h{3}{Control y libertad} & El visado abre con el foco en ``Cancelar''; se pregunta antes de descartar una observación escrita. \\ \hline
+\h{4}{Consistencia y estándares} & Los estados oficiales tienen siempre el mismo texto y color en la lista, el detalle y el historial (a). \\ \hline
+\h{5}{Prevención de errores} & Confirmación del visado; devolución bloqueada sin 10 caracteres; control de versión si el corte cambió. \\ \hline
+\h{6}{Reconocer antes que recordar} & Datos y soportes en una sola vista; la observación queda visible junto a ``Corregir corte'' (c). \\ \hline
+\h{7}{Flexibilidad y eficiencia} & Bandeja ya filtrada en pendientes; las causas frecuentes escriben el texto (b). \\ \hline
+\h{8}{Diseño estético y minimalista} & Dos acciones claras; en celular la barra de decisión mide 66 px. \\ \hline
+\h{9}{Recuperarse de errores} & Mensajes de conexión y de versión con la acción que los resuelve. \\ \hline
+\h{10}{Ayuda y documentación} & El diálogo explica que la decisión queda en la bitácora y que no frena el frente. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M05: Publicar documentos vigentes y armar la checklist}
+\rutas{\app{/dossier} y \app{/dossier/documentos/publicar} con el perfil Calidad}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{checklist-escritorio} & \captura{width=7.9cm}{publicar-escritorio} \\[2pt]
+\pie{(a) Checklist del dossier} & \pie{(b) Publicar documento del SIG}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & (a) ``18 requisitos - 22\,\% validado'', avance de cada carpeta y conteo por estado en cada filtro. \\ \hline
+\h{4}{Consistencia y estándares} & (a) Los mismos filtros, insignias de estado y botones que las listas de cortes y SST. \\ \hline
+\h{5}{Prevención de errores} & Retirar un requisito pide confirmación y explica que deja de contar en el avance. Sin conexión, los cambios se bloquean con el motivo. \\ \hline
+\h{6}{Reconocer antes que recordar} & El documento del SIG de un requisito se elige de la lista de versiones vigentes. \\ \hline
+\h{10}{Ayuda y documentación} & (b) Ayudas bajo cada campo: ``Por ejemplo GT-FR64. Si ya existe, se publica como versión nueva.'' \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M06: Cargar soportes en la checklist y buscar documentos}
+\rutas{\app{/dossier} y \app{/dossier/documentos} con el perfil Calidad}
+
+\begin{center}
+\captura{width=11cm}{documentos-escritorio}\\[2pt]
+\pie{Documentos del SIG con búsqueda y filtros}
+\end{center}
+
+\begin{evidencias}
+\h{6}{Reconocer antes que recordar} & Buscador por nombre o código, filtro de carpeta y filtros por estado a la vista; no hay que escribir códigos de memoria. \\ \hline
+\h{3}{Control y libertad} & La validación de un soporte se puede deshacer durante unos segundos: ``Usa ``Deshacer'' en el aviso si fue un error''. \\ \hline
+\h{9}{Recuperarse de errores} & ``El PDF no se cargó. Oprime ``Reintentar'' o selecciona otro archivo.'' \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M07: Registrar ensayos NDT ligados a una junta}
+\rutas{\app{/dossier/ensayos} y \app{/dossier/ensayos/nuevo} con el perfil Calidad}
+
+\begin{center}
+\captura{width=11cm}{ndt-error}\\[2pt]
+\pie{(a) Registrar un ensayo sin completar los datos}\\[8pt]
+\captura{width=9cm}{rite-actual-ayuda-ndt}\\[2pt]
+\pie{(b) Ayuda junto al resultado del laboratorio}
+\end{center}
+
+\begin{evidencias}
+\h{2}{Relación con el mundo real} & (a) Palabras del inspector: junta soldada, tipo de ensayo, laboratorio, número de informe, resultado del laboratorio. \\ \hline
+\h{5}{Prevención de errores} & La junta y el método se eligen de una lista. Se rechazan PDF de más de 15 MB, fechas futuras e informes repetidos. \\ \hline
+\h{9}{Recuperarse de errores} & (a) ``Revisa el registro: Selecciona una junta soldada del frente.'' Los datos escritos se conservan. \\ \hline
+\h{10}{Ayuda y documentación} & (b) Junto al resultado se aclara que el PDF debe ser revisado por Calidad, para no confundir \emph{Conforme} con \emph{Validado} (ajuste de la validación RITE). \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M08: Monitorear el avance del dossier y exportarlo}
+\rutas{\app{/dossier/avance} con el perfil Calidad}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{avance-escritorio} & \captura{width=7.9cm}{exportacion-bloqueada} \\[2pt]
+\pie{(a) Avance y plazo} & \pie{(b) Cierre bloqueado}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & (a) Porcentaje validado, avance por carpeta y ``4 días restantes'' con la fecha límite. \\ \hline
+\h{2}{Relación con el mundo real} & Las seis carpetas con los nombres del dossier contractual y el ``Acta de facturación'' que inicia el plazo. \\ \hline
+\h{3}{Control y libertad} & Se puede editar la aceptación del acta y deshacer una validación antes de confirmarla. \\ \hline
+\h{5}{Prevención de errores} & (b) ``Exportar dossier validado'' queda bloqueado y explica: ``Faltan 14 requisitos con soporte validado para habilitar el cierre''. El borrador parcial sigue disponible. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M09: Registrar cursos y aptitud médica con semáforo}
+\rutas{\app{/sst} y \texttt{/sst/:id/cursos/nuevo} con el perfil SST}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{m09-lista} & \captura{width=7.9cm}{m09-errores} \\[2pt]
+\pie{(a) Personal SST, críticos primero} & \pie{(b) Guardar un curso sin datos} \\[8pt]
+\multicolumn{2}{c}{\captura{width=9.5cm}{m09-semaforo}} \\[2pt]
+\multicolumn{2}{c}{\pie{(c) Vista previa del semáforo antes de guardar}}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{2}{Relación con el mundo real} & (a) Semáforo rojo, amarillo y verde, con palabras de obra: \emph{Bloqueados}, \emph{Vencen en 15 días o menos}, \emph{Habilitados}. Los bloqueados van primero y en rojo. \\ \hline
+\h{1}{Visibilidad del estado} & (c) Al elegir la fecha se ve en vivo cómo quedará el curso: \emph{``Próximo a Vencer (15d) - Vence en 11 días''}, antes de guardar. \\ \hline
+\h{5}{Prevención de errores} & (b) Aviso previo: \emph{``Después de guardar, el curso no se puede editar ni borrar''}. El vencimiento debe ser posterior a la expedición. \\ \hline
+\h{9}{Recuperarse de errores} & (b) Cada campo vacío se marca en rojo con su mensaje debajo (\emph{``Selecciona el tipo de curso''}) y el cursor va al primer campo con error. \\ \hline
+\h{4}{Consistencia y estándares} & (b) El formulario tiene la misma estructura que el de cortes (HU-M02 a): enlace para volver, título y botones abajo, el principal a la derecha. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M10: Asignar personal al corte con bloqueo SST}
+\rutas{\app{/cortes/nuevo}, sección \emph{Agregar personal}}
+
+\begin{center}
+\captura{height=9.5cm}{m10-selector}\\[2pt]
+\pie{Selector de personal después de tocar a un trabajador bloqueado}
+\end{center}
+
+\begin{evidencias}
+\h{5}{Prevención de errores} & Los trabajadores bloqueados no se pueden marcar: casilla inactiva, candado y van al final, en \emph{No se pueden agregar}. Así no se asigna personal sin habilitación. \\ \hline
+\h{9}{Recuperarse de errores} & Al tocar a un bloqueado, su fila se resalta y el motivo exacto queda a la vista: \emph{``Bloqueado: Aptitud médica vencido hace 1 día''}. \\ \hline
+\h{1}{Visibilidad del estado} & Contador \emph{``5 trabajadores - 2 disponibles - 3 bloqueados''} y origen de los datos: \emph{``Datos SST en línea - semáforo calculado al 17/11/2026''}. \\ \hline
+\h{2}{Relación con el mundo real} & Las alertas usan el lenguaje del residente: \emph{``Trabajo en alturas vence en 16 días''}. \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M11: Consultar la bitácora de cambios}
+\rutas{\app{/dossier/bitacora} con el perfil Calidad; historial de versiones en \texttt{/cortes/:id}}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{bitacora-escritorio} & \captura{width=7.9cm}{m11-historial} \\[2pt]
+\pie{(a) Bitácora de un corte} & \pie{(b) Historial de versiones de un corte visado}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & (a) Cada cambio muestra fecha y hora de Bogotá, autor, rol, estado anterior, estado nuevo y motivo; arriba, ``Más reciente primero - 2 eventos confirmados''. \\ \hline
+\h{3}{Control y libertad} & (b) \emph{Consultar versión 1} o \emph{2} muestra los valores anteriores sin perder la versión actual. Cambiar de proyecto no modifica ningún registro. \\ \hline
+\h{5}{Prevención de errores} & Consulta de solo lectura: no hay forma de editar ni borrar eventos. Al cambiar de proyecto se limpia el registro elegido para evitar cruces. \\ \hline
+\h{6}{Reconocer antes que recordar} & (a) Proyecto y registro se eligen de listas con el tipo y el nombre (``Corte - Corte \#06''). \\ \hline
+\end{evidencias}
+
+% =====================================================================
+\newpage
+\section{HU-M12: Consultar el tablero de avance}
+\rutas{\app{/dashboard} con los perfiles Director o Gerencia}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.5cm}}c@{}}
+\captura{width=7.9cm}{tablero-escritorio} & \captura{width=7.9cm}{tablero-carpeta-escritorio} \\[2pt]
+\pie{(a) Tablero del proyecto} & \pie{(b) Requisitos de una carpeta}
+\end{tabular}
+\end{center}
+
+\begin{evidencias}
+\h{1}{Visibilidad del estado} & (a) Fecha y hora de los datos mostrados (hora de Bogotá) y aviso ``Quedan 4 días para el dossier''. \\ \hline
+\h{2}{Relación con el mundo real} & Avance físico frente a tiempo contractual, en porcentaje, y las seis carpetas del dossier con sus nombres. \\ \hline
+\h{4}{Consistencia y estándares} & Mismos indicadores (\texttt{KpiCard}, \texttt{ProgressBar}) e insignias de estado que el resto del prototipo. \\ \hline
+\h{5}{Prevención de errores} & (b) El detalle es ``Consulta de requisitos - Sin acciones de validación'': desde el tablero no se cambia nada. \\ \hline
+\h{6}{Reconocer antes que recordar} & (b) Cada requisito muestra su estado y la acción pendiente (``Falta cargar el soporte''). \\ \hline
+\h{8}{Diseño estético y minimalista} & Tres indicadores y seis tarjetas; el detalle se abre solo cuando se pide con ``Ver requisitos''. \\ \hline
+\end{evidencias}
+
+\end{document}
