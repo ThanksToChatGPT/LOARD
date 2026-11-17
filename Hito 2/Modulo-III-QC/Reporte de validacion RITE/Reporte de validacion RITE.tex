@@ -1,0 +1,297 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\graphicspath{{capturas/}}
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.35}
+\setlist{nosep,leftmargin=1.2em}
+
+\definecolor{marca}{HTML}{0B3A5C}
+\definecolor{borde}{HTML}{B8C4CE}
+\definecolor{suave}{HTML}{F3F6F9}
+
+% Captura: si el archivo existe en capturas/ se muestra; si no, queda el espacio con su nombre.
+\newcommand{\captura}[1]{%
+  \IfFileExists{capturas/#1.png}{\includegraphics[width=\linewidth,height=5.2cm,keepaspectratio]{#1.png}}{%
+  \IfFileExists{capturas/#1.jpg}{\includegraphics[width=\linewidth,height=5.2cm,keepaspectratio]{#1.jpg}}{%
+  {\setlength{\fboxsep}{0pt}\fcolorbox{borde}{suave}{\parbox[c][3cm][c]{\dimexpr\linewidth-2\fboxrule\relax}{\centering\small\color{gray}\texttt{capturas/#1.png}}}}}}}
+
+% Un problema completo con sus fotos.
+% #1 número (h1, h2...), #2 título, #3 quién lo encontró, #4 prioridad, #5 qué pasó, #6 qué se cambió
+\newcommand{\problema}[6]{%
+  \par\bigskip\noindent\begin{minipage}{\linewidth}
+  {\large\textbf{\color{marca}#1}\ \ \textbf{#2}}\par\smallskip
+  {\small\colorbox{suave}{\strut\ \textbf{Quién lo encontró:} #3 \qquad \textbf{Prioridad:} #4\ }}\par\smallskip
+  \textbf{Qué pasó.} #5\par\smallskip
+  \textbf{Qué se cambió.} #6\par\medskip
+  \begin{minipage}[t]{0.485\linewidth}\centering
+    {\small\textbf{Antes}}\par\smallskip\captura{#1-antes}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.485\linewidth}\centering
+    {\small\textbf{Después}}\par\smallskip\captura{#1-despues}
+  \end{minipage}
+  \end{minipage}\par}
+
+% Paso del ciclo de pruebas.
+\newcommand{\paso}[1]{{\setlength{\fboxsep}{5pt}\fcolorbox{borde}{suave}{\textbf{\color{marca}#1}}}}
+
+\title{Reporte de validación RITE\\[0.3em]
+\large Loard - Hito 2 - Módulo III: QC de usabilidad y accesibilidad}
+\author{}
+\date{16 de noviembre de 2026}
+
+\begin{document}
+\maketitle
+
+% =====================================================================
+\section{Introducción}
+
+Este reporte recoge las pruebas del prototipo de Loard con usuarios reales.
+Se usa el método RITE: se prueba, se corrige lo que falla y se vuelve a probar.
+El objetivo es comprobar que las personas hacen las tareas principales sin ayuda
+y dejar evidencia de cada cambio.
+
+% =====================================================================
+\section{Cómo se hizo}
+
+\begin{center}
+\paso{Ronda 1} \ $\rightarrow$\ \paso{Ronda 2} \ $\rightarrow$\ \paso{Ajustes al prototipo} \ $\rightarrow$\ \paso{Ronda 3}
+\end{center}
+
+\begin{enumerate}[leftmargin=1.5em]
+  \item \textbf{Quiénes.} Tres personas reales que usarían Loard en su trabajo: dos
+        residentes de obra y un director de proyectos.
+  \item \textbf{Sesión.} Una persona a la vez, con el prototipo abierto.
+  \item \textbf{Pensar en voz alta.} Mientras hacía cada tarea, la persona decía lo que veía,
+        lo que buscaba y lo que esperaba que pasara.
+  \item \textbf{Instrucciones sin pistas.} Cada tarea decía qué había que lograr, no cómo:
+        no se nombraron botones, menús ni pantallas. Quien dirigía la prueba ayudó lo mínimo,
+        solo para que la prueba fluyera.
+  \item \textbf{Revisión libre.} Los aportes no se limitaron a los problemas de lo que hay
+        hoy en el prototipo. Después de las tareas se usó el espacio para sacar más ideas:
+        la persona recorrió el prototipo a su gusto, explicó cómo es el trabajo diario en
+        la obra y propuso mejoras.
+  \item \textbf{Encuesta.} Al terminar se respondió la encuesta SUS (sección~\ref{sec:sus}).
+  \item \textbf{Rondas.} Se hicieron las rondas 1 y 2, se ajustó el prototipo con lo
+        encontrado y después se hizo la ronda 3 con las mismas tareas de la ronda 1.
+\end{enumerate}
+
+% =====================================================================
+\section{Participantes}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{2.5cm} >{\raggedright\arraybackslash}p{4.1cm} >{\raggedright\arraybackslash}p{5cm} >{\raggedright\arraybackslash}p{2.6cm}}
+\toprule
+\textbf{Participante} & \textbf{Rol} & \textbf{Experiencia} & \textbf{Fecha} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Residente 1 & Residente de obra & Usa la suite de Microsoft para todo lo relacionado con su trabajo. & 16 de noviembre de 2026 \\
+Director & Director de proyectos. También conoce una parte de SST & Usa la suite de Microsoft para todo lo relacionado con su trabajo. & 16 de noviembre de 2026 \\
+Residente 2 & Residente de obra & Usa la suite de Microsoft para todo lo relacionado con su trabajo. & 16 de noviembre de 2026 \\
+\end{longtable}
+
+% =====================================================================
+\section{Tareas}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{1.15cm} >{\raggedright\arraybackslash}p{1.7cm} >{\raggedright\arraybackslash}p{9.35cm} >{\raggedright\arraybackslash}p{2.1cm}}
+\toprule
+\textbf{Tarea} & \textbf{HU} & \textbf{Instrucción para el usuario} & \textbf{Quién la hizo} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\textbf{T1} &
+\mbox{HU-M02}\newline \mbox{HU-M10} &
+``Hoy su cuadrilla terminó un trabajo en el frente de obra. Registre el corte del día
+con las cantidades y el personal que trabajó. Incluya también a un trabajador que
+está bloqueado por SST.'' &
+Residente 1 y Residente 2 \\
+
+\textbf{T2} &
+\mbox{HU-M04} &
+``Usted revisó un corte y las cantidades no coinciden con lo que
+vio en la obra. Haga que el residente lo corrija y déjele claro qué debe cambiar.'' &
+Director \\
+
+\textbf{T3} &
+\mbox{HU-M06} &
+``Le entregaron un soporte que pide el dossier del proyecto. Súbalo en
+el lugar que le corresponde.'' &
+Residente 1 y Residente 2 \\
+
+\textbf{T4} &
+\mbox{HU-M12} &
+``Se necesita saber cómo va el proyecto. Averigüe cuánto avance lleva y si hay algo
+atrasado o pendiente.'' &
+Director \\
+\end{longtable}
+
+% =====================================================================
+\section{Encuesta SUS}\label{sec:sus}
+
+Al terminar, cada persona marcó de 1 a 5 qué tan de acuerdo estaba con cada frase:
+1 = muy en desacuerdo, 5 = muy de acuerdo.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.75cm} >{\raggedright\arraybackslash}p{9.9cm} >{\centering\arraybackslash}p{1.9cm} >{\centering\arraybackslash}p{1.9cm}}
+\toprule
+\textbf{N.º} & \textbf{Pregunta} & \textbf{Residente de obra} & \textbf{Director de proyectos} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+1  & Creo que me gustaría utilizar este sistema con frecuencia. & 5 & 5 \\
+2  & Encontré el sistema innecesariamente complejo. & 1 & 2 \\
+3  & Pensé que el sistema era fácil de usar. & 5 & 4 \\
+4  & Creo que necesitaría el apoyo de un técnico para poder utilizar este sistema. & 1 & 2 \\
+5  & Encontré que las diversas funciones de este sistema estaban bien integradas. & 3 & 3 \\
+6  & Pensé que había demasiada inconsistencia en el sistema. & 1 & 1 \\
+7  & Imagino que la mayoría de las personas aprenderían a utilizar este sistema muy rápidamente. & 5 & 4 \\
+8  & Encontré el sistema muy incómodo de utilizar. & 1 & 1 \\
+9  & Me sentí muy seguro utilizando el sistema. & 4 & 5 \\
+10 & Necesité aprender muchas cosas antes de poder empezar a utilizar este sistema. & 1 & 2 \\
+\midrule
+   & \textbf{Puntaje SUS (0 a 100)} & \textbf{92,5} & \textbf{82,5} \\
+\end{longtable}
+
+\textbf{Cómo se calcula.} En las preguntas impares se resta 1 a la respuesta; en las pares
+se resta la respuesta a 5. Se suman los 10 resultados y se multiplica por 2,5:
+\[
+\mathrm{SUS} = 2{,}5 \times \Big[\,(r_1-1) + (5-r_2) + (r_3-1) + \cdots + (5-r_{10})\,\Big]
+\]
+
+\textbf{Promedio SUS:} 87,5 \qquad \textbf{Meta:} 70 o más \qquad \textbf{¿Se cumple?} Sí
+
+% =====================================================================
+\section{Evidencia: tabla de ``Problema detectado'' vs. ``Cambio aplicado en el prototipo''}
+
+En las pruebas salieron siete problemas de uso. La tabla los resume y, después, cada uno
+se explica con quién lo encontró, qué pasó, qué se cambió en el prototipo y la pantalla
+antes y después del cambio.
+
+\textbf{Prioridad:} P0 impide terminar la tarea; P1 la tarea se logra con mucha dificultad;
+P2 molesta o demora, pero se logra; P3 detalle menor.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.6cm} >{\raggedright\arraybackslash}p{4.6cm} >{\raggedright\arraybackslash}p{4.7cm} >{\raggedright\arraybackslash}p{2.3cm} >{\centering\arraybackslash}p{1.95cm}}
+\toprule
+\textbf{\#} & \textbf{Problema detectado} & \textbf{Cambio aplicado en el prototipo} & \textbf{Quién lo encontró} & \textbf{Prioridad} \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+h1 & No se podían subir soportes al registrar el corte. & Los soportes se agregan en el mismo formulario y quedan en el corte al guardar. & Residente 1 & P0 \\
+h2 & No se podía escribir una actividad que no estuviera en la lista. & Opción ``Otra actividad (escribir)'' con nombre, unidad y cantidad. & Residente 1 & P1 \\
+h3 & La cantidad no subía de uno en uno. & La cantidad sube de uno en uno y solo acepta números enteros. & Residente 1 & P2 \\
+h4 & La búsqueda de cortes solo miraba el estado elegido. & La búsqueda revisa todos los cortes y hay filtros por fecha, ciudad y cliente. & Director & P1 \\
+h5 & Ciudad, residente y contrato se veían pequeños en el corte. & Los tres datos van en letra grande arriba del corte. & Director & P2 \\
+h6 & No se reconocía el botón de cerrar sesión. & El botón usa el símbolo de apagar. & Director & P3 \\
+h7 & Los cuadros de actividad y cantidad no estaban alineados. & Los cuadros quedan a la misma altura y con el mismo tamaño. & Residente 2 & P3 \\
+\end{longtable}
+
+\subsection*{Cada problema con su antes y después}
+
+\problema{h1}{No se podían subir soportes al registrar el corte}{Residente 1}{P0}
+{Al registrar el corte, el residente quiso adjuntar las fotos y el PDF del trabajo. La sección
+``Soportes del corte'' solo mostraba un texto que pedía guardar primero el corte, y no encontró
+dónde subirlos ni los vio después. No pudo terminar esa parte de la tarea.}
+{Ahora los soportes se agregan en el mismo formulario del corte: se arrastran o se eligen
+los archivos (fotos o PDF), cada uno aparece en la lista apenas se sube y se puede quitar.
+Al guardar el corte, los soportes quedan dentro de él.}
+
+\problema{h2}{No se podía escribir una actividad propia}{Residente 1}{P1}
+{El residente había hecho un trabajo que no estaba en la lista (pintura de tubería). La lista
+solo traía actividades ya cargadas y no había forma de escribir otra, así que no pudo
+registrar lo que de verdad se hizo.}
+{La lista tiene la opción ``Otra actividad (escribir)''. Al elegirla se escribe el nombre de la
+actividad y se escoge su unidad de medida (m, m\textsuperscript{2}, m\textsuperscript{3}, kg
+o unidades), junto con la cantidad.}
+
+\problema{h3}{La cantidad no subía de uno en uno}{Residente 1}{P2}
+{Al anotar la cantidad ejecutada, el cuadro aceptaba decimales y no subía de uno en uno.
+Costaba dejar el número exacto y era fácil equivocarse.}
+{La cantidad ejecutada sube y baja de uno en uno (1, 2, 3\ldots) y solo acepta números
+enteros. Si se escribe un decimal, el formulario avisa.}
+
+\problema{h4}{La búsqueda de cortes dependía del estado}{Director}{P1}
+{El director buscó un corte por su nombre y no apareció, porque la lista solo mostraba los
+cortes del estado que estaba elegido (por ejemplo, ``En revisión''). Tampoco pudo buscar por
+fecha, ciudad ni cliente.}
+{Al escribir en el buscador se revisan todos los cortes, sin importar su estado, y la pantalla
+lo avisa. Se agregaron filtros por fecha (desde y hasta), ciudad y cliente, y la lista muestra
+la ciudad y el cliente de cada corte.}
+
+\problema{h5}{Ciudad, residente y contrato se veían pequeños}{Director}{P2}
+{Al abrir un corte, al director le costó ubicar de qué ciudad era, qué residente lo hizo y a
+qué contrato u obra pertenecía. Esos datos estaban en letra pequeña, mezclados con otros.}
+{Arriba del corte hay un recuadro con los tres datos en letra grande: ciudad, residente y
+contrato u obra, con el cliente debajo.}
+
+\problema{h6}{No se reconocía el botón de cerrar sesión}{Director}{P3}
+{El director no reconoció el botón para cerrar sesión. Tenía una flecha de salida y él
+esperaba el símbolo de apagar, que es el que usa todos los días en su correo.}
+{El botón de cerrar sesión ahora usa el símbolo de apagar.}
+
+\problema{h7}{Los cuadros de actividad y cantidad no estaban alineados}{Residente 2}{P3}
+{En ``Actividades ejecutadas'', el cuadro de la actividad y el de la cantidad quedaban a
+distinta altura y con distinto tamaño. Se veía desordenado.}
+{Los dos cuadros y el botón de quitar quedan a la misma altura y con el mismo tamaño.
+La unidad de medida pasó al título del cuadro de cantidad.}
+
+% =====================================================================
+\section{Pedidos para próximas versiones}
+
+Además de los problemas, las personas pidieron funciones nuevas. No son fallas del
+prototipo: son necesidades del trabajo diario que quedan anotadas para más adelante.
+
+\textbf{Residentes de obra}
+\begin{itemize}
+  \item \textbf{Actividades más detalladas.} En tubería, separar los metros tendidos de la cantidad de soldaduras y anotar el diámetro (4, 6 u 8 pulgadas), porque no todos rinden igual. En obra civil, agregar los pasos previos (excavación, formaleta, relleno, compactación, solado).
+  \item \textbf{Soldadores.} Registrar su calificación vigente en soldadura, además de los cursos.
+  \item \textbf{Materiales.} Registrar el lote que llega al proyecto (por ejemplo, 4 cajas de soldadura) en lugar de lo que se gasta cada día.
+  \item \textbf{Herramientas y equipos.} Anotar cuáles se usaron en el día y llevar su mantenimiento igual que con las personas: último mantenimiento y horas que faltan para el siguiente, con aviso cuando falte poco.
+  \item \textbf{Clima.} Anotar el clima del día (sol, horas de lluvia) para explicar el avance.
+  \item \textbf{Cortes.} El corte suele ser mensual. Debe llegarle al director o al gerente y poder descargarse para enviarlo al cliente.
+  \item \textbf{Cada quien ve lo suyo.} Que cada residente vea solo los cortes y documentos de su obra o ciudad.
+  \item \textbf{Proyectos nuevos.} Un botón para registrar un contrato apenas se apruebe, con aviso al director.
+  \item \textbf{Avisos.} Correo cuando devuelvan un corte o haya que revisar el dossier, y recordatorio de los cortes cuando se acerque la facturación.
+  \item \textbf{Más adelante.} Pasar las horas trabajadas a la nómina, llevar la caja y el balance de cada obra, y un módulo de cotizaciones con precios unitarios que el director revise en línea y se exporte a PDF o Excel.
+\end{itemize}
+
+\textbf{Director de proyectos}
+\begin{itemize}
+  \item \textbf{Elegir la obra.} Escoger en el tablero de qué obra se quieren ver los datos.
+  \item \textbf{Avance.} Medirlo comparando los días cotizados con los días que van, junto con las cantidades ejecutadas.
+  \item \textbf{Revisión diaria.} Una lista diaria para comprobar que equipos y herramientas están en condiciones de trabajar.
+  \item \textbf{Equipos y calibraciones.} Llevar en un solo lugar el mantenimiento y los certificados de los equipos que viajan entre obras; hoy están repartidos en correos.
+  \item \textbf{Más adelante.} Ver en el tablero el dinero ejecutado y lo facturado, conectar el plan de trabajo de MS Project y que el encargado de SST de cada obra actualice sus propios cursos y certificados.
+\end{itemize}
+
+% =====================================================================
+\section{Conclusión}
+
+Las tres personas entendieron el prototipo y lo recorrieron con muy poca ayuda. La encuesta SUS dio
+92,5 y 82,5 puntos, con un promedio de 87,5, por encima de la meta de 70.
+
+Se encontraron seis problemas de uso. El más importante fue que no se podían subir soportes
+al corte; los demás tienen que ver con buscar cortes, escribir actividades propias y detalles
+de la pantalla. Los siete se corrigieron en el prototipo y cada uno queda explicado con su cambio y sus
+capturas de antes y después.
+
+La mayor parte de los comentarios no fueron fallas, sino necesidades del trabajo diario que
+el prototipo aún no cubre: herramientas y equipos, materiales por lote, permisos por obra y
+cotizaciones. Quedan anotadas como pedidos para próximas versiones, y refinamiento del entendimiento del funcionamiento de loard.
+
+\end{document}
