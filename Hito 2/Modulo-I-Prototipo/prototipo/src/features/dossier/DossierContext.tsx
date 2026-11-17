@@ -9,7 +9,7 @@ interface DossierApi {
   confirmado: DossierDemo;
   /** Problema al leer lo guardado en el navegador. */
   error: string;
-  /** Requisitos cuya validación aún se puede deshacer (§6.2B): todavía no está en la bitácora. */
+  /** Requisitos cuya validación aún se puede deshacer (#6.2B): todavía no está en la bitácora. */
   porValidar: string[];
   iniciarValidacion: (itemId: string) => void;
   terminarValidacion: (itemId: string) => void;

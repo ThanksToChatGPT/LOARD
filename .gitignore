@@ -12,6 +12,7 @@ playwright-report/
 .playwright-cli/
 *.tsbuildinfo
 .local/
+~$*.docx
 backend/media/
 /backend/
 /frontend/

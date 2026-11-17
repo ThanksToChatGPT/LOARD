@@ -16,7 +16,7 @@ export interface AppShellProps {
 }
 
 /**
- * Estructura común de todas las pantallas (§4, §11.1): menú lateral fijo de 256 px
+ * Estructura común de todas las pantallas (#4, #11.1): menú lateral fijo de 256 px
  * desde 1024 px y temporal por debajo, topbar de 64 px, franja de avisos y contenido.
  */
 export function AppShell({ nav, topbar, banner, children }: AppShellProps) {

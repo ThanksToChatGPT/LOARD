@@ -1,5 +1,5 @@
 /**
- * Áreas táctiles (design.md §6.1).
+ * Áreas táctiles (design.md #6.1).
  * `default`: 48 px. `field`: 56 px por debajo de 1024 px, para las vistas
  * que se usan en obra (registro de corte, personal SST, carga de evidencias).
  */

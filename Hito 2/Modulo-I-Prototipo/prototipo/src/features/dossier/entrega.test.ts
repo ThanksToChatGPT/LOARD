@@ -12,7 +12,7 @@ beforeEach(() => {
   const valores = new Map<string, string>();
   vi.stubGlobal('localStorage', { getItem: (k: string) => valores.get(k) ?? null, setItem: (k: string, v: string) => valores.set(k, v) });
 });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 
 describe('HU-M07 · vinculación NDT', () => {
   it('guarda ensayo, junta, PDF e historial en el mismo dossier sin validarlo automáticamente', () => {
@@ -64,6 +64,13 @@ describe('HU-M07 · vinculación NDT', () => {
 });
 
 describe('HU-M08 · plazo y paquete', () => {
+  it('rechaza fechas futuras de ensayo y acta aunque en UTC ya sea el día siguiente', () => {
+    vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-11-18T01:30:00Z'));
+    expect(validarEnsayo({ ...datos, fechaEnsayo: '2026-11-18' }, archivo)).toContain('fecha');
+    expect(validarEnsayo({ ...datos, fechaEnsayo: '2026-11-17' }, archivo)).toBeNull();
+    expect(() => registrarActa({ numero: 'Acta #09', aceptada: '2026-11-18', usuario: calidad })).toThrow('fecha');
+    expect(() => registrarActa({ numero: 'Acta #09', aceptada: '2026-11-17', usuario: calidad })).not.toThrow();
+  });
   it('cuenta diez días calendario atravesando fines de semana y cambio de mes', () => {
     expect(plazoDossier('2026-10-28', '2026-11-07')).toEqual({ limite: '2026-11-07', dias: 0, vencido: false });
     expect(plazoDossier('2026-10-28', '2026-11-08')?.vencido).toBe(true);

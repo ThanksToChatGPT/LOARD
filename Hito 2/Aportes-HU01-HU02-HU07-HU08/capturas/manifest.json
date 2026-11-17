@@ -1,0 +1,140 @@
+{
+  "commitAplicacion": "2c0bee5",
+  "archivos": [
+    {
+      "archivo": "acceso-escritorio.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "6cb72b6fd97e419085850cff751994a832df8a820b5469cc653d9c57836e1b9c",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "acceso-movil.png",
+      "dimensiones": [
+        390,
+        844
+      ],
+      "sha256": "8b9ab11c1ddde071fac2c02fe0c222a9567c7fcf6b789731ee417bad90294b1c",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "acceso-teclado.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "44bc3151199d5efe33bbb6253961f83860d568c8724344cc295024edf6c697a0",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "acceso-texto-200.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "5bb4be5fca4908fac441e641cb6b51556165d17954e215c4f8a994779b59bd6a",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "avance-escritorio.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "e699a8583d4fedc1fe31e7e8853b8ebc10b8fd9a59205f73e46bbf3e7fdcac77",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "avance-movil.png",
+      "dimensiones": [
+        390,
+        844
+      ],
+      "sha256": "8da1ad2e14ab16c1c4031593c530912d103d1578cb596fe7817a293a315aac5b",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "avance-oscuro.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "79e5c8da13511bcbc1c624c2a92e8777c23613323b3e7c2c972707505a901cf8",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "corte-edicion.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "29fb2770311afabdc2810e078bbe5f6deca95ff61d70c19900ba13ab6279de8b",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "corte-escritorio.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "1afd2e14746e1876de089046d67f5f5dc079c2646e76a77cb34a804489665a9f",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "corte-historial.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "0506de1d78bb84c92916f8e8931d520100d3a1ad4b7705db2c58381334b3d295",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "corte-movil.png",
+      "dimensiones": [
+        390,
+        844
+      ],
+      "sha256": "ddbc238b9d4bbe12c6332e811ed7e55303a32d3e8db19a5cc2fb6775cfd6684a",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "exportacion-bloqueada.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "92ca0a9024c8aa2e248c5bf5a7ffa8f976e7b9a394af245d85500b3287451716",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "ndt-error.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "ad0ace2b604cc4c97054e6cde5a83fe77fab87ee95675dc1c0a56739dadfab2d",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "ndt-escritorio.png",
+      "dimensiones": [
+        1440,
+        1000
+      ],
+      "sha256": "3e43daa38c1028d2e240c777cb84e7b3de6873644592e4acb02729f88aeb806f",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    },
+    {
+      "archivo": "ndt-movil.png",
+      "dimensiones": [
+        390,
+        844
+      ],
+      "sha256": "ef600e6cebf191ec3b66ce12eabcb9ee4d6a551352c8a234e65a98f8a189f51f",
+      "procedencia": "captura actual de navegador, datos de demostracion; sin participantes"
+    }
+  ]
+}

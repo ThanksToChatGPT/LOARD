@@ -1,4 +1,4 @@
-/** Reglas de carga de soportes (design.md §7.2). */
+/** Reglas de carga de soportes (design.md #7.2). */
 
 import { formatoMB } from './formato';
 

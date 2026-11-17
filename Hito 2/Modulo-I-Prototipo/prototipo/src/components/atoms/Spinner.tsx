@@ -1,6 +1,6 @@
 import { cn } from '@/lib/cn';
 
-/** Indicador lineal de 16 px para botones en proceso. Nunca a pantalla completa (§7.1). */
+/** Indicador lineal de 16 px para botones en proceso. Nunca a pantalla completa (#7.1). */
 export function Spinner({ className }: { className?: string }) {
   return (
     <svg

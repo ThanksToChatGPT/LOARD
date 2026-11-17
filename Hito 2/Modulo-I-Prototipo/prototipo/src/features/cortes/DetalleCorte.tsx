@@ -1,6 +1,6 @@
 import { History, Pencil } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { Banner, Button, PageHeader, ResponsiveTable, StatusBadge, Timeline } from '@/components';
 import { formatoFecha, formatoFechaHora } from '@/lib/formato';
 import { useSst } from '@/lib/sst/SstContext';
@@ -19,7 +19,16 @@ export function DetalleCorte() {
   const { cortes, error } = useCortesDemo();
   const { usuario } = useAuthDemo();
   const navigate = useNavigate();
-  const [historial, setHistorial] = useState(false);
+  const [params, setParams] = useSearchParams();
+  const historial = params.get('vista') === 'historial';
+  function setHistorial(abierto: boolean) {
+    setParams(actual => {
+      const next = new URLSearchParams(actual);
+      if (abierto) next.set('vista', 'historial');
+      else next.delete('vista');
+      return next;
+    }, { replace: true });
+  }
   const [version, setVersion] = useState<number | null>(null);
   const corte = cortes.find(item => item.id === id);
   // Tras visar o devolver, el diálogo y la barra desaparecen: el foco pasa al nuevo estado del corte.

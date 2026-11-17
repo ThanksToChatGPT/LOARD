@@ -25,7 +25,7 @@ export interface UploadItemProps {
   className?: string;
 }
 
-/** Un archivo en carga: nombre, tamaño, progreso real y acciones (§7.2). */
+/** Un archivo en carga: nombre, tamaño, progreso real y acciones (#7.2). */
 export function UploadItem({
   name,
   sizeBytes,

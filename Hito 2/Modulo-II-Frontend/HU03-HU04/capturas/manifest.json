@@ -1,0 +1,296 @@
+{
+  "commitAplicacion": "737173c",
+  "fecha": "2026-11-17T00:21:36.314Z",
+  "url": "http://127.0.0.1:5174",
+  "procedencia": "Capturas automáticas con Microsoft Edge sin ventana, datos de demostración del prototipo; sin participantes.",
+  "archivos": [
+    {
+      "archivo": "soportes-cargando-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "1acd2fb0c4ca5eb985c997ac02d3c478457a8dc1d7e0ab7d6275287c64369196"
+    },
+    {
+      "archivo": "soportes-cargados-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "8455cdfad93f9cb59d6f59e4fb5fd16ed250b87fb73692abf15921c82f63fd03"
+    },
+    {
+      "archivo": "soportes-sin-senal-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "032b1671baa52aae1c438d7ffa2d749636aa1eeb94e36aeacc2dd0ea1ffe87b2"
+    },
+    {
+      "archivo": "soportes-deshacer-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "fb8671f310140656712bfe4db93d244905141c6dee0cc8c898dce735c0b6526c"
+    },
+    {
+      "archivo": "visor-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "0417a8adfa1e7ef680af6f34bc70a51516eae2911b5cf16007aae84593d208f8"
+    },
+    {
+      "archivo": "visado-bloqueado-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "665679fc4292efe89f4939aafe1ef49a7a2f7f29a1c9c8168814c14a98bebc73"
+    },
+    {
+      "archivo": "bandeja-director-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "ffc4cec60d36b16b503d367dc41f7fb27dee51a894f91068ecfdd19a0108ff62"
+    },
+    {
+      "archivo": "revision-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "f36fdb6bfab6995acff511d7e400acb6bd21efa83170a2e4dde0694bfab5d745"
+    },
+    {
+      "archivo": "revision-sin-senal-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "4d277d144bb0aa68835a7658597a000f0f1c7af64bd3dff5dc3bca9551f5017f"
+    },
+    {
+      "archivo": "devolucion-foco-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "082c793445e7ecce68d24f3d1cc64688b9cb60cc95458e89d72982f83d110854"
+    },
+    {
+      "archivo": "devolucion-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "aa1a54cf9e997b83daf654efb05c696ed0e0549e1ed1e0f2c208223a8f795884"
+    },
+    {
+      "archivo": "devuelto-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "e426241c4ed6afc26f098eac02ff0066ac3bee34f9d6f70717cef7c38520087d"
+    },
+    {
+      "archivo": "aviso-residente-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "491d76278b093bd20b326d5fa46864258b2735fc82f0e498dacc59e5d8880ac1"
+    },
+    {
+      "archivo": "correccion-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "fe0059b8a58d1a8b9d2acfa2ee2ed98070edb6f2abd632c99036de455fcac27b"
+    },
+    {
+      "archivo": "visado-confirmacion-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "577a9f13c5185525144fe95034ba19edba5ecff66aa9a2cf7953893a8c5c4a1d"
+    },
+    {
+      "archivo": "visado-resultado-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "1a4393f78902bfaecde36d228fe8b5a3b9ab8ae9c1157557ba1be6853b203b42"
+    },
+    {
+      "archivo": "historial-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "1c2789e5e5f2457e2ec892b791d40aa0f77a8c4988f95b97a62524d82a1042b7"
+    },
+    {
+      "archivo": "bandeja-director-oscuro-escritorio.png",
+      "dimensiones": [
+        1440,
+        900
+      ],
+      "sha256": "74afd5a728dc65667c5b24a44596760499d945f41e56915b1ad5d6852f5b4d83"
+    },
+    {
+      "archivo": "soportes-cargando-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "2e5b4fa37aeb4f9f44f111c3dbb6133414ef396fbae06102f824dfdb7d0d9227"
+    },
+    {
+      "archivo": "soportes-cargados-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "7a85e341e48cde60c75cab28bdb13b2222e5ea8fe907f8166e11e098b8f9f8d5"
+    },
+    {
+      "archivo": "soportes-sin-senal-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "dfa1dd870ae2f076ec04ba467b08044228580600bc1d5f1b116021b7f61a2bc7"
+    },
+    {
+      "archivo": "soportes-deshacer-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "d33467b097ce62876b9cf55591092283ca1198302fa964892e264ec8cd49d342"
+    },
+    {
+      "archivo": "visor-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "f6362245e8f7587684dbddef5e31028154f356be4224d1d4a0807d4db12367b2"
+    },
+    {
+      "archivo": "visado-bloqueado-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "c5b5d0060d1ad73f5cee656b2e33dbeb589c7e30147e54304379da848a7a7c4e"
+    },
+    {
+      "archivo": "bandeja-director-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "666e2982e11dc3d9622fc3c6a4a16b59e74791177958751b3ebb30b3f2de55d8"
+    },
+    {
+      "archivo": "revision-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "7e9a041d98f365ae5d68ea154f28b98947b140214c3233f23f131a30d1801766"
+    },
+    {
+      "archivo": "revision-sin-senal-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "2dc69ffc35cc0ea0d893caf71c76b00d2e36db66a7b53af853816f7ea6334fbf"
+    },
+    {
+      "archivo": "devolucion-foco-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "9358c18e2c780894e1c72ec8f54f1bc98123bfa63d665c24db240066a2650297"
+    },
+    {
+      "archivo": "devolucion-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "e662b9e3dc3fd298bacdfe31d612c4434da542cbd3336949da382261cfbf0d70"
+    },
+    {
+      "archivo": "devuelto-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "d66feb105d6051e019a14a77b7910af9dea89ed056e548897efca0615d49dc99"
+    },
+    {
+      "archivo": "aviso-residente-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "81eede05a7d663caddb2b51c2c8ca2b3b0efa27313a949b4c0c022ef89f33ffd"
+    },
+    {
+      "archivo": "correccion-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "e84eec3213bd5ca0a57f80efd2b656a2c0fab014713311b601eee5872ff64e16"
+    },
+    {
+      "archivo": "visado-confirmacion-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "003fafa351833f25be1f8fb64f1d269fd3f26fde92e10f19a3ecf2121b77d53c"
+    },
+    {
+      "archivo": "visado-resultado-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "85a79f73237b7a81492b9c293c1e81bada5cfd2ad8449ff46498c14f43a7fba9"
+    },
+    {
+      "archivo": "historial-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "93bd14bef8896624364aa07f115a9817a9719bc4e8542eb6db34fea666a33740"
+    },
+    {
+      "archivo": "bandeja-director-oscuro-movil.png",
+      "dimensiones": [
+        780,
+        1688
+      ],
+      "sha256": "00513044fd10595dabd42e2d9ce2f4d478fd4c0cd620218180ccbe64b9d10716"
+    }
+  ]
+}

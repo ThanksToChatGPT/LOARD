@@ -47,7 +47,7 @@ export function SoportesCorte({ corte }: { corte: CorteDemo }) {
   const actual = useRef({ subidas, corte, usuario, agregarSoporte });
   useEffect(() => { actual.current = { subidas, corte, usuario, agregarSoporte }; });
 
-  // Progreso simulado de cada archivo hacia el almacenamiento (§7.2).
+  // Progreso simulado de cada archivo hacia el almacenamiento (#7.2).
   const hayCarga = subidas.some(s => s.estado === 'uploading');
   useEffect(() => {
     if (!hayCarga) return;
@@ -59,7 +59,7 @@ export function SoportesCorte({ corte }: { corte: CorteDemo }) {
     return () => window.clearTimeout(t);
   }, [subidas, hayCarga]);
 
-  // Sin señal, los archivos esperan en cola y siguen solos al volver la conexión (§8.3).
+  // Sin señal, los archivos esperan en cola y siguen solos al volver la conexión (#8.3).
   useEffect(() => {
     setSubidas(lista => lista.map((s): Subida => {
       if (!enLinea && (s.estado === 'uploading' || s.estado === 'confirming')) return { ...s, estado: 'queued' };
@@ -89,7 +89,7 @@ export function SoportesCorte({ corte }: { corte: CorteDemo }) {
     return () => window.clearTimeout(t);
   }, [confirmando]);
 
-  // Aviso del navegador si se intenta salir con archivos sin confirmar (§8.2).
+  // Aviso del navegador si se intenta salir con archivos sin confirmar (#8.2).
   const pendientes = subidas.some(s => s.estado !== 'error');
   useEffect(() => {
     if (!pendientes) return;
@@ -229,7 +229,7 @@ function descargar(url: string, nombre: string) {
   enlace.click();
 }
 
-/** Visor lateral desde 1024 px y de pantalla completa en móvil (§7.2). Al cerrar, el foco vuelve a «Ver». */
+/** Visor lateral desde 1024 px y de pantalla completa en móvil (#7.2). Al cerrar, el foco vuelve a «Ver». */
 function VisorSoporte({ soporte, onClose }: { soporte: SoporteDemo | null; onClose: () => void }) {
   const ultimo = useRef(soporte);
   if (soporte) ultimo.current = soporte;

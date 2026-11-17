@@ -272,7 +272,7 @@ export function Muestra() {
             ))}
           </ul>
         </Bloque>
-        <Bloque titulo="Tipografía (Inter)">
+        <Bloque titulo="Tipografía (IBM Plex Sans)">
           <ul className="flex flex-col gap-gutter-sm">
             {TIPOGRAFIA.map(([clase, nombre]) => (
               <li key={nombre} className="flex flex-wrap items-baseline justify-between gap-gutter-sm">

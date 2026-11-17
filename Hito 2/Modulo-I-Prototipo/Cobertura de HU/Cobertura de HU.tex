@@ -1,133 +1,31 @@
 \documentclass[11pt]{article}
-
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish,es-tabla]{babel}
-\usepackage{lmodern}
-\usepackage[a4paper,margin=2.2cm]{geometry}
-\usepackage{array}
-\usepackage{longtable}
-\usepackage{booktabs}
-\usepackage[table]{xcolor}
-\usepackage[hidelinks]{hyperref}
-
-\setlength{\parskip}{0.5em}
+\usepackage[spanish]{babel}
+\usepackage{lmodern,array,longtable,booktabs}
+\usepackage[a4paper,margin=2cm]{geometry}
 \setlength{\parindent}{0pt}
-\renewcommand{\arraystretch}{1.35}
-
-\newcommand{\si}{\cellcolor{green!18}Cubierta}
-\newcommand{\parcial}{\cellcolor{yellow!30}Parcial}
-\newcommand{\no}{\cellcolor{red!15}Pendiente}
-
-\title{Cobertura de historias de usuario\\[0.3em]
-\large Loard - Hito 2 - Módulo I: Prototipo}
-\author{}
-\date{}
-
+\setlength{\parskip}{0.5em}
 \begin{document}
-\maketitle
+\section*{Cobertura de historias de usuario}
+Cubierta: flujo documentado para el prototipo; en HU3/4/9/10 se conserva la cobertura previa del equipo. Integrada: se verificó su presencia y conexión en el código actual, pero este aporte no sustituye la validación detallada de su responsable. Los estados describen el prototipo, no un backend productivo.
 
-\section{Introduccion}
-
-Esta matriz relaciona cada historia de usuario del MVP priorizado en el Hito 1
-(12 historias) con la ruta o rutas del prototipo donde se puede ver.
-Sirve para comprobar, historia por historia, qué ya está en el prototipo y qué
-falta.
-
-\begin{itemize}
-  \item \textbf{Cubierta:} la historia se puede recorrer completa en el prototipo.
-  \item \textbf{Parcial:} hay pantallas que muestran una parte de la historia.
-  \item \textbf{Pendiente:} todavía no tiene pantalla.
-\end{itemize}
-
-\section{Matriz HU \texorpdfstring{$\rightarrow$}{->} ruta(s)}
-
-Donde dice \texttt{:id} va el corte o el trabajador que se abre
-desde la lista. Para comprobarlo se puede entrar al prototipo con una de las cuentas
-de ejemplo y abrir la ruta.
-
-\begin{longtable}{>{\raggedright}p{1.6cm} >{\raggedright}p{3.2cm} >{\raggedright}p{7.6cm} p{1.7cm}}
-\toprule
-\textbf{HU} & \textbf{Historia} & \textbf{Ruta y qué se ve ahí} & \textbf{Estado} \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-
-\mbox{HU-M01} & Iniciar sesión y ver solo lo que corresponde al rol &
-\texttt{/acceso}: inicio de sesión; al entrar, el menú muestra solo lo del perfil \newline
-\texttt{/sst}: con un perfil sin permiso muestra el aviso de ``Acceso restringido'' &
-\si \\
-
-\mbox{HU-M02} & Registrar el corte de obra &
-\texttt{/cortes}: lista de cortes con su estado \newline
-\texttt{/cortes/nuevo}: formulario para registrar el corte \newline
-\texttt{/cortes/:id}: detalle del corte \newline
-\texttt{/cortes/:id/editar}: corregir un corte ya guardado &
-\si \\
-
-\mbox{HU-M03} & Adjuntar fotografías y soportes al corte &
-\texttt{/cortes/:id}: sección «Soportes del corte» para adjuntar, ver, descargar y retirar fotos o PDF; el director la consulta \newline
-\texttt{/cortes/:id/editar}: la misma sección mientras se corrige el corte &
-\si \\
-
-\mbox{HU-M04} & Visar o devolver el corte &
-\texttt{/cortes}: con el perfil Director abre filtrada en los pendientes de visado, con la acción «Revisar» \newline
-\texttt{/cortes/:id}: barra de revisión con «Visar corte» (confirmación) y «Devolver con observaciones» (mínimo 10 caracteres y causas frecuentes); el residente ve la observación y corrige el corte &
-\si \\
-
-\mbox{HU-M05} & Publicar documentos vigentes y armar la checklist &
---- &
-\no \\
-
-\mbox{HU-M06} & Cargar soportes en la checklist y buscar documentos &
---- &
-\no \\
-
-\mbox{HU-M07} & Registrar ensayos NDT ligados a una junta &
---- &
-\no \\
-
-\mbox{HU-M08} & Monitorear el avance del dossier y exportarlo &
---- &
-\no \\
-
-\mbox{HU-M09} & Registrar cursos y aptitud médica con semáforo &
-\texttt{/sst}: lista de personal con semáforo y filtros \newline
-\texttt{/sst/:id}: ficha del trabajador \newline
-\texttt{/sst/:id/cursos/nuevo}: registrar un curso con su vencimiento \newline
-\texttt{/sst/:id/aptitud}: marcar Habilitado o No habilitado &
-\si \\
-
-\mbox{HU-M10} & Asignar personal al corte con bloqueo SST &
-\texttt{/cortes/nuevo}: selector de personal con semáforo; no deja elegir a quien está bloqueado \newline
-\texttt{/cortes/nuevo/personal}: personal del corte con el motivo de cada bloqueo &
-\si \\
-
-\mbox{HU-M11} & Consultar la bitácora de cambios &
-\texttt{/cortes/:id}: historial de versiones del corte \newline
-\texttt{/sst/:id}: bitácora de cambios del trabajador \newline
-Falta el historial de la checklist y de documentos, y los filtros por fecha y autor &
-\parcial \\
-
-\mbox{HU-M12} & Consultar el tablero de avance &
---- &
-\no \\
-
-\end{longtable}
-
-\section{Resumen}
-
-\begin{center}
-\begin{tabular}{lcc}
-\toprule
-\textbf{Estado} & \textbf{Historias} & \textbf{Porcentaje} \\
-\midrule
-Cubierta  & 6 de 12 & 50 \% \\
-Parcial   & 1 de 12 & 8 \% \\
-Pendiente & 5 de 12 & 42 \% \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\end{document}
+\small
+\begin{longtable}{p{1.4cm}p{2.5cm}p{8.2cm}p{1.6cm}}
+\toprule HU & Historia & Pantallas y evidencia & Estado \\
+\midrule\endhead
+HU-M01 & Acceso por perfil & /acceso; sesión de ejemplo y menú por rol. & Cubierta \\ \addlinespace
+HU-M02 & Registro y edición de cortes & /cortes, /cortes/nuevo, /cortes/:id y /cortes/:id/editar; cantidades por unidad, HH, borrador y versiones. & Cubierta \\ \addlinespace
+HU-M03 & Soportes del corte & /cortes/:id y edición; fotos/PDF, visor, retiro y cola. Se conserva la cobertura documentada por su responsable. & Cubierta \\ \addlinespace
+HU-M04 & Visado o devolución & /cortes y /cortes/:id como Director; devolución con motivo y confirmación de visado. Se conserva la cobertura previa. & Cubierta \\ \addlinespace
+HU-M05 & Documentos y checklist & /dossier, /dossier/documentos y /dossier/documentos/publicar; pantallas integradas por el compañero. & Integrada \\ \addlinespace
+HU-M06 & Soportes y búsqueda del dossier & /dossier y /dossier/documentos; DetalleItem para carga, validación y observación. Integración compartida. & Integrada \\ \addlinespace
+HU-M07 & Ensayos NDT por junta & /dossier/ensayos y /dossier/ensayos/nuevo; laboratorio, método, fecha, resultado, PDF y requisito por informe. & Cubierta \\ \addlinespace
+HU-M08 & Avance y entrega del dossier & /dossier/avance; seis carpetas, faltantes, aceptación del acta, diez días y ZIP parcial/validado de ejemplo. & Cubierta \\ \addlinespace
+HU-M09 & Cursos y aptitud SST & /sst, /sst/:id, /sst/:id/cursos/nuevo y /sst/:id/aptitud; se conserva la cobertura documentada del equipo. & Cubierta \\ \addlinespace
+HU-M10 & Personal del corte con bloqueo SST & /cortes/nuevo y /cortes/nuevo/personal; selector compartido, motivos de bloqueo y horas. & Cubierta \\ \addlinespace
+HU-M11 & Bitácora de cambios & /dossier/bitacora; consulta de cortes y requisitos confirmados. /cortes/:id y /sst/:id conservan historiales propios. & Integrada \\ \addlinespace
+HU-M12 & Tablero del proyecto & /dashboard para Director/Gerencia; avance y seis carpetas. CW-118 usa el dossier compartido confirmado. & Integrada \\ \addlinespace
+\bottomrule\end{longtable}
+\normalsize\section*{Resumen}
+Ocho historias con cobertura documentada y cuatro integradas. El informe RITE del autor se consulta por separado.\end{document}

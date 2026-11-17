@@ -30,7 +30,7 @@ const ESTADO: Record<OfflineQueueState, { caja: string; color: string; fondo: st
   rejected: { caja: 'border-error-border bg-error-subtle', color: 'text-error', fondo: 'error', Icono: CircleAlert },
 };
 
-/** Franja bajo la topbar con el estado de la cola sin conexión (§8.3). */
+/** Franja bajo la topbar con el estado de la cola sin conexión (#8.3). */
 export function OfflineQueueBanner({
   state,
   pending = 0,

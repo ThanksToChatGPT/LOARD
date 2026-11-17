@@ -19,7 +19,7 @@ export interface DialogProps {
   initialFocus?: RefObject<HTMLElement | null>;
   /**
    * Hay texto escrito sin confirmar. `Esc`, la X y el clic en el fondo
-   * preguntan antes de cerrar, dentro del mismo diálogo (§11.4).
+   * preguntan antes de cerrar, dentro del mismo diálogo (#11.4).
    */
   dirty?: boolean;
   discardQuestion?: string;

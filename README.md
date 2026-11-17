@@ -67,6 +67,8 @@ La aplicación funcional anterior está conservada en la rama `codex/backend-en-
 
 ## Documentos del equipo
 
+- [Documentación de HU1, HU2, HU7 y HU8: aportes, capturas y checklist](Hito%202/Aportes-HU01-HU02-HU07-HU08/README.md). Incluye el informe RITE aportado por el autor y los anexos que faltan por reunir.
+
 - [Sistema de diseño](Hito%202/design.md)
 - [Módulo I · Prototipo](Hito%202/Modulo-I-Prototipo)
 - [Módulo II · Componentización](Hito%202/Modulo-II-Frontend)

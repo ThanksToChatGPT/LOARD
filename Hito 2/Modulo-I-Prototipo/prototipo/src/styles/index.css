@@ -16,7 +16,7 @@
 @layer components {
   /*
    * Superficies. Además del fondo, cada una redefine --focus-offset para que
-   * el espacio del anillo de foco tome el color de donde está el control (§2.2).
+   * el espacio del anillo de foco tome el color de donde está el control (#2.2).
    * Usarlas en tarjetas, drawers, modales, toasts y menú en lugar de bg-* suelto.
    */
   .sf-page {
@@ -44,12 +44,12 @@
     --focus-ring: var(--nav-indicator);
   }
 
-  /* Tarjeta estática: borde decorativo + sombra mínima (§4). */
+  /* Tarjeta estática: borde decorativo + sombra mínima (#4). */
   .card {
     @apply sf-container rounded-md border border-outline-variant shadow-1;
   }
 
-  /* Retícula 12–8–4 con sus gutters y márgenes (§4, §11.1). */
+  /* Retícula 12–8–4 con sus gutters y márgenes (#4, #11.1). */
   .grid-page {
     @apply grid grid-cols-4 gap-gutter-md px-gutter-md tablet:grid-cols-8 tablet:px-gutter-lg desktop:grid-cols-12 desktop:gap-gutter-lg;
   }

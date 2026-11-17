@@ -49,7 +49,7 @@ export interface Curso {
 }
 
 /**
- * Aptitud médica: solo el concepto y sus fechas (reserva legal, design.md §10).
+ * Aptitud médica: solo el concepto y sus fechas (reserva legal, design.md #10).
  * Nunca diagnósticos, restricciones ni texto clínico.
  */
 export interface Aptitud {

@@ -28,7 +28,7 @@ export interface ToastApi {
   /** Aviso informativo: «Curso registrado.» */
   show: (opciones: { message: ReactNode; actionLabel?: string; onAction?: () => void; duration?: number }) => void;
   /**
-   * Aviso con «Deshacer» por 5 segundos (§6.2B). Cambia la pantalla de inmediato y pasa:
+   * Aviso con «Deshacer» por 5 segundos (#6.2B). Cambia la pantalla de inmediato y pasa:
    * - `onCommit`: envía a la API y escribe en la bitácora. Se llama al terminar el plazo,
    *   al cerrar el aviso, al validar otro ítem o al salir de la pantalla.
    * - `onUndo`: devuelve la pantalla al estado anterior. No deja registro.

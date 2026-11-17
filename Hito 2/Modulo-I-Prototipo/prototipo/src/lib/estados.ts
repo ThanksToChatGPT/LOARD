@@ -1,5 +1,5 @@
 /**
- * Estados oficiales (design.md §10). Son idénticos en la base de datos,
+ * Estados oficiales (design.md #10). Son idénticos en la base de datos,
  * la API y las insignias: nunca escribirlos a mano en una pantalla.
  */
 
@@ -18,7 +18,7 @@ export type EstadoCorte = (typeof ESTADOS_CORTE)[number];
 export const ESTADOS_REQUISITO = ['Pendiente', 'Archivo Cargado', 'Observado', 'Validado'] as const;
 export type EstadoRequisito = (typeof ESTADOS_REQUISITO)[number];
 
-/** Solo existe en el dispositivo: corte en la cola sin conexión (§8.3). */
+/** Solo existe en el dispositivo: corte en la cola sin conexión (#8.3). */
 export const ESTADO_LOCAL = 'Pendiente de envío' as const;
 export type EstadoLocal = typeof ESTADO_LOCAL;
 

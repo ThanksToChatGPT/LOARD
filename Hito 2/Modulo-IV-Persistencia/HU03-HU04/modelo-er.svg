@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720" font-family="Arial, Helvetica, sans-serif" font-size="13">
+  <title>Modelo entidad-relación mínimo de HU-M03 y HU-M04</title>
+  <style>
+    .caja { fill: #FFFFFF; stroke: #4F7A96; stroke-width: 1.2; }
+    .cab { fill: #0B3C5D; }
+    .tit { fill: #FFFFFF; font-weight: bold; font-size: 14px; }
+    .campo { fill: #0A1F2E; }
+    .clave { fill: #0B3C5D; font-weight: bold; }
+    .ext { fill: #1F4A66; font-style: italic; }
+    .linea { stroke: #1F4A66; stroke-width: 1.5; fill: none; }
+    .card { fill: #0B3C5D; font-weight: bold; font-size: 13px; }
+    .verbo { fill: #1F4A66; font-size: 12px; font-style: italic; }
+  </style>
+  <rect width="960" height="720" fill="#F4F8FB"/>
+
+  <!-- Relaciones -->
+  <path class="linea" d="M170 150 V250 H350"/>
+  <text class="card" x="178" y="168">1</text><text class="card" x="334" y="244">N</text>
+  <text class="verbo" x="190" y="240">registra</text>
+
+  <path class="linea" d="M790 130 V250 H610"/>
+  <text class="card" x="798" y="148">1</text><text class="card" x="618" y="244">N</text>
+  <text class="verbo" x="700" y="240">contiene</text>
+
+  <path class="linea" d="M420 360 V390 H180 V420"/>
+  <text class="card" x="428" y="378">1</text><text class="card" x="188" y="414">N</text>
+  <text class="verbo" x="230" y="384">conserva versiones</text>
+
+  <path class="linea" d="M540 360 V390 H780 V420"/>
+  <text class="card" x="548" y="378">1</text><text class="card" x="788" y="414">N</text>
+  <text class="verbo" x="640" y="384">tiene soportes</text>
+
+  <path class="linea" d="M320 540 H350"/>
+  <text class="card" x="324" y="533">1</text>
+  <text class="card" x="321" y="557">0..1</text>
+  <text class="verbo" x="364" y="640">decide sobre una versión</text>
+
+  <!-- USUARIO -->
+  <rect class="caja" x="40" y="30" width="260" height="120" rx="6"/>
+  <path class="cab" d="M46 30 H294 A6 6 0 0 1 300 36 V60 H40 V36 A6 6 0 0 1 46 30 Z"/>
+  <text class="tit" x="54" y="51">USUARIO</text>
+  <text class="clave" x="54" y="82">id (PK)</text>
+  <text class="campo" x="54" y="102">nombre</text>
+  <text class="campo" x="54" y="122">correo (único)</text>
+  <text class="campo" x="54" y="142">rol</text>
+
+  <!-- PROYECTO -->
+  <rect class="caja" x="660" y="30" width="260" height="100" rx="6"/>
+  <path class="cab" d="M666 30 H914 A6 6 0 0 1 920 36 V60 H660 V36 A6 6 0 0 1 666 30 Z"/>
+  <text class="tit" x="674" y="51">PROYECTO</text>
+  <text class="clave" x="674" y="82">id (PK)</text>
+  <text class="campo" x="674" y="102">codigo</text>
+  <text class="campo" x="674" y="122">nombre</text>
+
+  <!-- CORTE -->
+  <rect class="caja" x="350" y="180" width="260" height="180" rx="6"/>
+  <path class="cab" d="M356 180 H604 A6 6 0 0 1 610 186 V210 H350 V186 A6 6 0 0 1 356 180 Z"/>
+  <text class="tit" x="364" y="201">CORTE</text>
+  <text class="clave" x="364" y="232">id (PK)</text>
+  <text class="campo" x="364" y="252">proyecto_id (FK)</text>
+  <text class="campo" x="364" y="272">residente_id (FK → USUARIO)</text>
+  <text class="campo" x="364" y="292">numero</text>
+  <text class="campo" x="364" y="312">frente</text>
+  <text class="campo" x="364" y="332">estado</text>
+  <text class="campo" x="364" y="352">version_actual</text>
+
+  <!-- VERSION_CORTE -->
+  <rect class="caja" x="40" y="420" width="280" height="220" rx="6"/>
+  <path class="cab" d="M46 420 H314 A6 6 0 0 1 320 426 V450 H40 V426 A6 6 0 0 1 46 420 Z"/>
+  <text class="tit" x="54" y="441">VERSION_CORTE</text>
+  <text class="clave" x="54" y="472">id (PK)</text>
+  <text class="campo" x="54" y="492">corte_id (FK)</text>
+  <text class="campo" x="54" y="512">version</text>
+  <text class="campo" x="54" y="532">periodo_inicio · periodo_fin</text>
+  <text class="campo" x="54" y="552">estado</text>
+  <text class="campo" x="54" y="572">motivo</text>
+  <text class="campo" x="54" y="592">autor_id (FK → USUARIO)</text>
+  <text class="campo" x="54" y="612">fecha</text>
+  <text class="ext" x="54" y="632">Detalles: ver HU-M02</text>
+
+  <!-- REVISION_CORTE -->
+  <rect class="caja" x="350" y="440" width="270" height="180" rx="6"/>
+  <path class="cab" d="M356 440 H614 A6 6 0 0 1 620 446 V470 H350 V446 A6 6 0 0 1 356 440 Z"/>
+  <text class="tit" x="364" y="461">REVISION_CORTE</text>
+  <text class="clave" x="364" y="492">id (PK)</text>
+  <text class="campo" x="364" y="512">version_corte_id (FK)</text>
+  <text class="campo" x="364" y="532">decision</text>
+  <text class="campo" x="364" y="552">observacion</text>
+  <text class="campo" x="364" y="572">causas</text>
+  <text class="campo" x="364" y="592">director_id (FK → USUARIO)</text>
+  <text class="campo" x="364" y="612">fecha</text>
+
+  <!-- SOPORTE_CORTE -->
+  <rect class="caja" x="650" y="420" width="280" height="240" rx="6"/>
+  <path class="cab" d="M656 420 H924 A6 6 0 0 1 930 426 V450 H650 V426 A6 6 0 0 1 656 420 Z"/>
+  <text class="tit" x="664" y="441">SOPORTE_CORTE</text>
+  <text class="clave" x="664" y="472">id (PK)</text>
+  <text class="campo" x="664" y="492">corte_id (FK)</text>
+  <text class="campo" x="664" y="512">nombre_original</text>
+  <text class="campo" x="664" y="532">tipo (foto | pdf)</text>
+  <text class="campo" x="664" y="552">tamano_bytes</text>
+  <text class="campo" x="664" y="572">clave_almacenamiento (S3)</text>
+  <text class="campo" x="664" y="592">subido_por (FK) · fecha_subida</text>
+  <text class="campo" x="664" y="612">retirado_por (FK) · fecha_retiro</text>
+  <text class="ext" x="664" y="638">Retiro lógico: no se borra</text>
+
+  <text class="verbo" x="40" y="700">PK: clave primaria · FK: clave foránea · 1–N: un registro tiene varios relacionados</text>
+</svg>

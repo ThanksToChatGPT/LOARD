@@ -83,7 +83,8 @@ function EditorCorte({ corte }: { corte?: CorteDemo }) {
       toast.show({ message: corte ? `Corte #${saved.numero} de ejemplo guardado. Versión ${saved.versiones[0].version}.`
         : fallidos.length ? `Corte #${saved.numero} de ejemplo guardado. No se pudo adjuntar: ${fallidos.map(item => `«${item.archivo.name}»`).join(', ')}. Agrégalo de nuevo en «Soportes del corte».`
         : cargados ? `Corte #${saved.numero} de ejemplo guardado con ${plural(cargados, 'soporte', 'soportes')}.`
-        : `Corte #${saved.numero} de ejemplo guardado. Puedes agregar fotografías y PDF en «Soportes del corte».` });
+        : `Corte #${saved.numero} de ejemplo guardado. Puedes agregar fotografías y PDF en «Soportes del corte».`,
+        actionLabel: 'Ver historial', onAction: () => navigate(`/cortes/${saved.id}?vista=historial`) });
       navigate(`/cortes/${saved.id}`, { replace: true });
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'No se pudo guardar el ejemplo. Intenta de nuevo.'); }
     finally { setGuardando(false); }

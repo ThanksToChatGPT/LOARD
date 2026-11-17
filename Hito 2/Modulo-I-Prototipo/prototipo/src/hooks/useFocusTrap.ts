@@ -14,7 +14,7 @@ interface Opciones {
 }
 
 /**
- * Reglas de teclado para diálogos, drawers y menú temporal (design.md §11.4):
+ * Reglas de teclado para diálogos, drawers y menú temporal (design.md #11.4):
  * al abrir, el foco entra; `Tab` circula solo adentro; `Esc` cierra;
  * al cerrar, el foco vuelve al control que lo abrió.
  */

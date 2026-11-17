@@ -19,8 +19,8 @@ interface Opciones {
 }
 
 /**
- * Cargas simuladas hacia el almacenamiento (§7.2): progreso de cada archivo y «Confirmando carga…».
- * Sin señal, los archivos esperan en cola y se suben solos al recuperar la conexión (§8.3).
+ * Cargas simuladas hacia el almacenamiento (#7.2): progreso de cada archivo y «Confirmando carga…».
+ * Sin señal, los archivos esperan en cola y se suben solos al recuperar la conexión (#8.3).
  */
 export function useCargasSimuladas({ enLinea, alConfirmar, conservar = false }: Opciones) {
   const [cargas, setCargas] = useState<CargaSimulada[]>([]);

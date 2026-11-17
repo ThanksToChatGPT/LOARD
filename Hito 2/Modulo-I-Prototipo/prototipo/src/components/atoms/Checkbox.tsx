@@ -8,7 +8,7 @@ export interface CheckboxProps extends Omit<ComponentProps<'input'>, 'type' | 's
   description?: ReactNode;
   size?: ControlSize;
   /**
-   * Bloqueada por regla de negocio (ej. trabajador no habilitado, §6.2A).
+   * Bloqueada por regla de negocio (ej. trabajador no habilitado, #6.2A).
    * Sigue recibiendo foco; al intentar marcarla no cambia y avisa con `onBlockedAttempt`.
    */
   blocked?: boolean;

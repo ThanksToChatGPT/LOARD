@@ -1,0 +1,74 @@
+[
+  [
+    "Claro",
+    "on-surface / surface",
+    "15.75:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Claro",
+    "on-surface-muted / surface-container",
+    "9.42:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Claro",
+    "on-primary / primary",
+    "11.55:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Claro",
+    "error / error-subtle",
+    "8.39:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Claro",
+    "warning / warning-subtle",
+    "8.04:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Claro",
+    "success / success-subtle",
+    "8.52:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Oscuro",
+    "on-surface / surface",
+    "16.03:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Oscuro",
+    "on-surface-muted / surface-container",
+    "9.54:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Oscuro",
+    "on-primary / primary",
+    "10.66:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Oscuro",
+    "error / error-subtle",
+    "8.89:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Oscuro",
+    "warning / warning-subtle",
+    "10.35:1",
+    "Supera 4,5:1"
+  ],
+  [
+    "Oscuro",
+    "success / success-subtle",
+    "10.00:1",
+    "Supera 4,5:1"
+  ]
+]

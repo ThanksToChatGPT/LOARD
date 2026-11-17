@@ -8,7 +8,7 @@ export interface ProgressBarProps {
   /** De 0 a 100. Sin valor, la barra es indeterminada. */
   value?: number;
   tone?: ProgressTone;
-  /** `thin`: 2 px, para recargas en segundo plano sobre una tabla (§7.1). */
+  /** `thin`: 2 px, para recargas en segundo plano sobre una tabla (#7.1). */
   size?: 'default' | 'thin';
   /** Muestra la etiqueta y el porcentaje sobre la barra. */
   showLabel?: boolean;
