@@ -12,9 +12,14 @@
 \usepackage{enumitem}
 \usepackage{tikz}
 \usetikzlibrary{backgrounds}
-\usepackage[hidelinks]{hyperref}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=[HTML]{0B3A5C}}
 
 \graphicspath{{capturas/}}
+
+% Enlaces al prototipo publicado en GitHub Pages.
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
 \renewcommand{\arraystretch}{1.35}
@@ -70,15 +75,13 @@
 \author{}
 \date{}
 
-\usepackage{pdfpages}
-
 \begin{document}
 \maketitle
 
 \section{Introducción}
 
 
-Loard se usa en dos lugares muy distintos: en la \textbf{oficina}, desde un computador, y en la \textbf{obra}, desde un celular. Para que funcione bien en los dos casos, desde el diseño se definió una \textbf{retícula}: una cuadrícula invisible de columnas sobre la que se ubica todo el contenido de la pantalla (títulos, tarjetas, tablas y formularios). Es la misma técnica que usan la mayoría de las aplicaciones y páginas web actuales para verse bien en cualquier dispositivo.
+Loard se usa en dos lugares muy distintos: en la \textbf{oficina}, desde un computador, y en la \textbf{obra}, desde un celular. Para que funcione bien en los dos casos, desde el diseño se definió una \textbf{retícula}: una cuadrícula invisible de columnas sobre la que se ubica todo el contenido de la pantalla (títulos, tarjetas, tablas y formularios). Es la técnica que usan la mayoría de las aplicaciones y páginas web actuales para verse bien en cualquier dispositivo.
 
 La retícula cambia según el ancho de la pantalla. En una pantalla grande hay más columnas y los elementos se ponen uno al lado del otro; en una pequeña hay menos columnas y los elementos se apilan uno debajo del otro.
 
@@ -104,7 +107,24 @@ Las pantallas principales del prototipo en dos tamaños, una al lado de la otra:
   \item \textbf{Móvil}: pantalla de celular (390 píxeles de ancho, el tamaño de un teléfono común).
 \end{itemize}
 
-Todas las capturas se tomaron del prototipo en funcionamiento.
+Todas las capturas se tomaron del prototipo en funcionamiento. Cada pantalla se puede abrir en el prototipo publicado en \href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}}.
+\begin{center}
+\begin{tabular}{|>{\raggedright\arraybackslash}m{5.4cm}|>{\raggedright\arraybackslash}m{3.4cm}|>{\raggedright\arraybackslash}m{6.6cm}|}
+\hline
+\rowcolor{barra}
+\textbf{Pantalla} & \textbf{Historia} & \textbf{Ruta} \\ \hline
+Cortes de obra & HU-M02 & \app{/cortes} \\ \hline
+Personal SST & HU-M09 & \app{/sst} \\ \hline
+Registrar corte de obra & HU-M02 y HU-M10 & \app{/cortes/nuevo} \\ \hline
+Iniciar sesión & HU-M01 & \app{/acceso} \\ \hline
+Soportes del corte y visor & HU-M03 & \app{/cortes/ejemplo-3} \\ \hline
+Revisión del Director & HU-M04 & \app{/cortes} (perfil Director) \\ \hline
+Checklist y documentos del SIG & HU-M05 y HU-M06 & \app{/dossier}, \app{/dossier/documentos} \\ \hline
+Registrar ensayo NDT & HU-M07 & \app{/dossier/ensayos/nuevo} \\ \hline
+Avance y entrega del dossier & HU-M08 & \app{/dossier/avance} \\ \hline
+Bitácora y tablero & HU-M11 y HU-M12 & \app{/dossier/bitacora}, \app{/dashboard} \\ \hline
+\end{tabular}
+\end{center}
 
 \newpage
 \section{Pantalla principal: Cortes de obra}
@@ -177,6 +197,167 @@ Formulario que llena el residente para reportar lo ejecutado en el periodo. Es l
 \end{itemize}}
 
 \newpage
+\section{Iniciar sesión}
+
+Primera pantalla de todos los perfiles (\app{/acceso}). El perfil, el correo y la contraseña de ejemplo quedan visibles en los dos tamaños.
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{acceso-escritorio} & \movil{6.9cm}{acceso-movil} \\[2pt]
+\pie{Escritorio} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Una sola columna:} en escritorio la presentación de Loard y el formulario van lado a lado; en el celular la presentación se reduce a una franja arriba y el formulario ocupa todo el ancho debajo.
+  \item \textbf{Campos completos:} el selector de perfil, el correo y la contraseña conservan su tamaño de toque y se leen enteros.
+\end{itemize}}
+
+\newpage
+\section{Soportes del corte y visor}
+
+El residente adjunta fotos y PDF al corte (HU-M03) y cualquiera de los perfiles los abre en el visor sin salir del corte.
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{soportes-cargados-escritorio} & \movil{6.9cm}{soportes-cargados-movil} \\[2pt]
+\pie{Escritorio: soportes cargados} & \pie{Móvil}
+\end{tabular}
+
+\medskip
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{visor-escritorio} & \movil{6.9cm}{visor-movil} \\[2pt]
+\pie{Escritorio: visor como panel derecho} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Botones de cada archivo:} en escritorio ``Ver'' y ``Quitar'' van a la derecha del archivo; en el celular pasan debajo del nombre.
+  \item \textbf{Visor:} desde 1024 px es un panel a la derecha y el corte sigue visible a la izquierda; en el celular ocupa toda la pantalla y se cierra con ``Cerrar visor''.
+\end{itemize}}
+
+\newpage
+\section{Revisión del Director}
+
+El Director encuentra los cortes pendientes y los visa o devuelve (HU-M04).
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{bandeja-director-escritorio} & \movil{6.9cm}{bandeja-director-movil} \\[2pt]
+\pie{Escritorio: bandeja filtrada} & \pie{Móvil}
+\end{tabular}
+
+\medskip
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{revision-escritorio} & \movil{6.9cm}{revision-movil} \\[2pt]
+\pie{Escritorio: barra de decisión al pie} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{1cm}}c@{}}
+\movil{6.9cm}{devolucion-movil} & \movil{6.9cm}{visado-confirmacion-movil} \\[2pt]
+\pie{Devolución en el celular} & \pie{Confirmación del visado}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Bandeja:} la tabla de cortes pasa a una tarjeta por corte.
+  \item \textbf{Barra de decisión:} en escritorio es una fila con los textos completos; en el celular quedan dos botones del mismo ancho, ``Devolver'' y ``Visar corte'', fijos al pie. Solo la fila de botones queda fija, para no tapar los datos que se revisan.
+  \item \textbf{Diálogos:} la devolución ocupa el ancho, las causas frecuentes se apilan y el contenido se desplaza dentro del diálogo.
+\end{itemize}}
+
+\newpage
+\section{Checklist y documentos del dossier}
+
+Calidad arma la checklist de las seis carpetas y publica los documentos del SIG (HU-M05 y HU-M06).
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{checklist-escritorio} & \movil{6.9cm}{checklist-movil} \\[2pt]
+\pie{Escritorio: checklist} & \pie{Móvil}
+\end{tabular}
+
+\medskip
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{documentos-escritorio} & \movil{6.9cm}{documentos-movil} \\[2pt]
+\pie{Escritorio: documentos del SIG} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Pestañas del dossier:} pasan de una fila a dos, sin salirse de la pantalla.
+  \item \textbf{Filtros por estado:} los botones con el conteo de cada estado se acomodan en varias filas y conservan su tamaño de toque.
+  \item \textbf{Acciones principales:} ``Agregar requisito'' y ``Publicar documento'' bajan debajo del título y ocupan el ancho disponible.
+  \item \textbf{Documentos:} el buscador y el filtro de carpeta quedan uno debajo del otro.
+\end{itemize}}
+
+\newpage
+\section{Registrar ensayo NDT}
+
+Calidad registra el informe del laboratorio ligado a una junta (HU-M07).
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{ndt-escritorio} & \movil{6.9cm}{ndt-movil} \\[2pt]
+\pie{Escritorio} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Campos:} en escritorio van en dos columnas; en el celular, en una.
+  \item \textbf{Archivo:} la selección del PDF y su progreso se conservan completos.
+\end{itemize}}
+
+\newpage
+\section{Avance y entrega del dossier}
+
+Avance global, seis carpetas, plazo del acta y exportación (HU-M08).
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{avance-escritorio} & \movil{6.9cm}{avance-movil} \\[2pt]
+\pie{Escritorio} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Carpetas:} las seis tarjetas se muestran en tres columnas o en una, según el espacio disponible.
+  \item \textbf{Plazo primero:} la tarjeta del plazo de 10 días, con la fecha límite y los días restantes, queda arriba, antes del porcentaje validado y de las carpetas.
+\end{itemize}}
+
+\newpage
+\section{Bitácora y tablero del proyecto}
+
+Calidad consulta la bitácora de un registro (HU-M11) y Director o Gerencia el tablero del proyecto (HU-M12). Las tarjetas se distribuyen en una columna por debajo de 600 px, en dos desde 600 px y en tres desde 1024 px.
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{bitacora-escritorio} & \movil{6.9cm}{bitacora-movil} \\[2pt]
+\pie{Escritorio: bitácora} & \pie{Móvil}
+\end{tabular}
+
+\medskip
+\begin{tabular}{@{}c@{\hspace{0.7cm}}c@{}}
+\escritorio{6.9cm}{tablero-escritorio} & \movil{6.9cm}{tablero-movil} \\[2pt]
+\pie{Escritorio: tablero} & \pie{Móvil}
+\end{tabular}
+\end{center}
+
+\cambios{
+\begin{itemize}
+  \item \textbf{Controles de consulta:} el proyecto y ``Actualizar consulta'' pasan de una fila a una columna.
+  \item \textbf{Indicadores:} avance físico, tiempo contractual y dossier validado quedan uno debajo del otro, con la cifra y la barra completas.
+  \item \textbf{Detalle de carpeta:} el panel lateral de requisitos ocupa toda la pantalla, como el visor de soportes.
+\end{itemize}}
+
+\newpage
 \section{Resumen}
 
 \begin{center}
@@ -191,14 +372,11 @@ Tablas & Filas y columnas. & Una tarjeta por registro. \\ \hline
 Formularios & Centrados, con campos lado a lado. & Una sola columna. \\ \hline
 Botones y campos & Tamaño normal para el ratón. & Más grandes, para tocar con el dedo. \\ \hline
 Botones del formulario & Fijos abajo, uno al lado del otro. & Fijos abajo, uno encima del otro. \\ \hline
+Visor y paneles de detalle & Panel a la derecha; la pantalla sigue visible. & Pantalla completa con botón para cerrar. \\ \hline
+Barra de decisión del Director & Fila con los textos completos. & Dos botones del mismo ancho, fijos al pie. \\ \hline
+Tarjetas de carpetas e indicadores & Tres columnas. & Una columna. \\ \hline
 Mover la pantalla hacia los lados & Nunca es necesario. & Nunca es necesario. \\ \hline
 \end{tabular}
 \end{center}
-
-En resumen, la persona que trabaja en la oficina ve toda la información de un vistazo, y la que está en la obra puede consultar y registrar datos desde su celular sin perder información ni acciones.
-
-% APORTE HU01-HU02-HU07-HU08
-\clearpage
-\includepdf[pages=-]{../../Aportes-HU01-HU02-HU07-HU08/02-responsivo.pdf}
 
 \end{document}
