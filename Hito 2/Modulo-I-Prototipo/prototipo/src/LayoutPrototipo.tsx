@@ -1,4 +1,4 @@
-import { ClipboardList, FolderCheck, HardHat, History, Layers, LayoutDashboard, LogOut, Moon, Sun, Wifi, WifiOff } from 'lucide-react';
+import { ClipboardList, FolderCheck, HardHat, History, Layers, LayoutDashboard, Moon, Power, Sun, Wifi, WifiOff } from 'lucide-react';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { AppShell, Banner, ConnectionIndicator, IconButton, OfflineQueueBanner } from '@/components';
@@ -88,7 +88,7 @@ export function LayoutPrototipo({ usuario, mensajeSinSenal, proyecto }: LayoutPr
             <IconButton label={tema === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'} onClick={alternar}>
               {tema === 'dark' ? <Sun aria-hidden="true" className="h-5 w-5" /> : <Moon aria-hidden="true" className="h-5 w-5" />}
             </IconButton>
-            <IconButton label="Cerrar sesión de ejemplo" onClick={() => { salir(); navigate('/acceso', { replace: true }); }}><LogOut className="h-5 w-5" /></IconButton>
+            <IconButton label="Cerrar sesión de ejemplo" onClick={() => { salir(); navigate('/acceso', { replace: true }); }}><Power aria-hidden="true" className="h-5 w-5" /></IconButton>
           </>
         ),
       }}
