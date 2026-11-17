@@ -1,0 +1,650 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.3}
+\setlist{nosep,leftmargin=1.6em}
+\definecolor{marca}{HTML}{0B3A5C}
+\definecolor{barra}{HTML}{E6ECF1}
+\hypersetup{colorlinks=true,linkcolor=marca,urlcolor=marca}
+
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
+\newcommand{\etiqueta}[1]{\colorbox{barra}{\textbf{\color{marca}#1}}}
+
+\title{Historias de usuario del MVP\\[0.3em]
+\large Loard - Hito 1}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+Este documento recoge las 12 historias de usuario que componen el MVP (Release 1) del sistema de información para Loard Construcciones S.A.S. En total suman 47 puntos de esfuerzo.
+
+Cada historia indica la pantalla que la resuelve en el prototipo de alta fidelidad del Hito 2, publicado en \href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}}. La correspondencia completa entre historias y pantallas está en la \emph{Cobertura de HU} del Módulo I del Hito 2.
+
+El MVP ataca dos problemas concretos que hoy le generan a la empresa dolores de cabeza y pérdida de tiempo: entregar a tiempo el dossier de calidad que exige Chevron, y evitar que alguien sin la habilitación de SST al día termine asignado a un frente de obra.
+
+\section{Por qué estas historias}
+
+La planeación anterior del proyecto no fue buena y eso nos dejó sin una base clara sobre la cual construir. Para poder avanzar, replanteamos el alcance y definimos estas 12 historias como un MVP acotado. El objetivo es poder avanzar, construir los prototipos y llevarlos a pruebas de usabilidad.
+
+Este no es el backlog definitivo. A medida que iteremos y recojamos lo que salga de las pruebas, iremos agregando más historias de usuario.
+
+\section{Resumen}
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{6.1cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{1.7cm} >{\centering\arraybackslash}p{1.2cm}}
+\toprule
+\textbf{Código} & \textbf{Historia} & \textbf{Rol principal} & \textbf{Prioridad} & \textbf{Puntos} \\ \midrule
+HU-M01 & Iniciar sesión y ver solo lo que corresponde al rol & Todos los usuarios & MUST & 3 \\
+HU-M02 & Registrar el corte de obra & Ingeniero Residente & MUST & 5 \\
+HU-M03 & Adjuntar fotografías y soportes al corte & Ingeniero Residente & MUST & 2 \\
+HU-M04 & Visar o devolver el corte & Director de Proyectos & MUST & 3 \\
+HU-M05 & Publicar documentos vigentes y armar la checklist & Coordinación SIG / Calidad & MUST & 5 \\
+HU-M06 & Cargar soportes en la checklist y buscar documentos & Residente / Calidad & MUST & 3 \\
+HU-M07 & Registrar ensayos NDT ligados a una junta & Calidad & MUST & 5 \\
+HU-M08 & Monitorear el avance del dossier y exportarlo & Calidad / Gerencia & MUST & 5 \\
+HU-M09 & Registrar cursos y aptitud médica con semáforo & Coordinación SST & MUST & 5 \\
+HU-M10 & Asignar personal al corte con bloqueo SST & Ingeniero Residente & MUST & 3 \\
+HU-M11 & Consultar la bitácora de cambios & Coordinación SIG / Calidad & MUST & 3 \\
+HU-M12 & Consultar el tablero de avance & Director / Gerencia & MUST & 5 \\
+ & \textbf{Total} &  &  & \textbf{47} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\newpage
+\section*{HU-M01: Iniciar sesión y ver solo lo que corresponde al rol}
+\addcontentsline{toc}{section}{HU-M01: Iniciar sesión y ver solo lo que corresponde al rol}
+\etiqueta{MUST}\quad\etiqueta{3 puntos}\quad Pantalla en el prototipo: \app{/acceso}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Control de acceso por roles. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Usuario de Loard (Ingeniero Residente, Director de Proyectos, Coordinación SIG/Calidad, Responsable SST o Gerencia). \\
+Quiero & iniciar sesión y encontrar únicamente las pantallas que tienen que ver con mi trabajo. \\
+Para & no perderme entre opciones que no uso y que nadie toque información que no le corresponde. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Con usuario y contraseña correctos, el sistema me deja entrar y me lleva a la pantalla de inicio de mi rol.
+\item Si los datos están mal, veo un mensaje claro de error que no dice cuál de los dos campos falló.
+\item El menú solo muestra los módulos autorizados para mi rol.
+\item Si intento abrir por dirección directa una pantalla que no es de mi rol, el sistema no me deja y me avisa que no tengo permiso.
+\item No existen cuentas para clientes externos: solo entra personal de Loard.
+\item Puedo cerrar sesión cuando quiera y, después de hacerlo, nadie puede volver a las pantallas sin autenticarse de nuevo.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M02: Registrar el corte de obra}
+\addcontentsline{toc}{section}{HU-M02: Registrar el corte de obra}
+\etiqueta{MUST}\quad\etiqueta{5 puntos}\quad Pantalla en el prototipo: \app{/cortes}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Captura de cortes de obra. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Ingeniero Residente. \\
+Quiero & registrar desde mi portátil el corte semanal o mensual con el avance físico por actividad, las horas-hombre trabajadas y los insumos consumidos. \\
+Para & dejar el avance del frente en un solo lugar y dejar de reportarlo por WhatsApp. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Puedo crear un corte eligiendo el proyecto, el frente de obra y el periodo que cubre (semanal o mensual).
+\item Por cada actividad registro el avance físico, las horas-hombre y los insumos consumidos.
+\item El sistema no acepta avances negativos ni acumulados por encima del~100\,\% de la actividad.
+\item Puedo guardar el corte como borrador y terminarlo después sin perder lo que llevaba.
+\item Cuando lo envío, el corte queda pendiente de visado y le aparece al Director de Proyectos.
+\item Tener un corte pendiente de visado no me impide registrar el siguiente.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M03: Adjuntar fotografías y soportes al corte}
+\addcontentsline{toc}{section}{HU-M03: Adjuntar fotografías y soportes al corte}
+\etiqueta{MUST}\quad\etiqueta{2 puntos}\quad Pantalla en el prototipo: \app{/cortes/ejemplo-3}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Captura de cortes de obra. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Ingeniero Residente. \\
+Quiero & adjuntar fotografías y soportes en PDF al corte que registré. \\
+Para & que lo reportado tenga evidencia y quien lo revise no tenga que pedírmela aparte. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Puedo adjuntar una o varias fotografías y archivos PDF a un corte.
+\item Si subo un archivo de otro tipo o demasiado pesado, el sistema lo rechaza y me explica por qué.
+\item Los adjuntos se ven listados dentro del corte y se pueden abrir o descargar.
+\item Puedo quitar un adjunto mientras el corte no haya sido visado.
+\item El Director de Proyectos ve los mismos adjuntos cuando revisa el corte.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M04: Visar o devolver el corte}
+\addcontentsline{toc}{section}{HU-M04: Visar o devolver el corte}
+\etiqueta{MUST}\quad\etiqueta{3 puntos}\quad Pantalla en el prototipo: \app{/cortes}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Captura de cortes de obra y visado. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Director de Proyectos. \\
+Quiero & revisar cada corte y aprobarlo (visarlo) o devolverlo con observaciones puntuales. \\
+Para & asegurar que lo reportado es correcto sin frenar el trabajo en el frente. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Veo la lista de cortes pendientes de visado, con su proyecto, frente y periodo.
+\item Al abrir un corte veo el avance, las horas-hombre, los insumos y los adjuntos.
+\item Puedo visar el corte, y desde ese momento queda aprobado y ya no se puede modificar.
+\item Puedo devolverlo, pero solo si escribo la observación que explica qué hay que corregir.
+\item El residente ve el corte devuelto junto con mi observación y puede corregirlo y reenviarlo.
+\item Mientras un corte está pendiente o devuelto, el residente puede seguir registrando cortes nuevos en ese frente.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M05: Publicar documentos vigentes y armar la checklist}
+\addcontentsline{toc}{section}{HU-M05: Publicar documentos vigentes y armar la checklist}
+\etiqueta{MUST}\quad\etiqueta{5 puntos}\quad Pantalla en el prototipo: \app{/dossier}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Dossier de calidad (checklist). \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Coordinación SIG / Calidad. \\
+Quiero & publicar las versiones vigentes de los formatos del SIG y definir los ítems que exige la checklist en cada una de las 6 carpetas contractuales. \\
+Para & que todos trabajen con el formato correcto y el dossier se vaya armando desde el primer día, no al cierre del contrato. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Puedo publicar un documento del SIG indicando su código, nombre y versión.
+\item Al publicar una versión nueva, la anterior deja de aparecer como vigente pero se conserva en el historial.
+\item Cada proyecto activo tiene su checklist organizada en las 6 carpetas: documentación contractual y legal, actas de corte de obra, planos de ingeniería, certificados de materiales, equipos y NDT, informes técnicos de obra y memorias de cálculo.
+\item Puedo agregar, editar o retirar ítems requeridos dentro de cada carpeta.
+\item Todo ítem nuevo arranca en estado Pendiente.
+\item Solo Coordinación SIG / Calidad puede publicar documentos y modificar la estructura de la checklist.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M06: Cargar soportes en la checklist y buscar documentos}
+\addcontentsline{toc}{section}{HU-M06: Cargar soportes en la checklist y buscar documentos}
+\etiqueta{MUST}\quad\etiqueta{3 puntos}\quad Pantalla en el prototipo: \app{/dossier/documentos}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Dossier de calidad (checklist). \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Ingeniero Residente o integrante de Calidad. \\
+Quiero & cargar el soporte PDF en cada ítem de la checklist y buscar con filtros los documentos vigentes. \\
+Para & ir completando el dossier a medida que avanza la obra y encontrar rápido el formato que necesito. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Puedo cargar un PDF en un ítem de la checklist y el ítem pasa a estado Archivo Cargado.
+\item Calidad puede marcar el ítem como Validado, o como Observado dejando escrito el motivo.
+\item Si un ítem queda Observado, puedo reemplazar el archivo y el ítem vuelve a Archivo Cargado.
+\item Puedo buscar documentos vigentes filtrando al menos por nombre o código, carpeta y estado.
+\item La búsqueda solo me muestra versiones vigentes, nunca las obsoletas.
+\item Si no hay resultados, el sistema lo dice con claridad en lugar de mostrar una lista vacía sin explicación.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M07: Registrar ensayos NDT ligados a una junta}
+\addcontentsline{toc}{section}{HU-M07: Registrar ensayos NDT ligados a una junta}
+\etiqueta{MUST}\quad\etiqueta{5 puntos}\quad Pantalla en el prototipo: \app{/dossier/ensayos}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Dossier de calidad (checklist). \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Integrante de Calidad. \\
+Quiero & registrar cada ensayo no destructivo de laboratorio asociado a la junta soldada que se inspeccionó y vincularlo a la checklist. \\
+Para & tener la trazabilidad de cada junta y que el reporte quede de una vez dentro del dossier. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Puedo registrar un ensayo indicando la junta soldada, el tipo de ensayo, la fecha, el laboratorio y el resultado.
+\item El sistema no deja guardar un ensayo sin junta asociada.
+\item Puedo adjuntar el reporte PDF que entrega el laboratorio.
+\item El ensayo queda vinculado al ítem correspondiente de la carpeta 4 (certificados de materiales, equipos y NDT).
+\item Desde una junta puedo ver todos los ensayos que se le han hecho.
+\item Un ensayo con resultado rechazado queda visible como tal y no cuenta como requisito cumplido.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M08: Monitorear el avance del dossier y exportarlo}
+\addcontentsline{toc}{section}{HU-M08: Monitorear el avance del dossier y exportarlo}
+\etiqueta{MUST}\quad\etiqueta{5 puntos}\quad Pantalla en el prototipo: \app{/dossier/avance}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Dossier de calidad (checklist). \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Integrante de Calidad o de Gerencia. \\
+Quiero & ver el porcentaje de avance de las 6 carpetas, saber qué requisitos faltan, controlar los días que quedan del plazo y exportar el paquete validado. \\
+Para & radicar el dossier dentro de los 10 días calendario posteriores a la aceptación del acta de facturación. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Veo el porcentaje de avance de cada carpeta y el global, y se actualizan apenas cambia el estado de un ítem.
+\item El sistema resalta los ítems que faltan (Pendiente u Observado) para que sepa exactamente qué perseguir.
+\item Al registrar la fecha de aceptación del acta de facturación, arranca la cuenta regresiva de 10 días calendario.
+\item Los días restantes se muestran siempre a la vista y la alerta se hace más notoria a medida que se acerca el vencimiento.
+\item El cierre y la exportación solo se habilitan cuando el~100\,\% de los ítems está Validado.
+\item La exportación genera un archivo .ZIP organizado en las 6 carpetas contractuales.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M09: Registrar cursos y aptitud médica con semáforo}
+\addcontentsline{toc}{section}{HU-M09: Registrar cursos y aptitud médica con semáforo}
+\etiqueta{MUST}\quad\etiqueta{5 puntos}\quad Pantalla en el prototipo: \app{/sst}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Seguridad y Salud en el Trabajo (SST). \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Responsable de SST. \\
+Quiero & registrar la vigencia de los cursos críticos de cada trabajador y su concepto médico ocupacional, con un semáforo que me avise antes de que algo se venza. \\
+Para & renovar a tiempo y que nadie llegue a obra con la habilitación vencida. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Por cada trabajador registro sus cursos críticos (trabajo en alturas, espacios confinados, inducciones) con fecha de vencimiento.
+\item Registro el concepto médico únicamente como Habilitado o No habilitado.
+\item El sistema no pide ni guarda historias clínicas ni diagnósticos, por reserva legal.
+\item El semáforo muestra verde cuando todo está vigente, una alerta preventiva cuando faltan 30 días o menos, una alerta más fuerte cuando faltan 15 días o menos y rojo cuando ya venció.
+\item Un trabajador con algún curso vencido o con concepto No habilitado aparece como no habilitado para obra.
+\item Puedo filtrar la lista de personal por estado del semáforo para ver primero a quienes están por vencerse.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M10: Asignar personal al corte con bloqueo SST}
+\addcontentsline{toc}{section}{HU-M10: Asignar personal al corte con bloqueo SST}
+\etiqueta{MUST}\quad\etiqueta{3 puntos}\quad Pantalla en el prototipo: \app{/cortes/nuevo/personal}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Captura de cortes de obra / SST. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Ingeniero Residente. \\
+Quiero & asignar al corte de obra el personal que trabajó en el frente, y que el sistema no me deje escoger a quien no esté habilitado. \\
+Para & no exponer a la empresa ni al trabajador por asignar a alguien con la habilitación vencida. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Al asignar personal, veo a cada trabajador con el estado de su semáforo SST.
+\item No puedo seleccionar a un trabajador vencido o No habilitado: el bloqueo es terminante y no hay forma de saltárselo.
+\item El sistema me dice por qué está bloqueado (curso vencido o concepto médico), sin mostrar información clínica.
+\item Sí puedo asignar a quienes están en alerta de 30 o 15 días, y la advertencia queda a la vista.
+\item Si un trabajador ya asignado se vence antes de que envíe el corte, el sistema me avisa y no me deja enviarlo con esa persona.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M11: Consultar la bitácora de cambios}
+\addcontentsline{toc}{section}{HU-M11: Consultar la bitácora de cambios}
+\etiqueta{MUST}\quad\etiqueta{3 puntos}\quad Pantalla en el prototipo: \app{/dossier/bitacora}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Trazabilidad y seguimiento directivo. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Coordinación SIG / Calidad. \\
+Quiero & consultar el historial de cambios de estado y aprobaciones de un registro. \\
+Para & saber quién hizo qué y cuándo, y poder responder con respaldo ante una auditoría. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item Cada cambio de estado o de documento queda guardado con fecha, hora y autor.
+\item Desde un corte, un ítem de la checklist o un documento puedo abrir su historial en orden cronológico.
+\item El historial muestra el estado anterior, el nuevo y la observación, cuando la hubo.
+\item Nadie puede editar ni borrar entradas de la bitácora.
+\item Puedo filtrar el historial por rango de fechas y por autor.
+\end{enumerate}
+
+
+\newpage
+\section*{HU-M12: Consultar el tablero de avance}
+\addcontentsline{toc}{section}{HU-M12: Consultar el tablero de avance}
+\etiqueta{MUST}\quad\etiqueta{5 puntos}\quad Pantalla en el prototipo: \app{/dashboard}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Módulo & Trazabilidad y seguimiento directivo. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Descripción de la historia de usuario}
+
+\begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+\toprule
+Como & Director de Proyectos o integrante de Gerencia. \\
+Quiero & ver en un tablero el avance físico de cada proyecto frente al tiempo contractual transcurrido, junto con el progreso del dossier. \\
+Para & detectar a tiempo los proyectos atrasados y decidir dónde intervenir sin tener que pedir informes. \\
+\bottomrule
+\end{tabular}
+
+\subsection*{Criterios de aceptación}
+
+\begin{enumerate}
+\item El tablero lista los proyectos activos con su porcentaje de avance físico y el porcentaje de tiempo contractual transcurrido.
+\item El avance físico se calcula con los cortes visados.
+\item Se distingue a simple vista cuándo un proyecto va por debajo de lo que debería según el tiempo transcurrido.
+\item Cada proyecto muestra el porcentaje de avance de la checklist del dossier.
+\item Puedo entrar a un proyecto para ver el detalle de sus cortes y de sus carpetas.
+\item El tablero es solo de consulta: desde ahí no se modifica ningún dato.
+\end{enumerate}
+
+% =====================================================================
+% Historias nuevas a partir de la validación RITE del Hito 2.
+% \historia{código}{título}{prioridad}{puntos}{módulo}{como}{quiero}{para}{criterios}
+\newcommand{\historia}[9]{%
+  \newpage
+  \section*{#1: #2}
+  \addcontentsline{toc}{section}{#1: #2}
+  \etiqueta{#3}\quad\etiqueta{#4 puntos}\quad Origen: validación RITE del Hito 2
+
+  \begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+  \toprule
+  Módulo & #5 \\
+  \bottomrule
+  \end{tabular}
+
+  \subsection*{Descripción de la historia de usuario}
+
+  \begin{tabular}{>{\bfseries}p{2.4cm} p{13.4cm}}
+  \toprule
+  Como & #6 \\
+  Quiero & #7 \\
+  Para & #8 \\
+  \bottomrule
+  \end{tabular}
+
+  \subsection*{Criterios de aceptación}
+
+  \begin{enumerate}
+  #9
+  \end{enumerate}}
+
+\newpage
+\section{Historias surgidas de la validación RITE}
+
+Durante la validación RITE del prototipo (Hito 2, 16 de noviembre de 2026), dos residentes de obra y un director de proyectos pidieron funciones que el MVP no cubre. No son fallas del prototipo: son necesidades del trabajo diario. Esta sección las convierte en historias de usuario para el siguiente release (Release 2), como se anunció al inicio de este documento.
+
+Se identifican con el prefijo \textbf{HU-R}. La prioridad sigue el método MoSCoW (MUST, SHOULD, COULD, WON'T) y los puntos son una estimación inicial que se debe ajustar con el equipo. La fuente es la sección \emph{Pedidos para próximas versiones} del \emph{Reporte de validación RITE} (Módulo III del Hito 2).
+
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.5cm} >{\raggedright\arraybackslash}p{6.1cm} >{\raggedright\arraybackslash}p{4cm} >{\centering\arraybackslash}p{1.7cm} >{\centering\arraybackslash}p{1.2cm}}
+\toprule
+\textbf{Código} & \textbf{Historia} & \textbf{Rol principal} & \textbf{Prioridad} & \textbf{Puntos} \\ \midrule
+HU-R01 & Detallar las actividades de tubería y obra civil & Ingeniero Residente & SHOULD & 3 \\
+HU-R02 & Registrar la calificación vigente de los soldadores & Coordinación SST & SHOULD & 3 \\
+HU-R03 & Registrar los lotes de materiales que llegan al proyecto & Ingeniero Residente & COULD & 3 \\
+HU-R04 & Controlar herramientas, equipos y su mantenimiento & Residente / Director & SHOULD & 5 \\
+HU-R05 & Hacer la revisión diaria de equipos y herramientas & Director de Proyectos & COULD & 3 \\
+HU-R06 & Anotar el clima del día en el corte & Ingeniero Residente & COULD & 1 \\
+HU-R07 & Descargar el corte mensual para el cliente & Director / Gerencia & SHOULD & 3 \\
+HU-R08 & Ver solo los cortes y documentos de mi obra & Ingeniero Residente & SHOULD & 3 \\
+HU-R09 & Registrar un proyecto nuevo y avisar al director & Ingeniero Residente & SHOULD & 2 \\
+HU-R10 & Recibir avisos por correo y recordatorios de facturación & Residente / Calidad & SHOULD & 3 \\
+HU-R11 & Que el encargado SST de cada obra actualice sus cursos & Encargado SST de obra & COULD & 2 \\
+ & \textbf{Total} &  &  & \textbf{31} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Pedidos que ya cubre el MVP}
+
+\begin{itemize}
+  \item \textbf{Elegir la obra en el tablero} (director): HU-M12 ya permite escoger el proyecto del que se ven los datos.
+  \item \textbf{Medir el avance comparando los días cotizados con los transcurridos} (director): HU-M12 compara el avance físico con el tiempo contractual transcurrido.
+\end{itemize}
+
+\subsection*{Pedidos fuera de alcance por ahora (WON'T)}
+
+Quedan registrados, pero salen del objetivo del sistema (dossier de calidad y control SST) y no se convierten en historias en este release:
+
+\begin{itemize}
+  \item Pasar las horas trabajadas a la nómina.
+  \item Llevar la caja y el balance de cada obra.
+  \item Módulo de cotizaciones con precios unitarios, revisión del director en línea y exportación a PDF o Excel.
+  \item Ver en el tablero el dinero ejecutado y lo facturado.
+  \item Conectar el plan de trabajo de MS Project.
+\end{itemize}
+
+\historia{HU-R01}{Detallar las actividades de tubería y obra civil}{SHOULD}{3}
+{Captura de cortes de obra.}
+{Ingeniero Residente.}
+{registrar por separado los metros de tubería tendidos, la cantidad de soldaduras y el diámetro de la tubería, y anotar los pasos previos de la obra civil.}
+{que el avance refleje el rendimiento real de cada trabajo, porque no rinde igual una tubería de 4 pulgadas que una de 8.}
+{\item En las actividades de tubería registro por separado los metros tendidos y la cantidad de soldaduras.
+\item Cada actividad de tubería indica su diámetro (4, 6 u 8 pulgadas).
+\item En obra civil puedo registrar los pasos previos: excavación, formaleta, relleno, compactación y solado.
+\item Cada paso tiene su propia unidad de medida y su cantidad.
+\item Los cortes anteriores siguen mostrando sus actividades como se registraron.}
+
+\historia{HU-R02}{Registrar la calificación vigente de los soldadores}{SHOULD}{3}
+{Control de habilitación SST.}
+{Coordinación SST.}
+{registrar la calificación en soldadura de cada soldador, con su vigencia, además de sus cursos.}
+{que ningún soldador sin calificación vigente quede asignado a un frente.}
+{\item Puedo registrar la calificación de un soldador con su proceso, fecha de expedición, vencimiento y certificado en PDF.
+\item La calificación usa el mismo semáforo de vencimiento a 30 y 15 días que los cursos.
+\item Un soldador con la calificación vencida aparece bloqueado en el selector de personal del corte, con el motivo visible.
+\item Las calificaciones no se editan ni se borran: se corrigen registrando una nueva.}
+
+\historia{HU-R03}{Registrar los lotes de materiales que llegan al proyecto}{COULD}{3}
+{Captura de cortes de obra.}
+{Ingeniero Residente.}
+{registrar los lotes de material que llegan al proyecto (por ejemplo, 4 cajas de soldadura) en lugar de lo que se gasta cada día.}
+{saber qué material hay en la obra sin tener que calcular el consumo diario.}
+{\item Puedo registrar la llegada de un lote con el material, la cantidad, la unidad y la fecha.
+\item Cada lote queda asociado a su proyecto y a quien lo registró.
+\item Puedo consultar los lotes recibidos por proyecto y por material.
+\item El corte deja de pedir el consumo diario de los materiales que se controlan por lote.}
+
+\historia{HU-R04}{Controlar herramientas, equipos y su mantenimiento}{SHOULD}{5}
+{Equipos y herramientas.}
+{Ingeniero Residente o Director de Proyectos.}
+{anotar qué equipos y herramientas se usaron en el día y llevar su mantenimiento y sus certificados de calibración en un solo lugar, como se hace con las personas.}
+{que ningún equipo trabaje con el mantenimiento o la calibración vencidos, aunque viaje entre obras.}
+{\item En el corte puedo indicar qué equipos y herramientas se usaron en el día.
+\item Cada equipo muestra su último mantenimiento y las horas que faltan para el siguiente.
+\item El sistema avisa cuando falta poco para el siguiente mantenimiento y bloquea el equipo cuando ya venció, como el semáforo SST.
+\item Cada equipo guarda sus certificados de calibración en PDF, con su vigencia.
+\item Puedo ver en qué obra está cada equipo, aunque haya pasado por varias.}
+
+\historia{HU-R05}{Hacer la revisión diaria de equipos y herramientas}{COULD}{3}
+{Equipos y herramientas.}
+{Director de Proyectos.}
+{tener una lista diaria para comprobar que los equipos y herramientas de la obra están en condiciones de trabajar.}
+{detectar a tiempo un equipo dañado antes de que afecte el trabajo o la seguridad.}
+{\item Cada día hay una lista de revisión con los equipos asignados a la obra.
+\item Por cada equipo marco si está apto o no apto, con una observación cuando no lo está.
+\item Un equipo marcado como no apto no se puede seleccionar en el corte de ese día.
+\item Queda registro de quién hizo la revisión y cuándo.}
+
+\historia{HU-R06}{Anotar el clima del día en el corte}{COULD}{1}
+{Captura de cortes de obra.}
+{Ingeniero Residente.}
+{anotar el clima del día en el corte (sol, lluvia y horas de lluvia).}
+{explicar con datos por qué el avance fue menor un día.}
+{\item El corte tiene un campo para el clima: soleado, nublado o lluvioso.
+\item Si llovió, puedo indicar las horas de lluvia.
+\item El clima se ve en el detalle del corte y en su historial de versiones.}
+
+\historia{HU-R07}{Descargar el corte mensual para el cliente}{SHOULD}{3}
+{Captura de cortes de obra.}
+{Director de Proyectos o integrante de Gerencia.}
+{recibir el corte mensual y descargarlo en un archivo para enviarlo al cliente.}
+{entregar al cliente el avance del mes sin tener que armar el informe a mano.}
+{\item Puedo armar el corte mensual a partir de los cortes visados del mes.
+\item El corte mensual le llega al director o al gerente del proyecto.
+\item Puedo descargarlo en PDF con el avance, las horas, los insumos y los soportes.
+\item Solo se incluyen cortes visados.}
+
+\historia{HU-R08}{Ver solo los cortes y documentos de mi obra}{SHOULD}{3}
+{Control de acceso por roles.}
+{Ingeniero Residente.}
+{ver solo los cortes y documentos de la obra o ciudad en la que trabajo.}
+{encontrar más rápido lo mío y que nadie consulte información de obras que no le corresponden.}
+{\item Cada residente queda asignado a una o varias obras.
+\item Las listas de cortes y documentos solo muestran los de sus obras.
+\item Si abro por dirección un corte de otra obra, el sistema me avisa que no tengo permiso.
+\item El director y la gerencia siguen viendo todas las obras.}
+
+\historia{HU-R09}{Registrar un proyecto nuevo y avisar al director}{SHOULD}{2}
+{Proyectos.}
+{Ingeniero Residente.}
+{registrar un contrato apenas se apruebe y que el director reciba un aviso.}
+{empezar a reportar cortes en la obra sin esperar a que alguien lo cree por otro medio.}
+{\item Un botón permite registrar un proyecto con su código, nombre, cliente, ciudad y fechas del contrato.
+\item Al registrarlo, el director recibe un aviso.
+\item El proyecto queda disponible para registrar cortes cuando el director lo confirma.}
+
+\historia{HU-R10}{Recibir avisos por correo y recordatorios de facturación}{SHOULD}{3}
+{Notificaciones.}
+{Ingeniero Residente o Coordinación SIG / Calidad.}
+{recibir un correo cuando me devuelvan un corte o haya que revisar el dossier, y un recordatorio cuando se acerque la facturación.}
+{no depender de entrar al sistema para enterarme de lo que tengo pendiente.}
+{\item Cuando el director devuelve un corte, el residente recibe un correo con la observación.
+\item Cuando hay soportes por revisar en el dossier, Calidad recibe un correo.
+\item Antes de la fecha de facturación, el residente recibe un recordatorio de los cortes pendientes.
+\item Cada correo tiene un enlace directo a la pantalla correspondiente.}
+
+\historia{HU-R11}{Que el encargado SST de cada obra actualice sus cursos}{COULD}{2}
+{Control de habilitación SST.}
+{Encargado SST de una obra.}
+{actualizar yo mismo los cursos y certificados del personal de mi obra.}
+{que la información SST esté al día sin depender de la coordinación central.}
+{\item El encargado SST de una obra puede registrar cursos y certificados solo del personal de esa obra.
+\item Los registros quedan con su autor, como los de la coordinación SST.
+\item La coordinación SST sigue viendo y corrigiendo los registros de todas las obras.}
+
+\end{document}
