@@ -1,9 +1,17 @@
-# Módulo II · Arquitectura de frontend y componentización
+# Módulo II - Arquitectura de frontend y componentización
 
-Artefactos de este módulo:
+[Módulo I](../Modulo-I-Prototipo/README.md) | [Hito 2](../README.md) | [Módulo III](../Modulo-III-QC/README.md)
 
-Aporte de HU1, HU2, HU7 y HU8: [pantallas en computador/celular](../Aportes-HU01-HU02-HU07-HU08/02-responsivo.md) y [componentes con seis reglas de usabilidad](../Aportes-HU01-HU02-HU07-HU08/03-componentes-heuristicas.md). Se agregaron al final de los PDF compartidos, conservando el trabajo del equipo.
+## Entregables
 
-- **Inventario de componentes:** elementos que se repiten y cómo se estructuran en React + TypeScript (jerarquía, props, variantes y estados). El código está en `../Modulo-I-Prototipo/prototipo/src/components`.
-- **Diseño responsivo:** la interfaz principal en escritorio y móvil, lado a lado.
-- **Heurísticas de Nielsen:** al menos 5 de las 10, cada una con evidencia en una pantalla concreta.
+| Entregable | Documento | Qué contiene |
+| --- | --- | --- |
+| Inventario de componentes | [PDF](Inventario%20de%20componentes/Inventario%20de%20componentes.pdf) | Los 33 componentes compartidos con captura, variantes y estados; su estructura en React + TypeScript (carpetas, props y jerarquía) y qué componentes usa cada historia. |
+| Diseño responsivo | [PDF](Dise%C3%B1o%20responsivo/Dise%C3%B1o%20responsivo.pdf) | Retícula de 4, 8 y 12 columnas y las pantallas principales de las 12 historias en escritorio (1440 px) y celular (390 px), lado a lado. |
+| Heurísticas de Nielsen | [PDF](Heur%C3%ADsticas%20de%20Nielsen/Heur%C3%ADsticas%20de%20Nielsen.pdf) | Las 10 heurísticas, con evidencia en capturas de cada historia y una matriz historia x heurística. |
+
+## Dónde verlo en el prototipo
+
+- Todos los componentes en sus estados: [/muestra](https://thankstochatgpt.github.io/LOARD/muestra).
+- Código de los componentes: [`Modulo-I-Prototipo/prototipo/src/components`](../Modulo-I-Prototipo/prototipo/src/components).
+- Sistema de diseño: [design.md](../design.md).

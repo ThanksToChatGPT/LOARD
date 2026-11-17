@@ -1,8 +1,10 @@
-# Módulo IV · Persistencia de soporte
+# Módulo IV - Persistencia de soporte
 
-Artefactos de este módulo:
+[Módulo III](../Modulo-III-QC/README.md) | [Hito 2](../README.md)
 
-Aporte de HU1, HU2, HU7 y HU8: [idea de datos, relaciones y API](../Aportes-HU01-HU02-HU07-HU08/06-persistencia-api.pdf), con [texto editable](../Aportes-HU01-HU02-HU07-HU08/06-persistencia-api.md). Es una propuesta para integrar con el equipo; el prototipo no tiene un backend activo.
+## Entregables
 
-- **Diagrama Entidad-Relación simplificado:** solo las tablas y campos que alimentan las pantallas del prototipo.
-- **Mapa de API:** puntos de contacto frontend ↔ backend, con la pantalla que consume cada endpoint.
+| Entregable | Documento | Qué contiene |
+| --- | --- | --- |
+| Diagrama entidad-relación simplificado | [PDF](Modelo%20de%20datos%20y%20API/Modelo%20de%20datos%20y%20API.pdf) | Un solo modelo con las tablas y campos que alimentan las pantallas del prototipo, y qué dato se ve en cada pantalla. |
+| Mapa de API | Mismo documento | Puntos de contacto frontend y backend, con la pantalla que consume cada endpoint y las reglas que debe hacer cumplir el servidor. |
