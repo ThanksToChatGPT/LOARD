@@ -1,31 +1,166 @@
 \documentclass[11pt]{article}
+
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[spanish]{babel}
-\usepackage{lmodern,array,longtable,booktabs}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
 \usepackage[a4paper,margin=2cm]{geometry}
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{0.5em}
-\begin{document}
-\section*{Cobertura de historias de usuario}
-Cubierta: flujo documentado para el prototipo; en HU3/4/9/10 se conserva la cobertura previa del equipo. Integrada: se verificó su presencia y conexión en el código actual, pero este aporte no sustituye la validación detallada de su responsable. Los estados describen el prototipo, no un backend productivo.
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{hyperref}
 
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.3}
+\setlist{nosep,leftmargin=1.4em}
+
+\definecolor{marca}{HTML}{0B3A5C}
+\hypersetup{colorlinks=true,linkcolor=marca,urlcolor=marca}
+
+% Enlaces al prototipo publicado en GitHub Pages.
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
+
+\title{Cobertura de historias de usuario\\[0.3em]
+\large Loard - Hito 2 - Módulo I: Prototipo de alta fidelidad}
+\author{}
+\date{17 de noviembre de 2026}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+
+Este documento muestra en qué parte del prototipo se puede ver cada una de las 12 historias de usuario del MVP. El prototipo está publicado en \href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}} y cada ruta de la tabla es un enlace directo.
+
+Para entrar se elige un perfil de ejemplo; el correo y la contraseña (\texttt{Demo2026!}) se completan solos. Los datos son ficticios y se guardan en el navegador.
+
+\section{Matriz de historias y pantallas}
+
+\begin{center}
 \small
-\begin{longtable}{p{1.4cm}p{2.5cm}p{8.2cm}p{1.6cm}}
-\toprule HU & Historia & Pantallas y evidencia & Estado \\
-\midrule\endhead
-HU-M01 & Acceso por perfil & /acceso; sesión de ejemplo y menú por rol. & Cubierta \\ \addlinespace
-HU-M02 & Registro y edición de cortes & /cortes, /cortes/nuevo, /cortes/:id y /cortes/:id/editar; cantidades por unidad, HH, borrador y versiones. & Cubierta \\ \addlinespace
-HU-M03 & Soportes del corte & /cortes/:id y edición; fotos/PDF, visor, retiro y cola. Se conserva la cobertura documentada por su responsable. & Cubierta \\ \addlinespace
-HU-M04 & Visado o devolución & /cortes y /cortes/:id como Director; devolución con motivo y confirmación de visado. Se conserva la cobertura previa. & Cubierta \\ \addlinespace
-HU-M05 & Documentos y checklist & /dossier, /dossier/documentos y /dossier/documentos/publicar; pantallas integradas por el compañero. & Integrada \\ \addlinespace
-HU-M06 & Soportes y búsqueda del dossier & /dossier y /dossier/documentos; DetalleItem para carga, validación y observación. Integración compartida. & Integrada \\ \addlinespace
-HU-M07 & Ensayos NDT por junta & /dossier/ensayos y /dossier/ensayos/nuevo; laboratorio, método, fecha, resultado, PDF y requisito por informe. & Cubierta \\ \addlinespace
-HU-M08 & Avance y entrega del dossier & /dossier/avance; seis carpetas, faltantes, aceptación del acta, diez días y ZIP parcial/validado de ejemplo. & Cubierta \\ \addlinespace
-HU-M09 & Cursos y aptitud SST & /sst, /sst/:id, /sst/:id/cursos/nuevo y /sst/:id/aptitud; se conserva la cobertura documentada del equipo. & Cubierta \\ \addlinespace
-HU-M10 & Personal del corte con bloqueo SST & /cortes/nuevo y /cortes/nuevo/personal; selector compartido, motivos de bloqueo y horas. & Cubierta \\ \addlinespace
-HU-M11 & Bitácora de cambios & /dossier/bitacora; consulta de cortes y requisitos confirmados. /cortes/:id y /sst/:id conservan historiales propios. & Integrada \\ \addlinespace
-HU-M12 & Tablero del proyecto & /dashboard para Director/Gerencia; avance y seis carpetas. CW-118 usa el dossier compartido confirmado. & Integrada \\ \addlinespace
-\bottomrule\end{longtable}
-\normalsize\section*{Resumen}
-Ocho historias con cobertura documentada y cuatro integradas. El informe RITE del autor se consulta por separado.\end{document}
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.4cm} >{\raggedright\arraybackslash}p{4.4cm} >{\raggedright\arraybackslash}p{6.4cm} >{\raggedright\arraybackslash}p{3cm}}
+\toprule
+\textbf{HU} & \textbf{Historia} & \textbf{Dónde se ve} & \textbf{Responsable} \\ \midrule
+HU-M01 & Iniciar sesión según el rol & \app{/acceso} & Juan David Peña \\
+HU-M02 & Registrar el corte de obra & \app{/cortes}, \app{/cortes/nuevo} & Juan David Peña \\
+HU-M03 & Adjuntar fotos y soportes al corte & \app{/cortes/ejemplo-3} (Corte \#08) & Sebastián Gutiérrez \\
+HU-M04 & Visar o devolver el corte & \app{/cortes} con el perfil Director & Sebastián Gutiérrez \\
+HU-M05 & Publicar documentos y armar la checklist & \app{/dossier}, \app{/dossier/documentos} & Angel Inyena Pasuy \\
+HU-M06 & Cargar soportes y buscar documentos & \app{/dossier}, \app{/dossier/documentos} & Angel Inyena Pasuy \\
+HU-M07 & Registrar ensayos NDT & \app{/dossier/ensayos} & Juan David Peña \\
+HU-M08 & Avance y entrega del dossier & \app{/dossier/avance} & Juan David Peña \\
+HU-M09 & Cursos y aptitud médica (SST) & \app{/sst} & Jonathan López \\
+HU-M10 & Personal del corte con bloqueo SST & \app{/cortes/nuevo/personal} & Jonathan López \\
+HU-M11 & Bitácora de cambios & \app{/dossier/bitacora} & Ronald Chávez \\
+HU-M12 & Tablero del proyecto & \app{/dashboard} & Ronald Chávez \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Las 12 historias tienen al menos una pantalla en el prototipo.
+
+\section{Qué se puede ver en cada historia}
+
+Para cada historia se resume qué hace el usuario y cómo responde el prototipo cuando algo sale mal (un dato incompleto, un archivo no permitido o la falta de señal en la obra).
+
+\subsection*{HU-M01: Iniciar sesión según el rol}
+Al elegir un perfil de ejemplo se llenan solos el correo y la contraseña. Cada perfil ve en el menú solo los módulos de su trabajo.
+\begin{itemize}
+  \item Si la contraseña está mal, aparece un mensaje claro sin decir cuál de los dos datos falló.
+  \item Si alguien abre por dirección una pantalla que no le corresponde, ve un aviso de acceso restringido y un enlace para volver al inicio.
+  \item El botón con el símbolo de apagar cierra la sesión.
+\end{itemize}
+
+\subsection*{HU-M02: Registrar el corte de obra}
+El residente registra el frente, el periodo, las actividades con su cantidad, el personal con sus horas y los insumos usados.
+\begin{itemize}
+  \item Si falta un dato, el formulario dice exactamente qué completar antes de guardar.
+  \item Si sale sin guardar, al volver puede continuar o descartar el borrador.
+  \item Cada corrección pide un motivo y crea una versión nueva; el historial conserva quién cambió qué y cuándo.
+  \item Un corte ya visado no se puede editar y la pantalla explica por qué.
+\end{itemize}
+
+\subsection*{HU-M03: Adjuntar fotografías y soportes al corte}
+El residente agrega fotos y PDF al corte, con el botón o arrastrándolos, y los abre en un visor sin salir del corte.
+\begin{itemize}
+  \item Un archivo de otro tipo o de más de 15 MB se rechaza con la causa y cómo solucionarlo.
+  \item Si se cae la señal, el archivo queda en espera y se sube solo al volver la conexión.
+  \item Un soporte quitado por error se recupera con ``Deshacer'' durante 5 segundos.
+  \item El Director ve los mismos soportes en modo consulta.
+\end{itemize}
+
+\subsection*{HU-M04: Visar o devolver el corte}
+El Director entra a una bandeja con los cortes pendientes, revisa cantidades, horas, insumos y soportes en una sola pantalla, y decide.
+\begin{itemize}
+  \item Visar pide confirmación; después el corte ya no se puede modificar.
+  \item Devolver exige escribir una observación (hay causas frecuentes para elegir rápido). El residente la ve, corrige y reenvía.
+  \item Sin señal, los botones de decisión quedan bloqueados con el motivo visible.
+  \item Tener cortes pendientes nunca impide que el residente registre cortes nuevos.
+\end{itemize}
+
+\subsection*{HU-M05: Publicar documentos vigentes y armar la checklist}
+Calidad publica los formatos y procedimientos del sistema de gestión y arma la lista de requisitos de las seis carpetas del dossier.
+\begin{itemize}
+  \item Publicar un documento con un código existente crea una versión nueva; la anterior queda en el historial.
+  \item Retirar un requisito pide confirmación y explica que deja de contar en el avance.
+\end{itemize}
+
+\subsection*{HU-M06: Cargar soportes y buscar documentos}
+A cada requisito se le carga su PDF, que Calidad valida u observa con un motivo. Los documentos se buscan por nombre, código, carpeta o estado.
+\begin{itemize}
+  \item Una validación hecha por error se puede deshacer durante unos segundos.
+  \item Si un PDF no se carga, el mensaje invita a reintentar o a elegir otro archivo.
+\end{itemize}
+
+\subsection*{HU-M07: Registrar ensayos NDT ligados a una junta}
+Calidad registra el ensayo de una junta soldada: laboratorio, número de informe, método, fecha, resultado y el PDF del laboratorio.
+\begin{itemize}
+  \item Cada informe crea su propio requisito en la carpeta 4 del dossier y no reemplaza el de otra junta.
+  \item No se permiten informes repetidos ni fechas posteriores al día de la demostración.
+  \item Junto al resultado se aclara que ``Conforme'' no significa que el documento ya esté validado por Calidad.
+\end{itemize}
+
+\subsection*{HU-M08: Monitorear el avance del dossier y exportarlo}
+Una pantalla muestra el porcentaje validado, el avance por carpeta, lo que falta y los días que quedan del plazo de diez días desde la aceptación del acta.
+\begin{itemize}
+  \item Solo cuentan los requisitos validados; un archivo cargado todavía no suma.
+  \item Siempre se puede descargar un borrador parcial en ZIP; la entrega final se habilita cuando todo está validado.
+\end{itemize}
+
+\subsection*{HU-M09: Registrar cursos y aptitud médica con semáforo}
+Coordinación SST ve la lista de trabajadores con los casos críticos primero, y registra cursos y conceptos de aptitud médica.
+\begin{itemize}
+  \item Un semáforo avisa a los 30 y a los 15 días de vencer, y bloquea al trabajador cuando vence.
+  \item Al elegir las fechas de un curso se ve cómo quedará el semáforo antes de guardar.
+  \item La aptitud médica es solo Habilitado o No Habilitado, sin datos clínicos. Los cursos no se borran: se corrigen registrando uno nuevo.
+\end{itemize}
+
+\subsection*{HU-M10: Asignar personal al corte con bloqueo SST}
+Al agregar personal a un corte, el residente ve a todos los trabajadores: los disponibles arriba y los bloqueados abajo, con candado y el motivo.
+\begin{itemize}
+  \item Un trabajador bloqueado no se puede marcar; si se intenta, la fila resalta el motivo.
+  \item Un resumen muestra los trabajadores elegidos con sus alertas de vencimiento.
+  \item Lo que se cambia en SST se refleja de inmediato en este selector.
+\end{itemize}
+
+\subsection*{HU-M11: Consultar la bitácora de cambios}
+Calidad elige un proyecto y un corte o requisito, y ve todos sus cambios de estado: quién, cuándo, de qué estado a cuál y por qué, del más reciente al más antiguo.
+\begin{itemize}
+  \item Es solo de consulta: ningún evento se puede editar ni borrar.
+  \item Si no hay eventos o la consulta falla, el prototipo lo dice y permite reintentar.
+\end{itemize}
+
+\subsection*{HU-M12: Consultar el tablero de avance}
+Director y Gerencia ven el avance físico del proyecto frente al tiempo del contrato, el porcentaje validado del dossier, los días que quedan del plazo y las seis carpetas.
+\begin{itemize}
+  \item Cada carpeta abre el detalle de sus requisitos, pero desde el tablero no se puede modificar nada.
+\end{itemize}
+
+\section{Conclusión}
+
+El prototipo cubre todas las historias del MVP con pantallas que comparten el mismo diseño y los mismos datos: el estado SST se refleja en los cortes, y el dossier alimenta la bitácora y el tablero. Los detalles de diseño están en los documentos del Módulo II y las pruebas con usuarios en el \emph{Reporte de validación RITE} del Módulo III.
+
+\end{document}
