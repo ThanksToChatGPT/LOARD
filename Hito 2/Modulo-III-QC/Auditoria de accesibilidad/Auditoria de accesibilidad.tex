@@ -12,9 +12,16 @@
 \usepackage{enumitem}
 \usepackage{tikz}
 \usetikzlibrary{backgrounds}
-\usepackage[hidelinks]{hyperref}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=[HTML]{0B3A5C}}
 
 \graphicspath{{capturas/}}
+
+% Enlaces al prototipo publicado en GitHub Pages.
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
 \renewcommand{\arraystretch}{1.35}
@@ -83,12 +90,9 @@
 \newcommand{\tecla}[1]{\tikz[baseline=(k.base)]\node[draw=borde, fill=suave, rounded corners=2pt, inner sep=2pt, font=\small\sffamily] (k) {#1};}
 
 \title{Auditoría de accesibilidad (WCAG 2.1 AA)\\[0.3em]
-\large Loard - Hito 2 - Módulo III: QC de usabilidad y accesibilidad\\[0.2em]
-\normalsize Primera versión}
+\large Loard - Hito 2 - Módulo III: QC de usabilidad y accesibilidad}
 \author{}
-\date{14 de noviembre de 2026}
-
-\usepackage{pdfpages}
+\date{14 de noviembre de 2026 - actualizada el 17 de noviembre de 2026}
 
 \begin{document}
 \maketitle
@@ -96,7 +100,9 @@
 
 \section{Introducción}
 
-Se revisó si el prototipo de Loard se puede \textbf{leer bien} y \textbf{usar sin ratón}. La revisión se hizo sobre el prototipo en funcionamiento, siguiendo las pautas de accesibilidad web \textbf{WCAG 2.1, nivel AA}, que es el nivel que se pide normalmente a sitios y aplicaciones.
+Se revisó si el prototipo de Loard se puede \textbf{leer bien} y \textbf{usar sin ratón}. La revisión se hizo sobre el prototipo en funcionamiento, siguiendo las pautas de accesibilidad web \textbf{WCAG 2.1, nivel AA}, que es el nivel que se pide normalmente a sitios y aplicaciones. El prototipo revisado está publicado en \href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}}.
+
+
 
 Loard no se usa solo en una oficina. Buena parte del trabajo se hace en la obra, y eso hace que estos tres puntos sean necesarios:
 
@@ -172,8 +178,8 @@ Se revisaron 9 pantallas del prototipo, en tamaño de escritorio (1440 píxeles 
 1.4.11 Contraste de controles & Bordes de los campos y recuadro que marca dónde está el teclado. & 3:1 \\ \hline
 1.4.4 Cambio de tamaño del texto & Ampliar al 200\,\% sin perder contenido ni funciones. & 200\,\% \\ \hline
 1.4.10 Ajuste del contenido & A 320 píxeles de ancho (zoom 400\,\%) no debe hacer falta mover la página hacia los lados. & 320 px \\ \hline
-2.1.1 y 2.1.2 Teclado & Todo se puede usar con teclado y el teclado nunca queda atrapado. & --- \\ \hline
-2.4.1, 2.4.3 y 2.4.7 Navegación & Atajo para saltar al contenido, orden lógico y foco siempre visible. & --- \\ \hline
+2.1.1 y 2.1.2 Teclado & Todo se puede usar con teclado y el teclado nunca queda atrapado. & No aplica \\ \hline
+2.4.1, 2.4.3 y 2.4.7 Navegación & Atajo para saltar al contenido, orden lógico y foco siempre visible. & No aplica \\ \hline
 \end{tabular}
 \end{center}
 
@@ -351,9 +357,5 @@ Se simuló una ventana de 1280 píxeles con zoom al 200\,\% y al 400\,\%.
 \end{center}
 
 En ambos, \tecla{Tab} da vueltas solo dentro del panel, \tecla{Esc} lo cierra y el foco vuelve al botón que lo abrió.
-
-% APORTE HU01-HU02-HU07-HU08
-\clearpage
-\includepdf[pages=-]{../../Aportes-HU01-HU02-HU07-HU08/04-accesibilidad.pdf}
 
 \end{document}
