@@ -1,0 +1,225 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\usepackage{pdflscape}
+\usepackage{hyperref}
+
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.3}
+\setlist{nosep,leftmargin=1.4em}
+
+\definecolor{marca}{HTML}{0B3C5D}
+\definecolor{borde}{HTML}{4F7A96}
+\definecolor{fondo}{HTML}{F4F8FB}
+\definecolor{texto}{HTML}{0A1F2E}
+\definecolor{nuevo}{HTML}{1F4A66}
+\hypersetup{colorlinks=true,linkcolor=marca,urlcolor=marca}
+
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
+\newcommand{\api}[1]{\texttt{\small #1}}
+
+% Entidad del diagrama: \entidad{nombre-nodo}{posición}{TÍTULO}{campos separados por \\}
+\tikzset{
+  ent/.style={draw=borde, fill=white, rounded corners=2pt, inner sep=3pt, align=left,
+    font=\scriptsize\sffamily, text=texto, text width=3.3cm},
+  rel/.style={draw=nuevo, line width=0.7pt},
+  card/.style={font=\scriptsize\sffamily\bfseries, text=marca, inner sep=1pt},
+}
+\newcommand{\entidad}[4]{%
+  \node[ent, #2] (#1) {\textcolor{marca}{\textbf{#3}}\\[-1pt]\rule{3.3cm}{0.4pt}\\#4};}
+\newcommand{\pk}[1]{\textbf{#1} (PK)}
+\newcommand{\fk}[1]{\textit{#1} (FK)}
+
+\title{Modelo de datos y mapa de API\\[0.3em]
+\large Loard - Hito 2 - Módulo IV: Persistencia de soporte}
+\author{}
+\date{17 de noviembre de 2026}
+
+\begin{document}
+\maketitle
+
+\section{Introducción}
+
+Este documento propone la persistencia que necesitaría el prototipo de Loard para funcionar con un servidor: un \textbf{diagrama entidad-relación simplificado} y un \textbf{mapa de API} que une cada pantalla con el punto de contacto del backend que la alimenta.
+
+\textbf{Hoy no hay un servidor activo.} El prototipo publicado en \href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}} guarda los cortes, versiones, soportes y el dossier en el navegador (\texttt{localStorage}) y usa datos de ejemplo con el reloj fijo en el 17/11/2026. La pila prevista desde el \texttt{design.md} es Django con Django REST Framework, PostgreSQL y un almacenamiento de archivos compatible con S3. La aplicación funcional anterior está apartada en la rama \texttt{codex/backend-en-pausa} y esta propuesta no la activa ni la modifica.
+
+Siguiendo la guía del hito, el modelo solo incluye las tablas y campos que alimentan las pantallas del prototipo. Reúne en un solo modelo las propuestas que hizo cada integrante para sus historias:
+
+\begin{center}
+\begin{tabular}{>{\raggedright\arraybackslash}p{3.8cm} >{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{8.2cm}}
+\toprule
+\textbf{Historias} & \textbf{Integrante} & \textbf{Aporte al modelo} \\ \midrule
+HU-M01, M02, M07, M08 & Juan David Peña & Usuario, proyecto, corte y versiones, juntas y ensayos NDT, dossier, acta aceptada. \\
+HU-M03, M04 & Sebastián Gutiérrez & Soportes del corte y revisiones del Director. \\
+HU-M11, M12 & Ronald Chávez & Fechas del proyecto para el tablero, carpetas, requisitos y eventos. \\
+HU-M05, M06, M09, M10 & --- & Documentos del SIG y datos SST, tomados de los tipos que ya usa el prototipo (\texttt{modelo.ts} y \texttt{lib/sst/tipos.ts}). \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Para unificar, se usan nombres en español: lo que la propuesta de HU-M11 y HU-M12 llamó \texttt{Project}, \texttt{Cut} y \texttt{CutRevision} corresponde a \texttt{PROYECTO}, \texttt{CORTE} y \texttt{VERSION\_CORTE}.
+
+% =====================================================================
+\section{Diagrama entidad-relación}
+
+En el diagrama, \textbf{1:N} significa que un registro puede tener varios relacionados (un corte tiene varias versiones) y \textbf{1:1}, uno a uno. Las claves primarias van en negrita y las foráneas en cursiva.
+
+\begin{landscape}
+\begin{center}
+\begin{tikzpicture}
+% Retícula: 6 columnas cada 4.25 cm y 3 filas.
+\def\ca{0}\def\cb{4.25}\def\cc{8.5}\def\cd{12.75}\def\ce{17}\def\cf{21.25}
+\def\ra{0}\def\rb{-4.4}\def\rc{-9.1}
+\tikzset{every node/.append style={anchor=north west}}
+% ----- Fila 1
+\entidad{usuario}{at={(\ca,\ra)}}{USUARIO}{\pk{id}\\nombre\\correo (único)\\rol, activo}
+\entidad{proyecto}{at={(\cb,\ra)}}{PROYECTO}{\pk{id}\\codigo, nombre\\inicio, fin\\avance\_fisico\\actualizado}
+\entidad{dossier}{at={(\cc,\ra)}}{DOSSIER}{\pk{id}\\\fk{proyecto\_id} (único)}
+\entidad{carpeta}{at={(\cd,\ra)}}{CARPETA}{\pk{id}\\\fk{dossier\_id}\\numero (1..6), nombre}
+\entidad{docsig}{at={(\ce,\ra)}}{DOCUMENTO\_SIG}{\pk{id}\\codigo, version\\nombre, carpeta\\vigente, nota, archivo}
+\entidad{trabajador}{at={(\cf,\ra)}}{TRABAJADOR}{\pk{id}\\nombre, cedula\\cargo, frente\\cursos\_requeridos}
+% ----- Fila 2
+\entidad{version}{at={(\ca,\rb)}}{VERSION\_CORTE}{\pk{id}\\\fk{corte\_id}\\version, periodo\\estado, motivo\\\fk{autor\_id}, rol, fecha\\detalle: actividades, trabajadores con horas, insumos}
+\entidad{corte}{at={(\cb,\rb)}}{CORTE}{\pk{id}\\\fk{proyecto\_id}\\\fk{residente\_id}\\numero, frente\\estado, version\_actual}
+\entidad{acta}{at={(\cc,\rb)}}{ACTA\_ACEPTADA}{\pk{id}\\\fk{dossier\_id}\\referencia\\fecha\_aceptacion\\responsable\\fecha\_registro}
+\entidad{requisito}{at={(\cd,\rb)}}{REQUISITO}{\pk{id}\\\fk{carpeta\_id}\\nombre, estado\\observacion\\\fk{documento\_sig\_id}?}
+\entidad{ensayo}{at={(\ce,\rb)}}{ENSAYO\_NDT}{\pk{id}\\\fk{junta\_id}\\\fk{requisito\_id} (único)\\laboratorio\\numero\_informe\\metodo, fecha, resultado\\registrado\_por}
+\entidad{curso}{at={(\cf,\rb)}}{CURSO\_SST}{\pk{id}\\\fk{trabajador\_id}\\tipo, entidad\\expedicion, vencimiento\\certificado\\reemplaza\_a?}
+% ----- Fila 3
+\entidad{revision}{at={(\ca,\rc)}}{REVISION\_CORTE}{\pk{id}\\\fk{corte\_id}\\\fk{version\_corte\_id}\\decision, observacion\\causas, \fk{director\_id}\\fecha}
+\entidad{soporte}{at={(\cb,\rc)}}{SOPORTE\_CORTE}{\pk{id}\\\fk{corte\_id}\\nombre\_original, tipo\\tamano\_bytes\\clave\_almacenamiento\\subido\_por, fecha\_subida\\retirado\_por?, fecha\_retiro?}
+\entidad{evento}{at={(\cc,\rc)}}{EVENTO\_REQUISITO}{\pk{id}\\\fk{requisito\_id}\\\fk{autor\_id}, rol, fecha\\estado\_anterior\\estado\_nuevo, motivo}
+\entidad{sopreq}{at={(\cd,\rc)}}{SOPORTE\_REQUISITO}{\pk{id}\\\fk{requisito\_id}\\nombre, tamano, clave\\version, autor, fecha}
+\entidad{junta}{at={(\ce,\rc)}}{JUNTA}{\pk{id}\\\fk{proyecto\_id}\\codigo}
+\entidad{aptitud}{at={(\cf,\rc)}}{APTITUD\_MEDICA}{\pk{id}\\\fk{trabajador\_id}\\concepto (Habilitado o No Habilitado)\\expedicion, vencimiento}
+
+% ----- Relaciones (1 junto al lado "uno", N junto al lado "muchos")
+\tikzset{every node/.style={}}
+\draw[rel] (usuario.south east) -- node[card, pos=0.12, above right]{1} node[card, pos=0.88, above right]{N} node[font=\tiny\itshape, sloped, below]{registra} (corte.north west);
+\draw[rel] (proyecto.south) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (proyecto.south |- corte.north);
+\draw[rel] (proyecto.east |- dossier.west) -- node[card, pos=0.2, above]{1} node[card, pos=0.8, above]{1} (dossier.west);
+\draw[rel] (dossier.east) -- node[card, pos=0.2, above]{1} node[card, pos=0.8, above]{N} (carpeta.west);
+\draw[rel] (dossier.south) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (dossier.south |- acta.north);
+\draw[rel] (carpeta.south) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (carpeta.south |- requisito.north);
+\draw[rel] (docsig.south west) -- node[card, pos=0.12, above left]{1} node[card, pos=0.88, above left]{N} (requisito.north east);
+\draw[rel] (requisito.east |- ensayo.north west) ++(0,-0.6) coordinate (r) -- node[card, pos=0.2, above]{1} node[card, pos=0.8, above]{1} (r -| ensayo.west);
+\draw[rel] (requisito.south) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (requisito.south |- sopreq.north);
+\draw[rel] (requisito.south west) -- node[card, pos=0.12, above left]{1} node[card, pos=0.88, above left]{N} (evento.north east);
+\draw[rel] (junta.north) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (junta.north |- ensayo.south);
+\draw[rel] (corte.west |- version.north east) ++(0,-0.6) coordinate (c) -- node[card, pos=0.2, above]{1} node[card, pos=0.8, above]{N} node[font=\tiny\itshape, below]{conserva} (c -| version.east);
+\draw[rel] (corte.south) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (corte.south |- soporte.north);
+\draw[rel] (corte.south west) -- node[card, pos=0.12, above left]{1} node[card, pos=0.88, above left]{N} (revision.north east);
+\draw[rel] (trabajador.south) -- node[card, pos=0.15, right]{1} node[card, pos=0.85, right]{N} (trabajador.south |- curso.north);
+\draw[rel] (trabajador.east) -- ++(0.35,0) |- node[card, pos=0.97, above]{N} (aptitud.east);
+\node[card, anchor=south west] at ([xshift=1pt]trabajador.east) {1};
+\end{tikzpicture}
+\end{center}
+\end{landscape}
+
+Las relaciones de usuario con versiones, revisiones, soportes y eventos (autor, director, quien sube o retira) se indican con claves foráneas y no se dibujan para no saturar el diagrama.
+
+% =====================================================================
+\section{Qué dato alimenta cada pantalla}
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.3cm} >{\raggedright\arraybackslash}p{5cm} >{\raggedright\arraybackslash}p{7.2cm}}
+\toprule \textbf{Tabla} & \textbf{Campos} & \textbf{Dónde se ve} \\ \midrule \endhead
+\bottomrule \endfoot
+\texttt{USUARIO} & \texttt{nombre}, \texttt{correo}, \texttt{rol} & Acceso por perfil, menú por rol y autor de cada cambio (\app{/acceso}). La contraseña protegida se guardaría solo en el servidor. \\
+\texttt{PROYECTO} & \texttt{codigo}, \texttt{nombre}, \texttt{inicio}, \texttt{fin}, \texttt{avance\_fisico} & Barra superior, selector de proyecto y cálculo del tiempo contractual del tablero (\app{/dashboard}). \\
+\texttt{CORTE} & \texttt{numero}, \texttt{frente}, \texttt{estado}, \texttt{version\_actual} & Lista de cortes, bandeja ``Pendientes de visado'' y control de versión (\app{/cortes}). \\
+\texttt{VERSION\_CORTE} & \texttt{periodo}, \texttt{estado}, \texttt{motivo}, \texttt{autor\_id}, \texttt{fecha} & ``Historial de versiones'' del corte y bitácora. Las versiones anteriores no se borran. \\
+\texttt{VERSION\_CORTE} (detalle) & actividades, trabajadores con horas e insumos & Formulario y detalle del corte (\app{/cortes/nuevo}). Se guardan por versión. \\
+\texttt{SOPORTE\_CORTE} & \texttt{nombre\_original}, \texttt{tipo}, \texttt{tamano\_bytes}, \texttt{clave\_almacenamiento}, \texttt{retirado\_por} & Lista de soportes, visor y ``Descargar''. Retirar no borra: el soporte sale de la lista pero queda para la bitácora. \\
+\texttt{REVISION\_CORTE} & \texttt{decision}, \texttt{observacion}, \texttt{causas}, \texttt{version\_corte\_id} & Aviso de devolución para el residente; impide decidir sobre una versión que ya cambió. \\
+\texttt{TRABAJADOR}, \texttt{CURSO\_SST}, \texttt{APTITUD\_MEDICA} & fechas de expedición y vencimiento, concepto & Semáforo de Personal SST (\app{/sst}) y bloqueo en el selector del corte. La aptitud es solo Habilitado o No Habilitado, sin datos clínicos. Los cursos no se editan: una corrección reemplaza al anterior. \\
+\texttt{DOCUMENTO\_SIG} & \texttt{codigo}, \texttt{version}, \texttt{vigente} & Documentos del SIG (\app{/dossier/documentos}); solo una versión vigente por código. \\
+\texttt{CARPETA}, \texttt{REQUISITO} & \texttt{numero}, \texttt{estado}, \texttt{observacion} & Checklist (\app{/dossier}), avance (\app{/dossier/avance}) y seis carpetas del tablero. \\
+\texttt{EVENTO\_REQUISITO} & estado anterior y nuevo, autor, rol, motivo & Bitácora (\app{/dossier/bitacora}). Solo se crea al confirmar un cambio. \\
+\texttt{JUNTA}, \texttt{ENSAYO\_NDT} & \texttt{laboratorio}, \texttt{numero\_informe}, \texttt{metodo}, \texttt{resultado} & Ensayos NDT (\app{/dossier/ensayos}). Cada informe tiene su propio requisito. \\
+\texttt{ACTA\_ACEPTADA} & \texttt{referencia}, \texttt{fecha\_aceptacion} & Plazo de 10 días del dossier en el avance y en el tablero. \\
+\end{longtable}
+\normalsize
+
+% =====================================================================
+\section{Mapa de API}
+
+Rutas propuestas entre el frontend React y el backend. \textbf{Ninguna existe todavía como servicio}. GET consulta datos; POST crea; DELETE retira.
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{6.3cm} >{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}p{5.1cm}}
+\toprule \textbf{Método y ruta} & \textbf{Pantalla que la usa} & \textbf{Respuesta esperada} \\ \midrule \endhead
+\bottomrule \endfoot
+\multicolumn{3}{l}{\textbf{Acceso (HU-M01)}} \\
+\api{POST /api/sesiones} & Iniciar sesión & Perfil del usuario y módulos autorizados. \\
+\api{GET} o \api{DELETE /api/sesiones/actual} & Barra superior & Consultar o cerrar la sesión. \\
+\api{GET /api/proyectos} & Selector de proyecto & Proyectos autorizados y fechas del contrato. \\
+\midrule
+\multicolumn{3}{l}{\textbf{Cortes (HU-M02, M03, M04, M10)}} \\
+\api{GET /api/proyectos/:id/cortes?estado=} & Lista y bandeja del Director & Número, frente, periodo, horas, cantidad de soportes y estado. \\
+\api{POST /api/proyectos/:id/cortes} & Registrar corte & 201 con la versión 1. \\
+\api{GET /api/cortes/:id} & Detalle del corte & Versión actual y soportes vigentes. \\
+\api{GET} o \api{POST /api/cortes/:id/versiones} & Historial y corrección & Versiones con autor, rol, estado y motivo; al corregir envía \texttt{version\_esperada}. \\
+\api{GET /api/cortes/:id/soportes} & Soportes del corte & Soportes vigentes, sin los retirados. \\
+\api{POST /api/cortes/:id/soportes/}\newline\api{\quad solicitudes-carga} & Al elegir un archivo & URL firmada para subirlo al almacenamiento; 422 si el tipo o el peso no se permiten. \\
+\api{POST /api/cortes/:id/soportes} & ``Confirmando carga\ldots{}'' & 201; usa \texttt{Idempotency-Key} para no duplicar al reintentar. \\
+\api{GET /api/soportes/:id/archivo} & ``Ver'' y ``Descargar'' & Enlace temporal al archivo. \\
+\api{DELETE /api/cortes/:id/soportes/:soporteId} & ``Quitar'', al terminar los 5 s de ``Deshacer'' & 204; 409 si el corte está visado y 403 si no es el residente autor. \\
+\api{POST /api/cortes/:id/revisiones} & ``Confirmar visado'' y ``Confirmar devolución'' & 201 con la nueva versión; envía \texttt{decision}, \texttt{observacion}, \texttt{causas} y \texttt{version\_esperada}. \\
+\api{GET /api/proyectos/:id/trabajadores} & Selector de personal del corte & Trabajadores con su estado SST y el motivo de bloqueo. \\
+\midrule
+\multicolumn{3}{l}{\textbf{Personal SST (HU-M09)}} \\
+\api{GET /api/trabajadores/:id} & Ficha del trabajador & Cursos, aptitud e historial. \\
+\api{POST /api/trabajadores/:id/cursos} & Registrar curso & 201; un curso nuevo puede reemplazar a otro, nunca se edita. \\
+\api{POST /api/trabajadores/:id/aptitudes} & Actualizar aptitud & 201 con el concepto y sus fechas. \\
+\midrule
+\multicolumn{3}{l}{\textbf{Dossier (HU-M05 a M08)}} \\
+\api{GET} o \api{POST /api/documentos-sig} & Documentos del SIG y publicar & Versiones vigentes; publicar un código existente crea una versión nueva. \\
+\api{GET /api/proyectos/:id/dossier/requisitos} & Checklist y detalle & Requisitos por carpeta con su estado. \\
+\api{POST /api/requisitos/:id/soportes} y \api{/revisiones} & Cargar, validar u observar & Soporte asociado o nuevo estado del requisito. \\
+\api{GET /api/proyectos/:id/juntas} & Registrar ensayo NDT & Juntas disponibles del proyecto. \\
+\api{GET} o \api{POST /api/proyectos/:id/ensayos} & Ensayos NDT & Búsqueda o registro; guarda el ensayo y su requisito en una sola transacción. \\
+\api{GET /api/proyectos/:id/dossier/avance} & Avance y entrega & Porcentaje, faltantes y fecha límite. \\
+\api{POST /api/dossiers/:id/actas-aceptadas} & Editar aceptación del acta & Referencia y fecha; reinicia el cálculo del plazo. \\
+\api{POST /api/dossiers/:id/exportaciones} & Exportar ZIP & Enlace de descarga del borrador parcial o del cierre. \\
+\midrule
+\multicolumn{3}{l}{\textbf{Seguimiento (HU-M11, M12)}} \\
+\api{GET /api/requisitos/:id/historial} & Bitácora de un requisito & Eventos confirmados, el más reciente primero. \\
+\api{GET /api/proyectos/:id/tablero} & Tablero del proyecto & Fechas, avance físico y conteos del dossier por carpeta. \\
+\end{longtable}
+\normalsize
+
+% =====================================================================
+\section{Reglas que debe hacer cumplir el servidor}
+
+\begin{itemize}
+  \item Revisar en el servidor quién tiene permiso para cada acción, aunque la interfaz ya oculte lo que no corresponde.
+  \item Solo el residente autor agrega o retira soportes, y solo mientras el corte no esté visado. Solo se aceptan PDF, JPG y PNG de hasta 15 MB.
+  \item Solo el Director registra revisiones, y solo sobre cortes en revisión. Una devolución exige una observación de al menos 10 caracteres.
+  \item Si \texttt{version\_esperada} no coincide con la versión actual, responder 409 ``El corte cambió'' y no registrar nada.
+  \item La revisión, la nueva versión y el evento de bitácora se guardan en una sola transacción. Lo mismo el ensayo NDT y su requisito.
+  \item Evitar registros repetidos al reintentar; no repetir un informe del mismo laboratorio en el proyecto.
+  \item Visar o devolver no bloquea que el residente registre cortes nuevos en el mismo frente.
+  \item Contar diez días calendario desde la aceptación del acta. Un archivo cargado no cuenta como validado. El cierre solo se permite cuando las seis carpetas tienen sus requisitos validados.
+  \item Los eventos de la bitácora son de solo lectura y se generan al confirmar un cambio; una validación deshecha no genera evento.
+\end{itemize}
+
+\section{Decisiones pendientes}
+
+Falta acordar con el equipo dónde se guardarán los archivos de forma permanente, cómo se administrarán las cuentas y cómo se conecta el acta aceptada con la facturación.
+
+\end{document}
