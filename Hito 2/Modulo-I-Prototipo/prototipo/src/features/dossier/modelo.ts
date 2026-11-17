@@ -9,7 +9,7 @@ import { ARCHIVO_MAX_BYTES } from '@/lib/archivos';
 import { CARPETAS_DOSSIER, OBSERVACION_MIN_CARACTERES } from '@/lib/constantes';
 import { ESTADOS_REQUISITO, type EstadoRequisito } from '@/lib/estados';
 import { formatoMB, sinTildes } from '@/lib/formato';
-import { ahora, momento } from '@/lib/sst/fechas';
+import { HOY_SST, ahora, momento } from '@/lib/sst/fechas';
 
 /* ───────────────── Tipos ───────────────── */
 
@@ -224,7 +224,7 @@ export function validarEnsayo(datos: DatosEnsayo, archivo: ArchivoElegido | null
   if (datos.laboratorio.trim().length < 3) return 'Escribe el laboratorio responsable (mínimo 3 caracteres).';
   if (!TIPOS_NDT.some(t => t === datos.tipo)) return 'Selecciona el tipo de ensayo.';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(datos.fechaEnsayo) || !Number.isFinite(Date.parse(datos.fechaEnsayo)) ||
-      new Date(`${datos.fechaEnsayo}T00:00:00Z`).toISOString().slice(0, 10) !== datos.fechaEnsayo || datos.fechaEnsayo > ahora().toISOString().slice(0, 10)) return 'Indica una fecha de ensayo válida, hasta el día de la demostración.';
+      new Date(`${datos.fechaEnsayo}T00:00:00Z`).toISOString().slice(0, 10) !== datos.fechaEnsayo || datos.fechaEnsayo > HOY_SST) return 'Indica una fecha de ensayo válida, hasta el día de la demostración.';
   if (!['Conforme', 'No conforme'].includes(datos.resultado)) return 'Selecciona el resultado del laboratorio.';
   if (!datos.informe.trim()) return 'Escribe el número de informe del laboratorio.';
   if (ensayos.some(e => sinTildes(e.laboratorio.trim()) === sinTildes(datos.laboratorio.trim()) &&
@@ -255,7 +255,7 @@ export function registrarEnsayo({ id, datos, archivo, usuario }: { id: string; d
 export function registrarActa({ numero, aceptada, usuario }: { numero: string; aceptada: string; usuario: Usuario }) {
   if (!puedeRevisar(usuario)) throw new Error('Solo Calidad registra la aceptación del acta.');
   if (!numero.trim()) throw new Error('Indica la referencia del acta aceptada.');
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(aceptada) || !Number.isFinite(Date.parse(aceptada)) || new Date(`${aceptada}T00:00:00Z`).toISOString().slice(0, 10) !== aceptada || aceptada > ahora().toISOString().slice(0, 10)) throw new Error('Selecciona una fecha de aceptación válida, hasta el día de la demostración.');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(aceptada) || !Number.isFinite(Date.parse(aceptada)) || new Date(`${aceptada}T00:00:00Z`).toISOString().slice(0, 10) !== aceptada || aceptada > HOY_SST) throw new Error('Selecciona una fecha de aceptación válida, hasta el día de la demostración.');
   const dossier = leerDossier();
   guardarDossier({ ...dossier, acta: { numero: numero.trim(), aceptada, registradoPor: usuario.nombre, fechaRegistro: ahora().toISOString() } });
 }
