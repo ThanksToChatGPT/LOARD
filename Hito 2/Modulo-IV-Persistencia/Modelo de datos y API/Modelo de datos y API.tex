@@ -203,23 +203,5 @@ Rutas propuestas entre el frontend React y el backend. \textbf{Ninguna existe to
 \end{longtable}
 \normalsize
 
-% =====================================================================
-\section{Reglas que debe hacer cumplir el servidor}
-
-\begin{itemize}
-  \item Revisar en el servidor quién tiene permiso para cada acción, aunque la interfaz ya oculte lo que no corresponde.
-  \item Solo el residente autor agrega o retira soportes, y solo mientras el corte no esté visado. Solo se aceptan PDF, JPG y PNG de hasta 15 MB.
-  \item Solo el Director registra revisiones, y solo sobre cortes en revisión. Una devolución exige una observación de al menos 10 caracteres.
-  \item Si \texttt{version\_esperada} no coincide con la versión actual, responder 409 ``El corte cambió'' y no registrar nada.
-  \item La revisión, la nueva versión y el evento de bitácora se guardan en una sola transacción. Lo mismo el ensayo NDT y su requisito.
-  \item Evitar registros repetidos al reintentar; no repetir un informe del mismo laboratorio en el proyecto.
-  \item Visar o devolver no bloquea que el residente registre cortes nuevos en el mismo frente.
-  \item Contar diez días calendario desde la aceptación del acta. Un archivo cargado no cuenta como validado. El cierre solo se permite cuando las seis carpetas tienen sus requisitos validados.
-  \item Los eventos de la bitácora son de solo lectura y se generan al confirmar un cambio; una validación deshecha no genera evento.
-\end{itemize}
-
-\section{Decisiones pendientes}
-
-Falta acordar con el equipo dónde se guardarán los archivos de forma permanente, cómo se administrarán las cuentas y cómo se conecta el acta aceptada con la facturación.
 
 \end{document}
