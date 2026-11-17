@@ -11,9 +11,17 @@
 \usepackage{colortbl}
 \usepackage{array}
 \usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=[HTML]{0B3A5C}}
 
 \graphicspath{{capturas/}}
+
+% Enlaces al prototipo publicado y al código en GitHub.
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\app}[1]{\href{\urlapp#1}{\texttt{#1}}}
+\newcommand{\codigo}[1]{\href{https://github.com/ThanksToChatGPT/LOARD/tree/main/Hito\%202/Modulo-I-Prototipo/prototipo/src/#1}{\texttt{src/#1}}}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
 \renewcommand{\arraystretch}{1.25}
@@ -65,8 +73,6 @@
 \author{}
 \date{}
 
-\usepackage{pdfpages}
-
 \begin{document}
 \maketitle
 
@@ -74,8 +80,10 @@
 
 Para el desarrollo de los prototipos, se plantearon componentes que se repetirían varias veces, como botones, formularios, etiquetas, tablas y avisos. Para mantener consistencia en todo el prototipo y agilizar el trabajo en equipo, se inició creando los componentes \textbf{una sola vez} para luego reutilizarlos en todos los módulos sin crear elementos visuales propios.
 
-Este inventario muestra cada componente con una captura tomada del prototipo en funcionamiento. El código se encuentra en \texttt{Modulo-I-Prototipo/prototipo/src/components} y se recomienda ver la página de muestra del prototipo para visualizar estos componentes
-en la ruta \texttt{/muestra} del prototipo.
+Este inventario muestra cada componente con una captura tomada del prototipo en funcionamiento. El código se encuentra en \codigo{components} y se recomienda ver la página de muestra del prototipo para visualizar estos componentes
+en la ruta \app{/muestra} del prototipo publicado.
+
+La sección~\ref{sec:react} explica cómo se organizan en React + TypeScript (carpetas, jerarquía y props) y la sección~\ref{sec:historias} muestra qué componentes usa cada historia de usuario.
 
 
 \subsection*{Reglas comunes a todos los componentes}
@@ -184,23 +192,69 @@ en la ruta \texttt{/muestra} del prototipo.
 {Estructura común de todos los formularios: encabezado, campos en una columna centrada y un pie fijo con los botones.}
 {\textbf{Presentación:} en escritorio ocupa 8 de 12 columnas centradas; el pie con los botones queda siempre visible.}
 
-\section{Resumen}
+% =====================================================================
+\newpage
+\section{Estructura en React + TypeScript}\label{sec:react}
+
+\subsection*{Organización de las carpetas}
+
+El prototipo es una aplicación de React 19 con TypeScript, Vite y Tailwind CSS. Los componentes siguen el diseño atómico: átomos, moléculas, organismos y plantillas. Todos se importan desde un solo punto, \texttt{@/components}.
 
 \begin{center}
-\begin{tabular}{|m{2.6cm}|m{1.8cm}|m{10.6cm}|}
+\begin{tabular}{|>{\raggedright\arraybackslash}m{3.6cm}|>{\raggedright\arraybackslash}m{12cm}|}
 \hline
-\textbf{Nivel} & \textbf{Cantidad} & \textbf{Elemento repetido que resuelve} \\ \hline
-Átomos & 9 & Botones, etiquetas de estado (badges), casillas, chips e indicadores de carga. \\ \hline
-Moléculas & 13 & Campos de formulario, controles de selección, tarjetas de indicador y avisos. \\ \hline
-Organismos & 8 & Tablas, navegación, ventanas emergentes, carga de archivos y bitácora. \\ \hline
-Plantillas & 3 & Marco de página, encabezado y estructura de formulario. \\ \hline
+\textbf{Carpeta} & \textbf{Qué va ahí} \\ \hline
+\codigo{styles} & \texttt{tokens.css} es el único archivo con códigos de color. En el resto se usan nombres de token (\texttt{bg-surface}, \texttt{text-error}). \\ \hline
+\codigo{components} & Componentes compartidos por todo el equipo, en \texttt{atoms}, \texttt{molecules}, \texttt{organisms} y \texttt{templates}. \\ \hline
+\codigo{lib} & Reglas y constantes de negocio: estados oficiales, semáforo SST, formatos de fecha, validación de archivos, datos SST compartidos y consultas de seguimiento. \\ \hline
+\codigo{hooks} & Tema claro u oscuro, foco dentro de diálogos, ancho de pantalla y estado de conexión. \\ \hline
+\codigo{features} & Una carpeta por módulo funcional: \texttt{acceso}, \texttt{cortes}, \texttt{dossier}, \texttt{sst} y \texttt{tablero}. Cada pantalla se construye dentro de la suya. \\ \hline
+\codigo{muestra} & Página que enseña todos los componentes compartidos (\app{/muestra}). \\ \hline
 \end{tabular}
 \end{center}
 
-Con estos 33 componentes se construyen las pantallas del MVP. Si cambia una regla de diseño (un color, un tamaño), se corrige en un solo componente y el cambio llega a todas las pantallas.
 
-% APORTE HU01-HU02-HU07-HU08
-\clearpage
-\includepdf[pages=-]{../../Aportes-HU01-HU02-HU07-HU08/03-componentes-heuristicas.pdf}
+\subsection*{Props: el ejemplo de \texttt{Button}}
+
+Cada componente declara sus props con una interfaz de TypeScript. Las variantes y los estados son props, no clases sueltas. Así es la de \texttt{Button}:
+
+\begin{center}
+\begin{tabular}{|>{\ttfamily}m{3cm}|>{\ttfamily\raggedright\arraybackslash}m{4.4cm}|>{\raggedright\arraybackslash}m{7.8cm}|}
+\hline
+\textrm{\textbf{Prop}} & \textrm{\textbf{Tipo}} & \textbf{Para qué sirve} \\ \hline
+variant & 'primary' | 'secondary' | 'warning' | 'ghost' & Peso visual de la acción. \\ \hline
+size & 'default' | 'field' & \texttt{field} sube el alto a 56 px en móvil para uso en obra. \\ \hline
+icon & ReactNode & Ícono a la izquierda del texto. \\ \hline
+loading & boolean & Petición en curso: muestra el spinner e impide un segundo envío. \\ \hline
+loadingText & string & Texto mientras carga, por ejemplo ``Guardando corte\ldots{}''. \\ \hline
+blocked & boolean & Bloqueado por una regla de negocio; sigue recibiendo foco. \\ \hline
+blockedReason & ReactNode & Motivo visible del bloqueo y cómo resolverlo. Obligatorio si \texttt{blocked}. \\ \hline
+fullWidth & boolean & Ocupa todo el ancho (botones del pie en móvil). \\ \hline
+\end{tabular}
+\end{center}
+
+Los demás componentes siguen el mismo patrón: \texttt{Banner} recibe \texttt{tone}, \texttt{title} y \texttt{actions}; \texttt{Dialog} y \texttt{Drawer} reciben \texttt{open}, \texttt{onClose} y \texttt{title}; \texttt{PageHeader} recibe \texttt{title}, \texttt{description}, \texttt{meta} y \texttt{actions}; \texttt{FormLayout} recibe \texttt{header}, \texttt{status}, \texttt{footer} y \texttt{onSubmit}.
+
+\subsection*{Jerarquía de una pantalla: el detalle del corte}
+
+Las pantallas componen las piezas compartidas y las reglas viven fuera de los componentes. Por ejemplo, el detalle del corte (\texttt{/cortes/:id}) se arma así:
+
+\begin{verbatim}
+DetalleCorte (pagina /cortes/:id)
+|-- PageHeader . StatusBadge . AvisoDevolucion
+|-- ValoresCorte (actividades, horas-hombre, insumos)
+|-- SoportesCorte
+|   |-- ItemSoporte x n  -->  VisorSoporte (Drawer)
+|   `-- FileUpload  -->  UploadItem x n
+`-- RevisionCorte (solo Director, corte en revision)
+    |-- Dialog "Confirmar visado tecnico"
+    `-- DialogoObservacion  -->  TextArea + Chip x 5
+\end{verbatim}
+
+Las reglas están en \texttt{soportes.ts} (validación, permisos y retiro sin borrado) y \texttt{modeloDemo.ts} (quién puede decidir, sobre qué versión y con qué observación). \texttt{CortesDemoContext} las comparte con las pantallas. Del mismo modo, en el dossier las reglas están en \texttt{modelo.ts} y \texttt{entrega.ts}, y \texttt{lib/seguimiento} lleva esos datos a la bitácora y al tablero sin crear otra checklist.
+
+% =====================================================================
+
+Con estos 33 componentes se construyen las pantallas del MVP. Si cambia una regla de diseño (un color, un tamaño), se corrige en un solo componente y el cambio llega a todas las pantallas.
 
 \end{document}
