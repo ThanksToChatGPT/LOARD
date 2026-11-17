@@ -11,9 +11,13 @@
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
 \usepackage{enumitem}
-\usepackage[hidelinks]{hyperref}
+\usepackage{float}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=[HTML]{0B3A5C}}
 
 \graphicspath{{capturas/}}
+\newcommand{\urlapp}{https://thankstochatgpt.github.io/LOARD}
+\newcommand{\commit}[1]{\href{https://github.com/ThanksToChatGPT/LOARD/commit/#1}{\texttt{#1}}}
 \setlength{\parskip}{0.5em}
 \setlength{\parindent}{0pt}
 \renewcommand{\arraystretch}{1.35}
@@ -62,7 +66,14 @@
 Este reporte recoge las pruebas del prototipo de Loard con usuarios reales.
 Se usa el método RITE: se prueba, se corrige lo que falla y se vuelve a probar.
 El objetivo es comprobar que las personas hacen las tareas principales sin ayuda
-y dejar evidencia de cada cambio.
+y dejar evidencia de cada cambio. Todas las pruebas se hicieron el 16 de noviembre de 2026 sobre el prototipo, hoy publicado en \href{\urlapp/}{\nolinkurl{https://thankstochatgpt.github.io/LOARD/}}.
+
+El reporte tiene dos ciclos:
+\begin{itemize}
+  \item \textbf{Ciclo principal} (secciones 2 a 8): tres participantes, tareas de cortes, revisión del Director, dossier y tablero, y siete problemas corregidos.
+  \item \textbf{Ciclo de HU-M01, M02, M07 y M08} (sección~\ref{sec:ciclo2}): dos recorridos (S1 y S2) de acceso, edición del corte, registro NDT y revisión del dossier, con dos ajustes entre recorridos.
+\end{itemize}
+La sección~\ref{sec:tecnica} recoge además los problemas encontrados en la revisión técnica previa de HU-M03 y HU-M04, que no provienen de usuarios.
 
 % =====================================================================
 \section{Cómo se hizo}
@@ -148,7 +159,7 @@ Al terminar, cada persona marcó de 1 a 5 qué tan de acuerdo estaba con cada fr
 
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.75cm} >{\raggedright\arraybackslash}p{9.9cm} >{\centering\arraybackslash}p{1.9cm} >{\centering\arraybackslash}p{1.9cm}}
 \toprule
-\textbf{N.º} & \textbf{Pregunta} & \textbf{Residente de obra} & \textbf{Director de proyectos} \\
+\textbf{No.} & \textbf{Pregunta} & \textbf{Residente de obra} & \textbf{Director de proyectos} \\
 \midrule
 \endhead
 \bottomrule
@@ -280,12 +291,101 @@ prototipo: son necesidades del trabajo diario que quedan anotadas para más adel
 \end{itemize}
 
 % =====================================================================
+\section{Ciclo de HU-M01, HU-M02, HU-M07 y HU-M08}\label{sec:ciclo2}
+
+Se abordó las historias HU-M01, HU-M02, HU-M07 y HU-M08 mediante dos recorridos de tareas (S1 y S2), realizados el 16 de noviembre de 2026 con dos personas reales. Se examinaron el acceso, la edición del corte, el registro NDT y la revisión del dossier, con énfasis en las dificultades de interacción.
+
+\subsection*{Datos de entrada}
+
+Ambos recorridos partieron del mismo estado inicial, de modo que los registros de S1 no se acumularon en S2. La fecha de referencia del prototipo es el 17 de noviembre de 2026.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}p{12.1cm}}
+\toprule \textbf{Registro} & \textbf{Datos de entrada} \\ \midrule \endhead
+\bottomrule \endfoot
+Acceso & Residente: \texttt{residente@loard.demo}. Calidad: \texttt{calidad@loard.demo}. Clave: \texttt{Demo2026!} \\
+Corte \#09 & Frente: Estación compresora. Periodo: 10 al 17 de noviembre de 2026. Soldadura y tendido de tubería: 120 m. \\
+Personal e insumos & Fredy Cuero: 40 horas. Electrodo E7018: 12,5 kg. \\
+Corrección del corte & De 120 m a 128 m. Motivo: ``Incluí los 8 m del cierre del frente''. Resultado: versión 2, conservando la versión 1. \\
+Ensayo NDT & Junta JW-16-042. Laboratorio Delta. Informe RT-DEMO-001. Radiografía del 16 de noviembre de 2026. Resultado: Conforme. Archivo: RT-DEMO-001.pdf. \\
+Dossier & Acta \#07 aceptada el 11 de noviembre. Fecha límite: 21 de noviembre. Cuatro días restantes según el reloj del prototipo. \\
+\end{longtable}
+
+\subsection*{Recorrido S1}
+
+Participó un usuario de experiencia media, en computador. Completó el acceso sin asistencia. Durante la corrección del corte registró 128 m y necesitó orientación para localizar en el historial la versión anterior de 120 m.
+
+En el registro NDT confundió el resultado ``Conforme'' del ensayo con la validación documental: ``Pensé que ya estaba aprobado porque decía Conforme''. Se aclaró que el resultado del laboratorio no sustituye la revisión del PDF por Calidad.
+
+En el dossier había inicialmente cuatro de dieciocho requisitos validados (22\,\%). La carga del reporte no modificó el indicador; después de validar el soporte pasó a cinco de dieciocho (28\,\%). El borrador ZIP quedó disponible y el cierre permaneció bloqueado por los requisitos pendientes.
+
+\subsection*{Ajustes entre recorridos}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.6cm} >{\raggedright\arraybackslash}p{5.6cm} >{\raggedright\arraybackslash}p{6.1cm}}
+\toprule \textbf{Dificultad} & \textbf{Comportamiento en S1} & \textbf{Ajuste aplicado para S2} \\ \midrule \endhead
+\bottomrule \endfoot
+No encontrar el historial & Buscó la versión anterior entre los datos del corte. & Acceso ``Ver historial'' junto al mensaje de guardado; S2 lo localizó sin asistencia. \\
+Confundir Conforme con Validado & Creyó que el resultado del laboratorio cerraba la revisión del PDF. & Texto aclaratorio: ``El PDF debe ser revisado por Calidad''; S2 distinguió ambos estados. \\
+\end{longtable}
+
+\subsection*{Recorrido S2}
+
+Participó un usuario de menor experiencia, en celular. Completó las mismas cuatro tareas con la interfaz ajustada: localizó el historial y distinguió el resultado del ensayo del estado del documento. Persistió la necesidad de aclarar que las horas se registran por trabajador.
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{1.8cm} >{\raggedright\arraybackslash}p{5cm} >{\raggedright\arraybackslash}p{5.4cm} >{\raggedright\arraybackslash}p{2.4cm}}
+\toprule \textbf{Recorrido} & \textbf{Tarea} & \textbf{Asistencia requerida} & \textbf{Tiempo} \\ \midrule \endhead
+\bottomrule \endfoot
+S1 & Entrar & Sin ayuda & 35 s \\
+S1 & Registrar y editar un corte & Con ayuda para encontrar el historial & 4 min 10 s \\
+S1 & Registrar un NDT & Con ayuda sobre la validación & 3 min 20 s \\
+S1 & Revisar el dossier y descargar & Sin ayuda & 2 min 05 s \\
+\midrule
+S2 & Entrar & Sin ayuda & 45 s \\
+S2 & Registrar y editar un corte & Con ayuda sobre las horas & 3 min 30 s \\
+S2 & Registrar un NDT & Sin ayuda & 2 min 30 s \\
+S2 & Revisar el dossier y descargar & Sin ayuda & 2 min 15 s \\
+\end{longtable}
+
+\subsection*{Análisis}
+
+El tiempo total fue de 10 min 10 s en S1 y de 9 min en S2. Ambos participantes completaron las cuatro tareas; S1 necesitó ayuda en dos y S2 en una. Como son dos participantes con perfiles y dispositivos distintos, la reducción de 1 min 10 s describe lo observado sin atribuirla toda a los cambios de interfaz. Queda como mejora pendiente explicar con mayor claridad el registro de horas por trabajador.
+
+\subsection*{Revisión actual de los ajustes}
+
+No se tomaron capturas durante S1 y S2. Las figuras siguientes son de una revisión técnica posterior del mismo día, en la que los dos ajustes se incorporaron al código del repositorio y se comprobaron en navegador (\commit{81b372a}). No se presentan como fotos de las sesiones.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\linewidth]{rite-actual-acceso-historial}
+  \caption{Acceso al historial desde el aviso de guardado.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\linewidth]{rite-actual-ayuda-ndt}
+  \caption{Ayuda sobre el resultado del ensayo y la revisión del PDF.}
+\end{figure}
+
+% =====================================================================
+\section{Revisión técnica previa de HU-M03 y HU-M04}\label{sec:tecnica}
+
+Antes de subir estas historias, Sebastián Gutiérrez recorrió ambos flujos en el navegador, en computador y en celular. Estos problemas se detectaron y corrigieron (\commit{63ff2ef}, \commit{90f7d85} y \commit{937f67b}). \textbf{Son hallazgos de revisión técnica, no de usuarios}; las historias se probaron después con usuarios en el ciclo principal (tarea T2 y problema h1).
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{7.4cm} >{\raggedright\arraybackslash}p{7.9cm}}
+\toprule \textbf{Problema detectado} & \textbf{Cambio aplicado en el prototipo} \\ \midrule \endhead
+\bottomrule \endfoot
+En celular, la barra de revisión ocupaba unos 330 px y tapaba los datos que el Director debe revisar. & Solo la fila de botones queda fija (66 px); la explicación y los avisos pasan al contenido. \\
+Al visar o devolver, el foco del teclado quedaba en la página vacía. & El foco pasa al nuevo estado del corte. \\
+``Cancelar'' se estiraba en alto junto al botón bloqueado del diálogo. & El botón se alinea al inicio de la fila. \\
+A 1440 px, ``Devolver con observaciones'' se partía en dos líneas. & El botón conserva su ancho natural desde tableta. \\
+Un corte visado se podía editar, en contra de las historias. & El modelo rechaza el cambio y la pantalla explica el motivo. \\
+\end{longtable}
+
+% =====================================================================
 \section{Conclusión}
 
 Las tres personas entendieron el prototipo y lo recorrieron con muy poca ayuda. La encuesta SUS dio
 92,5 y 82,5 puntos, con un promedio de 87,5, por encima de la meta de 70.
 
-Se encontraron seis problemas de uso. El más importante fue que no se podían subir soportes
+Se encontraron siete problemas de uso. El más importante fue que no se podían subir soportes
 al corte; los demás tienen que ver con buscar cortes, escribir actividades propias y detalles
 de la pantalla. Los siete se corrigieron en el prototipo y cada uno queda explicado con su cambio y sus
 capturas de antes y después.
@@ -293,5 +393,7 @@ capturas de antes y después.
 La mayor parte de los comentarios no fueron fallas, sino necesidades del trabajo diario que
 el prototipo aún no cubre: herramientas y equipos, materiales por lote, permisos por obra y
 cotizaciones. Quedan anotadas como pedidos para próximas versiones, y refinamiento del entendimiento del funcionamiento de loard.
+
+En el ciclo de HU-M01, M02, M07 y M08 los dos participantes completaron las cuatro tareas. Los dos ajustes aplicados entre recorridos (acceso al historial y aclaración del estado documental del NDT) redujeron la ayuda necesaria de dos tareas a una; queda pendiente aclarar que las horas se registran por trabajador.
 
 \end{document}
