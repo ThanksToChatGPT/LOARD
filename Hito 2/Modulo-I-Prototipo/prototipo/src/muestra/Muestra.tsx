@@ -3,7 +3,8 @@
  * Los textos son de relleno escritos aquí mismo; no hay datos de ejemplo del negocio.
  */
 
-import { Bell, Eye, Layers, Moon, Plus, Sun } from 'lucide-react';
+import { ArrowLeft, Bell, Eye, Layers, Moon, Plus, Sun } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { useState, type ReactNode } from 'react';
 import {
   AppShell,
@@ -41,6 +42,7 @@ import {
   type OfflineQueueState,
   type TableColumn,
 } from '@/components';
+import { Volver } from '@/features/sst/componentes';
 import { useTheme } from '@/hooks';
 import { cn } from '@/lib/cn';
 import { OBSERVACION_MIN_CARACTERES } from '@/lib/constantes';
@@ -132,6 +134,7 @@ const Fila = ({ children }: { children: ReactNode }) => (
 export function Muestra() {
   const { tema, alternar } = useTheme();
   const toast = useToast();
+  const navegar = useNavigate();
 
   const [seccion, setSeccion] = useState('fundamentos');
   const [conexion, setConexion] = useState<ConnectionState>('online');
@@ -211,6 +214,9 @@ export function Muestra() {
         role: 'Sistema de diseño',
         actions: (
           <>
+            <IconButton label="Volver al prototipo" onClick={() => navegar('/')}>
+              <ArrowLeft aria-hidden="true" className="h-5 w-5" />
+            </IconButton>
             <IconButton label="Alertas, 2 pendientes" badge={2}>
               <Bell aria-hidden="true" className="h-5 w-5" />
             </IconButton>
@@ -245,6 +251,9 @@ export function Muestra() {
       }
     >
       <div className="grid-page mb-section">
+        <div className="col-span-full">
+          <Volver to="/">Volver al prototipo</Volver>
+        </div>
         <PageHeader
           className="col-span-full"
           title="Componentes compartidos"
@@ -256,6 +265,11 @@ export function Muestra() {
             </Button>
           }
         />
+        <Banner tone="info" title="Vista general de la estética de la app" className="col-span-full">
+          Esta página reúne los colores, la tipografía y los componentes con los que está construido el prototipo.
+          Los mismos botones, campos, tablas, avisos y paneles se repiten en todas las pantallas de los módulos; aquí
+          se ven aislados, con sus variantes y estados, usando textos de relleno.
+        </Banner>
       </div>
 
       <Seccion id="fundamentos" titulo="Fundamentos">
