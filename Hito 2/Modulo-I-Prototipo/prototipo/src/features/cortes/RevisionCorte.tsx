@@ -78,9 +78,9 @@ export function RevisionCorte({ corte, onDecidido }: { corte: CorteDemo; onDecid
         className="card sticky bottom-gutter-md z-10 col-span-full flex flex-col gap-gutter-sm p-gutter-sm shadow-2 tablet:flex-row tablet:items-center tablet:justify-end">
         {bloqueo && <p id={motivoId} className="text-body-sm text-warning tablet:mr-auto">{bloqueo}</p>}
         <div className="grid grid-cols-2 gap-gutter-sm tablet:flex">
-          <Button variant="secondary" fullWidth icon={<RotateCcw className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
+          <Button variant="secondary" fullWidth className="tablet:w-auto tablet:whitespace-nowrap" icon={<RotateCcw className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
             onClick={() => abrir('Devuelto con Observaciones')}>Devolver<span className="sr-only tablet:not-sr-only"> con observaciones</span></Button>
-          <Button fullWidth icon={<ShieldCheck className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
+          <Button fullWidth className="tablet:w-auto tablet:whitespace-nowrap" icon={<ShieldCheck className="h-4 w-4" />} blocked={Boolean(bloqueo)} aria-describedby={bloqueo ? motivoId : undefined}
             onClick={() => abrir('Visado')}>Visar corte</Button>
         </div>
       </div>
